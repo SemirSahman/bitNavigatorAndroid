@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="0px" >>
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/map"
+            tools:context=".MapsActivity"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+
+            tools:layout="@layout/abc_action_bar_view_list_nav_layout" />
+
+        <!--  Header  Starts-->
+        <LinearLayout android:id="@+id/header"
+            android:layout_width="fill_parent"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:background="@color/bitcolor"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip">
+
+            <!-- Logo Start-->
+            <ImageView android:src="@drawable/header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"/>
+            <!-- Logo Ends -->
+
+        </LinearLayout>
+        <!--  Header Ends -->
+        <!-- Link to Login Screen -->
+        <TextView android:id="@+id/link_to_login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="480dp"
+            android:text="Login here"
+            android:gravity="center"
+            android:textSize="20dip"
+            android:textColor="#025f7c" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
