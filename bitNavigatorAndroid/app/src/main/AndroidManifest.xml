@@ -32,15 +32,15 @@
         <activity
             android:name=".controllers.MapsActivity"
             android:label="@string/title_activity_maps" >
+        </activity>
+
+        <activity android:name=".controllers.LoginActivity"
+            android:label="BIT Navigator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity android:name=".controllers.LoginActivity"
-            android:label="BIT Navigator">
         </activity>
 
         <!--  Entry for RegisterActivity.class -->
