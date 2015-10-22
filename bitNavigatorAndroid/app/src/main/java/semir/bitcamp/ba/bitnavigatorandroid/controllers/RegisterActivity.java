@@ -1,4 +1,4 @@
-package semir.bitcamp.ba.bitnavigatorandroid;
+package semir.bitcamp.ba.bitnavigatorandroid.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import semir.bitcamp.ba.bitnavigatorandroid.R;
 
 
 /**

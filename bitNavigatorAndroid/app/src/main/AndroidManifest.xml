@@ -30,7 +30,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".controllers.MapsActivity"
             android:label="@string/title_activity_maps" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,12 +39,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LoginActivity"
+        <activity android:name=".controllers.LoginActivity"
             android:label="BIT Navigator">
         </activity>
 
         <!--  Entry for RegisterActivity.class -->
-        <activity android:name=".RegisterActivity"
+        <activity android:name=".controllers.RegisterActivity"
             android:label="Register New Account"></activity>
 
     </application>

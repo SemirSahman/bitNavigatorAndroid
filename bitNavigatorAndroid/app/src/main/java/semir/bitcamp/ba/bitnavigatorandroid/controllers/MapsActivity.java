@@ -1,8 +1,9 @@
-package semir.bitcamp.ba.bitnavigatorandroid;
+package semir.bitcamp.ba.bitnavigatorandroid.controllers;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,6 +13,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import semir.bitcamp.ba.bitnavigatorandroid.R;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -60,5 +72,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng ius = new LatLng(43.821692, 18.308846);
         mMap.addMarker(new MarkerOptions().position(ius).title("Marker in IUS"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ius));
+    }
+
+    private Callback getCompany() {
+        return new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                //makeToast(R.string.toast_try_again);
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                String responseJson = response.body().string();
+
+                try {
+                    String responses= response.body().string();
+                    //Log.d("EDIBRespons", responseS);
+                    JSONArray array = new JSONArray(responses);
+                    //Log.d("SARR", "" + array.length());
+                    for (int i = 0; i < array.length(); i++) {
+
+                        JSONObject postObj = array.getJSONObject(i);
+                        int id = postObj.getInt("id");
+                        String name = postObj.getString("title");
+                        Double longitude = postObj.getDouble("longitude");
+                        Double latitude = postObj.getDouble("latitude");
+
+
+
+                        mFeedCompany.add(new Company(id, name, email, logo));
+                        Log.d("TESTAG", postObj.toString());
+                    }
+                } catch (JSONException e) {
+                    //makeToast(R.string.toast_try_again);
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 }
