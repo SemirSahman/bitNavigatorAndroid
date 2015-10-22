@@ -1,6 +1,7 @@
 package semir.bitcamp.ba.bitnavigatorandroid.lists;
 
 import android.text.Editable;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,6 +44,10 @@ public class PlaceList {
 
     public void remove(Place place) {
         placeList.remove(place);
+    }
+
+    public List<Place> getPlaceList(){
+        return placeList;
     }
 
 }

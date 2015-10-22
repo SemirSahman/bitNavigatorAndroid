@@ -40,9 +40,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        ServiceRequest.get(getString(R.string.service_all_places), getPlaces());
-
         TextView loginScreen = (TextView) findViewById(R.id.link_to_login);
 
         loginScreen.setOnClickListener(new View.OnClickListener() {
@@ -52,12 +49,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Switching to Login Screen/closing register screen
                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(i);
-
                 finish();
             }
         });
 
     }
+
+    public void drawMarkers(){
+        for(Place place: PlaceList.getInstance().getPlaceList()){
+            LatLng ius = new LatLng(place.getLatitude(),place.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(ius).title(place.getTitle()));
+        }
+    }
+
+
+
 
 
     /**
@@ -72,11 +78,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        if(PlaceList.getInstance().getPlaceList().size() == 0) {
+            ServiceRequest.get(getString(R.string.service_all_places), getPlaces());
+        }
 
+        drawMarkers();
+        
         // Add a marker in Sydney and move the camera
-        LatLng ius = new LatLng(43.821692, 18.308846);
-        mMap.addMarker(new MarkerOptions().position(ius).title("Marker in IUS"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(ius));
+
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(43.821, 18.3088)));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(43.821, 18.3088), 13.0f));
     }
 
     private Callback getPlaces() {
