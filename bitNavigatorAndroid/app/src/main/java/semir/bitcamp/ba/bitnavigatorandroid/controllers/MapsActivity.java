@@ -24,6 +24,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import semir.bitcamp.ba.bitnavigatorandroid.R;
+import semir.bitcamp.ba.bitnavigatorandroid.lists.PlaceList;
+import semir.bitcamp.ba.bitnavigatorandroid.models.Place;
+import semir.bitcamp.ba.bitnavigatorandroid.service.ServiceRequest;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -37,6 +40,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        ServiceRequest.get(getString(R.string.service_all_places), getPlaces());
 
         TextView loginScreen = (TextView) findViewById(R.id.link_to_login);
 
@@ -74,34 +79,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ius));
     }
 
-    private Callback getCompany() {
+    private Callback getPlaces() {
         return new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
                 //makeToast(R.string.toast_try_again);
+                Log.d("dibag", "hdashgdkjsa87998987");
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
-                String responseJson = response.body().string();
 
                 try {
-                    String responses= response.body().string();
-                    //Log.d("EDIBRespons", responseS);
-                    JSONArray array = new JSONArray(responses);
-                    //Log.d("SARR", "" + array.length());
+                    String responseJSON= response.body().string();
+                    JSONArray array = new JSONArray(responseJSON);
                     for (int i = 0; i < array.length(); i++) {
 
                         JSONObject postObj = array.getJSONObject(i);
-                        int id = postObj.getInt("id");
+                        Integer id = postObj.getInt("id");
                         String name = postObj.getString("title");
+                        String address = postObj.getString("address");
                         Double longitude = postObj.getDouble("longitude");
                         Double latitude = postObj.getDouble("latitude");
 
+                        Place place = new Place(id, name, address, longitude, latitude);
+                        PlaceList.getInstance().add(place);
+                        Log.d("dibag", address);
 
-
-                        mFeedCompany.add(new Company(id, name, email, logo));
-                        Log.d("TESTAG", postObj.toString());
                     }
                 } catch (JSONException e) {
                     //makeToast(R.string.toast_try_again);
