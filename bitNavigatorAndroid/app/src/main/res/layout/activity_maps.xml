@@ -22,22 +22,6 @@
             tools:layout="@layout/abc_action_bar_view_list_nav_layout" />
 
         <!--  Header  Starts-->
-        <LinearLayout android:id="@+id/header"
-            android:layout_width="fill_parent"
-            android:layout_height="70dp"
-            android:orientation="vertical"
-            android:background="@color/bitcolor"
-            android:paddingTop="5dip"
-            android:paddingBottom="5dip">
-
-            <!-- Logo Start-->
-            <ImageView android:src="@drawable/header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"/>
-            <!-- Logo Ends -->
-
-        </LinearLayout>
         <!--  Header Ends -->
         <!-- Link to Login Screen -->
         <TextView android:id="@+id/link_to_login"
