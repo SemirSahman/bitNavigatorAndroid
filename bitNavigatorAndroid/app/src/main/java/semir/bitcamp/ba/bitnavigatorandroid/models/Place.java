@@ -71,4 +71,13 @@ public class Place {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Place){
+            Place p = (Place) o;
+            return this.id == p.id;
+        }
+        return false;
+    }
 }

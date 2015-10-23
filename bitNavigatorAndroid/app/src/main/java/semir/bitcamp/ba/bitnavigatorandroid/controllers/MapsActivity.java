@@ -114,7 +114,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Double latitude = postObj.getDouble("latitude");
 
                         Place place = new Place(id, name, address, longitude, latitude);
-                        PlaceList.getInstance().add(place);
+                        if (!PlaceList.getInstance().getPlaceList().contains(place)) {
+                            PlaceList.getInstance().add(place);
+                        }
                         Log.d("dibag", address);
 
                     }
