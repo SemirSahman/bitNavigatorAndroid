@@ -78,9 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if(PlaceList.getInstance().getPlaceList().size() == 0) {
-            ServiceRequest.get(getString(R.string.service_all_places), getPlaces());
-        }
+        ServiceRequest.get(getString(R.string.service_all_places), getPlaces());
 
         drawMarkers();
         
