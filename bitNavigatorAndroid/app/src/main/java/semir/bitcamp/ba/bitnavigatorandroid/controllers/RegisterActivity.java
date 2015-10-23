@@ -3,15 +3,30 @@ package semir.bitcamp.ba.bitnavigatorandroid.controllers;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import semir.bitcamp.ba.bitnavigatorandroid.R;
+import semir.bitcamp.ba.bitnavigatorandroid.models.User;
+import semir.bitcamp.ba.bitnavigatorandroid.service.ServiceRequest;
 
 
 /**
@@ -45,29 +60,50 @@ public class RegisterActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-                final String emailString = email.getText().toString();
+                String emailString = email.getText().toString();
                 if (!isValidEmail(emailString)) {
                     email.setError("Invalid Email");
+                    return;
                 }
 
-                final String pass = password.getText().toString();
+                String pass = password.getText().toString();
                 if (!isValidPassword(pass)) {
                     password.setError("Invalid Password");
+                    return;
                 }
 
                 final String fName = firstName.getText().toString();
                 if(!isValidName(fName)){
                     firstName.setError("First name can only contain letters");
+                    return;
                 }
 
                 final String lName = lastName.getText().toString();
                 if(!isValidName(lName)){
                     lastName.setError("Last name can only contain letters");
+                    return;
                 }
 
                 if(!(password.getText().toString().equals(confirmPassword.getText().toString()))){
                     confirmPassword.setError("Password does not match");
+                    return;
                 }
+                Log.d("dibag", emailString + " ---  " + pass);
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("email", emailString);
+                    json.put("password", pass);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                    Log.d("dibag", emailString + "++++++++++" + pass);
+                }
+
+                String url = getString(R.string.service_sign_up);
+
+                ServiceRequest.post(url, json.toString(), registerUser());
+
+
             }
         });
 
@@ -109,6 +145,8 @@ public class RegisterActivity extends Activity {
     }
 
     private boolean isValidName(String name){
+        if(name.equals(""))
+            return true;
         String NAME_PATTERN = "[a-zA-Z]+";
 
         Pattern pattern = Pattern.compile(NAME_PATTERN);
@@ -122,6 +160,54 @@ public class RegisterActivity extends Activity {
             return true;
         }
         return false;
+    }
+
+    private Callback registerUser() {
+        return new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                //makeToast(R.string.toast_try_again);
+                Log.d("dibag", "56465789797");
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+
+                try {
+                    String responseJSON= response.body().string();
+                    JSONObject json = new JSONObject(responseJSON);
+                    Integer id = json.getInt("id");
+                    if (id > 0) {
+                        gotToMap();
+                    }
+                    makeToast("Correct the form!");
+                    Log.d("dibag", "tuj sam /*/*/------------*//*/*/*/*/-----------/*/*/*/");
+
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+    }
+
+    public void gotToMap() {
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
+    }
+
+    private void makeToast(final String message){
+        new Handler(Looper.getMainLooper())
+                .post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(RegisterActivity.this,
+                                message,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 }
