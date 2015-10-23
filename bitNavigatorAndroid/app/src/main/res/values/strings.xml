@@ -3,4 +3,6 @@
     <string name="title_activity_maps">BIT Navigator</string>
     <color name="bitcolor">#2b669a</color>
     <string name="app">BIT Navigator</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
 </resources>
