@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -40,18 +41,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        TextView loginScreen = (TextView) findViewById(R.id.link_to_login);
 
-        loginScreen.setOnClickListener(new View.OnClickListener() {
+        Button mLoginButton = (Button) findViewById(R.id.btnLogin);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+                                            public void onClick(View v) {
+                                                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                                                startActivity(i);
+                                            }
+                                        }
+        );
 
-            public void onClick(View arg0) {
-                // Closing registration screen
-                // Switching to Login Screen/closing register screen
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
+        Button mRegisterButton = (Button) findViewById(R.id.btnRegister);
+        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+                                               public void onClick(View v) {
+                                                   Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                                                   startActivity(i);
+                                               }
+                                           }
+        );
+
+        Button mSearchButton = (Button) findViewById(R.id.btnSearch);
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
+                                             public void onClick(View v) {
+                                                 Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                                                 startActivity(i);
+                                             }
+                                         }
+        );
+
+        Button mMapButton = (Button) findViewById(R.id.btnMap);
+        mMapButton.setOnClickListener(new View.OnClickListener() {
+                                          public void onClick(View v) {
+                                              Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+                                              startActivity(i);
+                                          }
+                                      }
+        );
 
     }
 

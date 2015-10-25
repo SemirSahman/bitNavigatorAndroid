@@ -53,8 +53,8 @@ public class RegisterActivity extends Activity {
         password = (EditText) findViewById(R.id.password);
         confirmPassword = (EditText) findViewById(R.id.confirmpassword);
 
-        TextView loginScreen = (TextView) findViewById(R.id.link_to_login);
-        TextView homeScreen = (TextView) findViewById(R.id.link_to_homepage);
+//        TextView loginScreen = (TextView) findViewById(R.id.link_to_login);
+//        TextView homeScreen = (TextView) findViewById(R.id.link_to_homepage);
 
         findViewById(R.id.btnRegister).setOnClickListener(new OnClickListener() {
 
@@ -108,30 +108,66 @@ public class RegisterActivity extends Activity {
         });
 
         // Listening to Login Screen link
-        loginScreen.setOnClickListener(new OnClickListener() {
+//        loginScreen.setOnClickListener(new OnClickListener() {
+//
+//            public void onClick(View arg0) {
+//                // Closing registration screen
+//                // Switching to Login Screen/closing register screen
+//                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+//                startActivity(i);
+//
+//                finish();
+//            }
+//        });
+//
+//        // Listening to Map Screen link
+//        homeScreen.setOnClickListener(new OnClickListener() {
+//
+//            public void onClick(View arg0) {
+//                // Closing registration screen
+//                // Switching to Login Screen/closing register screen
+//                Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+//                startActivity(i);
+//
+//                finish();
+//            }
+//        });
 
-            public void onClick(View arg0) {
-                // Closing registration screen
-                // Switching to Login Screen/closing register screen
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(i);
+        Button mLoginButton = (Button) findViewById(R.id.btnLogin);
+        mLoginButton.setOnClickListener(new View.OnClickListener(){
+                                            public void onClick(View v) {
+                                                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                                                startActivity(i);
+                                            }
+                                        }
+        );
 
-                finish();
-            }
-        });
+        Button mRegisterButton = (Button) findViewById(R.id.btnRegister);
+        mRegisterButton.setOnClickListener(new View.OnClickListener(){
+                                               public void onClick(View v) {
+                                                   Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                                                   startActivity(i);
+                                               }
+                                           }
+        );
 
-        // Listening to Map Screen link
-        homeScreen.setOnClickListener(new OnClickListener() {
+        Button mSearchButton = (Button) findViewById(R.id.btnSearch);
+        mSearchButton.setOnClickListener(new View.OnClickListener(){
+                                             public void onClick(View v) {
+                                                 Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                                                 startActivity(i);
+                                             }
+                                         }
+        );
 
-            public void onClick(View arg0) {
-                // Closing registration screen
-                // Switching to Login Screen/closing register screen
-                Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-                startActivity(i);
-
-                finish();
-            }
-        });
+        Button mMapButton = (Button) findViewById(R.id.btnMap);
+        mMapButton.setOnClickListener(new View.OnClickListener() {
+                                          public void onClick(View v) {
+                                              Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+                                              startActivity(i);
+                                          }
+                                      }
+        );
     }
 
     // validating email id
