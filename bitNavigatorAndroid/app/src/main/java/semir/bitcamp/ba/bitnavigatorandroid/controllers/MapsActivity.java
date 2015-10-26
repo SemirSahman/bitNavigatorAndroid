@@ -42,7 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        Button mLoginButton = (Button) findViewById(R.id.btnLogin);
+        Button mLoginButton = (Button) findViewById(R.id.btnProfile);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
                                             public void onClick(View v) {
                                                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
@@ -51,10 +51,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         }
         );
 
-        Button mRegisterButton = (Button) findViewById(R.id.btnRegister);
+        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
                                                public void onClick(View v) {
-                                                   Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                                                    startActivity(i);
                                                }
                                            }

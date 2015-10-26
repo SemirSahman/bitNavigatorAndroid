@@ -70,6 +70,16 @@
             android:layout_marginTop="10dip"
             android:text="Login"/>
 
+        <Button
+            android:id="@+id/btnLinkToRegisterScreen"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dip"
+            android:background="@null"
+            android:text="I don&apos;t have account. Register Me!"
+            android:textColor="#91c8e1"
+            android:textStyle="bold" />
+
     </LinearLayout>
     <!-- Login Form Ends -->
     </RelativeLayout>

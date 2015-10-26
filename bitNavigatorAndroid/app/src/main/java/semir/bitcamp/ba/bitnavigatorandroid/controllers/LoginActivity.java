@@ -1,6 +1,7 @@
 package semir.bitcamp.ba.bitnavigatorandroid.controllers;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -38,10 +39,11 @@ public class LoginActivity extends Activity {
     private EditText mEmailEditText;
     private EditText mPasswordEditText;
     private Button mLoginButton;
+    private Button mLinkToRegister;
 
     public User user;
 
-    public SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    public SharedPreferences sharedpreferences;
 
 
     @Override
@@ -49,21 +51,37 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         // setting default screen to login.xml
         setContentView(R.layout.activity_login);
+        sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
+        if(!sharedpreferences.contains("email")){
+           makeToast("Ovdje se pravi profile page");
+        }
 
         mEmailEditText = (EditText) findViewById(R.id.login_email);
         mPasswordEditText = (EditText) findViewById(R.id.login_password);
         mLoginButton = (Button) findViewById(R.id.login);
+        mLinkToRegister = (Button) findViewById(R.id.btnLinkToRegisterScreen);
+
+        mLinkToRegister.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.clear();
+                Intent i = new Intent(getApplicationContext(),
+                        RegisterActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
         Log.e("////////////////","id");
+
+
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("----------------------","id");
+                makeToast("Loging in...");
                 String email = mEmailEditText.getText().toString();
                 String password = mPasswordEditText.getText().toString();
-//                try {
-//                    password = PasswordHash.createHash(mPasswordEditText.getText().toString());
-//                }catch (Exception e){}
 
                 JSONObject json = new JSONObject();
                 try {
@@ -79,7 +97,7 @@ public class LoginActivity extends Activity {
         });
 
 
-        Button mLoginButton = (Button) findViewById(R.id.btnLogin);
+        Button mLoginButton = (Button) findViewById(R.id.btnProfile);
         mLoginButton.setOnClickListener(new View.OnClickListener(){
                                             public void onClick(View v) {
                                                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
@@ -88,10 +106,10 @@ public class LoginActivity extends Activity {
                                         }
         );
 
-        Button mRegisterButton = (Button) findViewById(R.id.btnRegister);
+        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
         mRegisterButton.setOnClickListener(new View.OnClickListener(){
                                                public void onClick(View v) {
-                                                   Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                                                    startActivity(i);
                                                }
                                            }
@@ -100,7 +118,7 @@ public class LoginActivity extends Activity {
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener(){
                                              public void onClick(View v) {
-                                                 Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                                                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                                                  startActivity(i);
                                              }
                                          }
@@ -131,16 +149,15 @@ public class LoginActivity extends Activity {
 
                 try {
                     String responseJSON= response.body().string();
-                    JSONObject userObj = new JSONObject(responseJSON);
+                    JSONObject userObj = new JSONObject(responseJSON.toString());
                     Integer id = userObj.getInt("id");
-                    Log.e("*******", "id" + id);
                     String name = userObj.getString("firstName");
                     String surname = userObj.getString("lastName");
                     String email = userObj.getString("email");
                     String password = userObj.getString("password");
                     user = new User(id, name, surname, email, password);
                     makeToast("Successfull loged in " + user.getFirstName());
-                    SharedPreferences.Editor editor = settings.edit();
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putInt("id", id);
                     editor.putString("name", name);
                     editor.putString("surname", surname);

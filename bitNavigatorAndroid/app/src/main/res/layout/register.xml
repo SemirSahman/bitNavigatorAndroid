@@ -101,6 +101,16 @@
                 android:layout_marginTop="10dip"
                 android:text="Register New Account"/>
 
+            <Button
+                android:id="@+id/btnLinkToLoginScreen"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dip"
+                android:background="@null"
+                android:text="Already registred. Login Me!"
+                android:textColor="#91c8e1"
+                android:textStyle="bold" />
+
         </LinearLayout>
 </ScrollView>
         <!-- Registration Form Ends -->

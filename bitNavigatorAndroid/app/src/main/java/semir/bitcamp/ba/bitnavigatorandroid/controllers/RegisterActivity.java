@@ -40,6 +40,7 @@ public class RegisterActivity extends Activity {
     private EditText email;
     private EditText password;
     private EditText confirmPassword;
+    private Button mLinkToLogin;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,9 +53,17 @@ public class RegisterActivity extends Activity {
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         confirmPassword = (EditText) findViewById(R.id.confirmpassword);
+        mLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
 
-//        TextView loginScreen = (TextView) findViewById(R.id.link_to_login);
-//        TextView homeScreen = (TextView) findViewById(R.id.link_to_homepage);
+
+        mLinkToLogin.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),
+                        LoginActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         findViewById(R.id.btnRegister).setOnClickListener(new OnClickListener() {
 
@@ -133,7 +142,7 @@ public class RegisterActivity extends Activity {
 //            }
 //        });
 
-        Button mLoginButton = (Button) findViewById(R.id.btnLogin);
+        Button mLoginButton = (Button) findViewById(R.id.btnProfile);
         mLoginButton.setOnClickListener(new View.OnClickListener(){
                                             public void onClick(View v) {
                                                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
@@ -142,7 +151,7 @@ public class RegisterActivity extends Activity {
                                         }
         );
 
-        Button mRegisterButton = (Button) findViewById(R.id.btnRegister);
+        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
         mRegisterButton.setOnClickListener(new View.OnClickListener(){
                                                public void onClick(View v) {
                                                    Intent i = new Intent(getApplicationContext(), RegisterActivity.class);

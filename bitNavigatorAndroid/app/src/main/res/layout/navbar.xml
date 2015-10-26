@@ -14,18 +14,18 @@
         android:background="@drawable/navbar_background"
         >
         <RadioButton
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnProfile"
             style="@style/navbar_button"
-            android:drawableTop="@drawable/navbar_loginselector"
-            android:text="Login"
+            android:drawableTop="@drawable/navbar_profileselector"
+            android:text="Profile"
             android:singleLine="false"
             android:textColorLink="#f80a0a"
             android:textColor="#ffffff" />
         <RadioButton
-            android:id="@+id/btnRegister"
+            android:id="@+id/btnReservations"
             style="@style/navbar_button"
-            android:drawableTop="@drawable/navbar_registerselector"
-            android:text="Register"
+            android:drawableTop="@drawable/navbar_reservationsselector"
+            android:text="Reservations"
             android:layout_marginLeft="5dp"
             android:textColor="#FFFFFFFF" />
         <RadioButton
