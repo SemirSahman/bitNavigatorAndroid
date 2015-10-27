@@ -1,4 +1,4 @@
-package semir.bitcamp.ba.bitnavigatorandroid;
+package ba.bitcamp.bitNavigator.bitnavigator;
 
 import org.junit.Test;
 
