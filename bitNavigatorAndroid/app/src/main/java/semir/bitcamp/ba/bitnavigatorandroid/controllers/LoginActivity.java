@@ -119,7 +119,7 @@ public class LoginActivity extends Activity {
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener(){
                                              public void onClick(View v) {
-                                                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
                                                  startActivity(i);
                                              }
                                          }
@@ -157,13 +157,16 @@ public class LoginActivity extends Activity {
                     String email = userObj.getString("email");
                     String password = userObj.getString("password");
                     user = new User(id, name, surname, email, password);
-                    makeToast("Successfull loged in " + user.getFirstName());
+                    makeToast("Wellcome " + user.getFirstName());
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putInt("id", id);
                     editor.putString("name", name);
                     editor.putString("surname", surname);
                     editor.putString("email", email);
                     editor.commit();
+
+                    goToProfile();
+
                 } catch (JSONException e) {
                     Log.e("**************", "id");
                     Log.e("Message = ",e.getMessage());
@@ -173,8 +176,8 @@ public class LoginActivity extends Activity {
         };
     }
 
-    public void gotToMap() {
-        Intent intent = new Intent(this, MapsActivity.class);
+    public void goToProfile() {
+        Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
 

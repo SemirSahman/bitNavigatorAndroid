@@ -5,4 +5,6 @@
     <string name="app">BIT Navigator</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="search_text">Enter name of place</string>
+    <string name="search_button">Search</string>
 </resources>
