@@ -100,6 +100,8 @@ public class RegisterActivity extends Activity {
                 Log.d("dibag", emailString + " ---  " + pass);
                 JSONObject json = new JSONObject();
                 try {
+                    json.put("firstName", fName);
+                    json.put("lastName", lName);
                     json.put("email", emailString);
                     json.put("password", pass);
                 } catch (JSONException e) {
@@ -116,31 +118,6 @@ public class RegisterActivity extends Activity {
             }
         });
 
-        // Listening to Login Screen link
-//        loginScreen.setOnClickListener(new OnClickListener() {
-//
-//            public void onClick(View arg0) {
-//                // Closing registration screen
-//                // Switching to Login Screen/closing register screen
-//                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-//                startActivity(i);
-//
-//                finish();
-//            }
-//        });
-//
-//        // Listening to Map Screen link
-//        homeScreen.setOnClickListener(new OnClickListener() {
-//
-//            public void onClick(View arg0) {
-//                // Closing registration screen
-//                // Switching to Login Screen/closing register screen
-//                Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-//                startActivity(i);
-//
-//                finish();
-//            }
-//        });
 
         Button mLoginButton = (Button) findViewById(R.id.btnProfile);
         mLoginButton.setOnClickListener(new View.OnClickListener(){
@@ -211,35 +188,19 @@ public class RegisterActivity extends Activity {
         return new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                //makeToast(R.string.toast_try_again);
-                Log.d("dibag", "56465789797");
+                makeToast("Wrong input.");
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
-
-                try {
-                    String responseJSON= response.body().string();
-                    JSONObject json = new JSONObject(responseJSON);
-                    Integer id = json.getInt("id");
-                    if (id > 0) {
-                        gotToMap();
-                    }
-                    makeToast("Correct the form!");
-                    Log.d("dibag", "tuj sam /*/*/------------*//*/*/*/*/-----------/*/*/*/");
-
-
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    makeToast("Registered! Please log in.");
+                    goToLogin();
             }
         };
     }
 
-    public void gotToMap() {
-        Intent intent = new Intent(this, MapsActivity.class);
+    public void goToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 

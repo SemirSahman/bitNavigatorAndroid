@@ -52,8 +52,11 @@ public class LoginActivity extends Activity {
         // setting default screen to login.xml
         setContentView(R.layout.activity_login);
         sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-        if(!sharedpreferences.contains("email")){
-           makeToast("Ovdje se pravi profile page");
+        if(sharedpreferences.contains("email")){
+            Intent i = new Intent(getApplicationContext(),
+                    ProfileActivity.class);
+            startActivity(i);
+            finish();
         }
 
         mEmailEditText = (EditText) findViewById(R.id.login_email);
@@ -63,8 +66,6 @@ public class LoginActivity extends Activity {
 
         mLinkToRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.clear();
                 Intent i = new Intent(getApplicationContext(),
                         RegisterActivity.class);
                 startActivity(i);

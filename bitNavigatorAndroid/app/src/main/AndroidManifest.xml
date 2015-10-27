@@ -57,6 +57,11 @@
             android:name=".controllers.RegisterActivity"
             android:label="Register New Account"
             android:screenOrientation="portrait"/>
-    </application>
 
+    <activity
+        android:name=".controllers.ProfileActivity"
+        android:label="Profile"
+        android:screenOrientation="portrait">
+    </activity>
+</application>
 </manifest>
