@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -20,11 +24,11 @@ import ba.bitcamp.bitNavigator.models.Place;
 /**
  * Created by hajrudin.sehic on 27/10/15.
  */
-public class SearchActivity extends Activity implements SearchView.OnQueryTextListener{
+public class SearchActivity extends Activity{
 
     public static PlaceList placeList = PlaceList.getInstance();
 
-    private SearchView mSearch;
+    private EditText mSearch;
     private RecyclerView recyclerView;
     private PlaceAdapter placeAdapter;
 
@@ -32,13 +36,51 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        Log.e("Placelist", placeList.getSize() + "");
 
-        mSearch = (SearchView) findViewById(R.id.search_view);
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
+        mSearch = (EditText)findViewById(R.id.autocomplete_places);
         placeAdapter = new PlaceAdapter(placeList);
         recyclerView.setAdapter(placeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        mSearch.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+
+                placeAdapter.notifyDataSetChanged();
+
+                Log.e("USOOO", "aaaaaaaaaaa");
+                if (s.length() != 0) {
+                    int size = placeList.getSize();
+                    for (int i = 0; i < size; i++) {
+                        if (placeList.get(i).getTitle().contains(mSearch.getText())) {
+                            PlaceList.getInstance().add(PlaceList.getInstance().get(i));
+                        }
+                    }
+                    for (int i = 0; i < size; i++) {
+                        PlaceList.getInstance().remove(PlaceList.getInstance().get(i));
+                    }
+                    placeAdapter = new PlaceAdapter(placeList);
+                    recyclerView.setAdapter(placeAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
+                }
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
 
 
         Button mLoginButton = (Button) findViewById(R.id.btnProfile);
@@ -78,32 +120,6 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
         );
     }
 
-
-    public boolean onQueryTextChange(String newText) {
-        PlaceList placeList1 = null;
-        for(int i = 0; i<placeList.getSize(); i++){
-            if(placeList.get(i).getTitle().contains(newText)){
-                placeList1.add(placeList.get(i));
-            }
-        }
-        placeAdapter = new PlaceAdapter(placeList1);
-        recyclerView.setAdapter(placeAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        return true;
-    }
-
-    public boolean onQueryTextSubmit(String query) {
-        PlaceList placeList1 = null;
-        for(int i = 0; i<placeList.getSize(); i++){
-            if(placeList.get(i).getTitle().contains(query)){
-                placeList1.add(placeList.get(i));
-            }
-        }
-        placeAdapter = new PlaceAdapter(placeList1);
-        recyclerView.setAdapter(placeAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        return true;
-    }
 
     private class PlaceView extends RecyclerView.ViewHolder {
 
