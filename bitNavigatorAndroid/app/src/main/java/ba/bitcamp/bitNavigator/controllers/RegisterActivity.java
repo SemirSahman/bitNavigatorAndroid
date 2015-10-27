@@ -141,7 +141,7 @@ public class RegisterActivity extends Activity {
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new OnClickListener(){
                                              public void onClick(View v) {
-                                                 Intent i = new Intent(getApplicationContext(), ba.bitcamp.bitNavigator.controllers.RegisterActivity.class);
+                                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
                                                  startActivity(i);
                                              }
                                          }

@@ -37,7 +37,6 @@ public class ProfileActivity extends Activity{
         mName = (TextView) findViewById(R.id.txtName);
         mEmail = (TextView) findViewById(R.id.txtEmail);
         mLogout = (Button) findViewById(R.id.btn_sign_out);
-        llProfileLayout = (LinearLayout) findViewById(R.id.llProfile);
 
         final SharedPreferences preferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
         String name = preferences.getString("name","") + " ";
@@ -58,6 +57,43 @@ public class ProfileActivity extends Activity{
                 finish();
             }
         });
+
+
+        Button mLoginButton = (Button) findViewById(R.id.btnProfile);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+                                            public void onClick(View v) {
+                                                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                                                startActivity(i);
+                                            }
+                                        }
+        );
+
+        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
+        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+                                               public void onClick(View v) {
+                                                   Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                                                   startActivity(i);
+                                               }
+                                           }
+        );
+
+        Button mSearchButton = (Button) findViewById(R.id.btnSearch);
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
+                                             public void onClick(View v) {
+                                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+                                                 startActivity(i);
+                                             }
+                                         }
+        );
+
+        Button mMapButton = (Button) findViewById(R.id.btnMap);
+        mMapButton.setOnClickListener(new View.OnClickListener() {
+                                          public void onClick(View v) {
+                                              Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+                                              startActivity(i);
+                                          }
+                                      }
+        );
 
 
 
