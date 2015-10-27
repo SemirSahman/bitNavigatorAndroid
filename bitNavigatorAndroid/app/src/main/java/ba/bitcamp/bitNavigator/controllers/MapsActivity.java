@@ -121,7 +121,7 @@ public class MapsActivity extends Activity {
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
                                              public void onClick(View v) {
-                                                 Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
                                                  startActivity(i);
                                              }
                                          }
