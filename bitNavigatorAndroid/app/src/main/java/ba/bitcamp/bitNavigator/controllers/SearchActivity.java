@@ -12,6 +12,24 @@ import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SearchView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.PlaceList;
 import ba.bitcamp.bitNavigator.models.Place;
@@ -20,11 +38,11 @@ import ba.bitcamp.bitNavigator.models.Place;
 /**
  * Created by hajrudin.sehic on 27/10/15.
  */
-public class SearchActivity extends Activity implements SearchView.OnQueryTextListener{
+public class SearchActivity extends Activity{
 
-    public static PlaceList placeList = PlaceList.getInstance();
+    public static List<Place> placeList = PlaceList.getInstance().getPlaceList();
 
-    private SearchView mSearch;
+    private EditText mSearch;
     private RecyclerView recyclerView;
     private PlaceAdapter placeAdapter;
 
@@ -33,12 +51,82 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        mSearch = (SearchView) findViewById(R.id.search_view);
-        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        Collections.sort(placeList, new Comparator<Place>() {
+            @Override
+            public int compare(Place lhs, Place rhs) {
+                return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+            }
+        });
 
+
+        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        mSearch = (EditText)findViewById(R.id.autocomplete_places);
         placeAdapter = new PlaceAdapter(placeList);
         recyclerView.setAdapter(placeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mSearch.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+
+                List<Place> list = new ArrayList<Place>();
+
+                for (int i = 0; i < placeList.size(); i++) {
+                    list.add(placeList.get(i));
+                }
+
+
+                placeAdapter.notifyDataSetChanged();
+
+
+                if (s.length() != 0) {
+                    int size = list.size();
+                    int i = 0;
+                    while (i < size) {
+                        if (!(list.get(i).getTitle().toLowerCase().contains(s.toString().toLowerCase()))) {
+                            list.remove(i);
+                            size--;
+                        } else {
+                            i++;
+                        }
+                    }
+
+                    Collections.sort(list, new Comparator<Place>() {
+                        @Override
+                        public int compare(Place lhs, Place rhs) {
+                            return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+                        }
+                    });
+
+                    placeAdapter = new PlaceAdapter(list);
+                    recyclerView.setAdapter(placeAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
+                } else {
+
+                    Collections.sort(placeList, new Comparator<Place>() {
+                        @Override
+                        public int compare(Place lhs, Place rhs) {
+                            return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+                        }
+                    });
+
+                    placeAdapter = new PlaceAdapter(placeList);
+                    recyclerView.setAdapter(placeAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
+                }
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
         Button mLoginButton = (Button) findViewById(R.id.btnProfile);
@@ -78,33 +166,6 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
         );
     }
 
-
-    public boolean onQueryTextChange(String newText) {
-        PlaceList placeList1 = null;
-        for(int i = 0; i<placeList.getSize(); i++){
-            if(placeList.get(i).getTitle().contains(newText)){
-                placeList1.add(placeList.get(i));
-            }
-        }
-        placeAdapter = new PlaceAdapter(placeList1);
-        recyclerView.setAdapter(placeAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        return true;
-    }
-
-    public boolean onQueryTextSubmit(String query) {
-        PlaceList placeList1 = null;
-        for(int i = 0; i<placeList.getSize(); i++){
-            if(placeList.get(i).getTitle().contains(query)){
-                placeList1.add(placeList.get(i));
-            }
-        }
-        placeAdapter = new PlaceAdapter(placeList1);
-        recyclerView.setAdapter(placeAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        return true;
-    }
-
     private class PlaceView extends RecyclerView.ViewHolder {
 
         private TextView titleText;
@@ -118,11 +179,11 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
         }
     }
 
-    private class PlaceAdapter extends RecyclerView.Adapter<PlaceView> {
+    private class PlaceAdapter extends RecyclerView.Adapter<PlaceView>{
 
-        private PlaceList placeList;
+        private List<Place> placeList;
 
-        public PlaceAdapter(PlaceList placeList) {
+        public PlaceAdapter(List<Place> placeList) {
             this.placeList = placeList;
         }
 
@@ -142,7 +203,7 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
 
         @Override
         public int getItemCount() {
-            return placeList.getSize();
+            return placeList.size();
         }
     }
 
