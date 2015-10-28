@@ -1,12 +1,15 @@
 package ba.bitcamp.bitNavigator.controllers;
 
 import android.content.Intent;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.here.android.mpa.cluster.ClusterLayer;
+import com.here.android.mpa.common.ViewObject;
+import com.here.android.mpa.mapping.MapGesture;
 import com.here.android.mpa.mapping.MapMarker;
 import java.io.IOException;
 
@@ -15,6 +18,7 @@ import ba.bitcamp.bitNavigator.lists.PlaceList;
 import ba.bitcamp.bitNavigator.models.Place;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import android.app.Activity;
 import android.widget.ImageView;
@@ -31,6 +35,12 @@ import com.here.android.mpa.common.Image;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.common.PositioningManager;
 import com.here.android.mpa.mapping.Map;
+import com.here.android.mpa.mapping.MapObject;
+import com.here.android.mpa.mapping.MapRoute;
+import com.here.android.mpa.routing.RouteManager;
+import com.here.android.mpa.routing.RouteOptions;
+import com.here.android.mpa.routing.RoutePlan;
+import com.here.android.mpa.routing.RouteResult;
 
 public class MapsActivity extends Activity {
 
@@ -65,6 +75,8 @@ public class MapsActivity extends Activity {
     private ClusterLayer mClusterLayer;
 
     private GeoCoordinate mGPSPosition;
+
+    private MapRoute mapRoute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,13 +155,54 @@ public class MapsActivity extends Activity {
         for (Place place : PlaceList.getInstance().getPlaceList()) {
             MapMarker marker = new MapMarker();
             marker.setCoordinate(new GeoCoordinate(place.getLatitude(), place.getLongitude()));
-            marker.setTitle("title");
-            marker.setDescription("description");
-            marker.showInfoBubble();
+            marker.setTitle(place.getTitle());
+            //marker.setDescription(place.getDescription());
+
             mClusterLayer.addMarker(marker);
         }
-        map.addClusterLayer(mClusterLayer);
 
+        // Create a gesture listener and add it to the MapFragment
+        MapGesture.OnGestureListener listener = new MapGesture.OnGestureListener.OnGestureListenerAdapter() {
+            @Override
+            public boolean onMapObjectsSelected(List<ViewObject> objects) {
+                for (ViewObject viewObj : objects) {
+                    if (viewObj.getBaseType() == ViewObject.Type.USER_OBJECT) {
+                        if (((MapObject)viewObj).getType() == MapObject.Type.MARKER) {
+                            if (!((MapMarker)viewObj).isInfoBubbleVisible()) {
+                                ((MapMarker)viewObj).showInfoBubble();
+                            } else {
+                                ((MapMarker)viewObj).hideInfoBubble();
+                            }
+                        }
+                    }
+                }
+                // return false to allow the map to handle this callback also
+                return false;
+            }
+
+            @Override
+            public boolean onLongPressEvent(PointF pointF) {
+                Log.d("dibag", "hold");
+                for (ViewObject object : map.getSelectedObjects(pointF)) {
+                    Log.d("dibag", "for");
+                    if (object instanceof MapMarker) {
+                        MapMarker marker = (MapMarker) object;
+                        Log.d("dibag", "marker");
+                        if (mGPSPosition != null) {
+                            Log.d("dibag", "getd");
+                            getDirections(mGPSPosition, marker.getCoordinate());
+                            Log.d("dibag", "naso");
+                        }
+
+                    }
+                }
+                return false;
+            }
+        };
+
+        compositeFragment.getMapGesture().addOnGestureListener(listener);
+
+        map.addClusterLayer(mClusterLayer);
     }
 
     private void setupLiveSight() {
@@ -242,4 +295,59 @@ public class MapsActivity extends Activity {
             Toast.makeText(this, R.string.error_gps, Toast.LENGTH_SHORT).show();
         }
     }
+
+    private class RouteListener implements RouteManager.Listener {
+
+        // Method defined in Listener
+        public void onProgress(int percentage) {
+            // Display a message indicating calculation progress
+        }
+
+        // Method defined in Listener
+        public void onCalculateRouteFinished(RouteManager.Error error, List<RouteResult> routeResult) {
+            // If the route was calculated successfully
+            if (error == RouteManager.Error.NONE) {
+                // Render the route on the map
+                mapRoute = new MapRoute(routeResult.get(0).getRoute());
+                map.addMapObject(mapRoute);
+            }
+            else {
+                // Display a message indicating route calculation failure
+            }
+        }
+    }
+
+    // Functionality for hold on the marker
+    public void getDirections(GeoCoordinate start, GeoCoordinate destination) {
+        // 1. clear previous results
+        //textViewResult.setText("");
+        if (map != null && mapRoute != null) {
+            map.removeMapObject(mapRoute);
+            mapRoute = null;
+        }
+
+        // 2. Initialize RouteManager
+        RouteManager routeManager = new RouteManager();
+
+        // 3. Select routing options via RoutingMode
+        RoutePlan routePlan = new RoutePlan();
+
+        RouteOptions routeOptions = new RouteOptions();
+        routeOptions.setTransportMode(RouteOptions.TransportMode.CAR);
+        routeOptions.setRouteType(RouteOptions.Type.FASTEST);
+        routePlan.setRouteOptions(routeOptions);
+
+        // 4. Select Waypoints for your routes
+        routePlan.addWaypoint(start);
+        routePlan.addWaypoint(destination);
+
+        // 5. Retrieve Routing information via RouteManagerListener
+        RouteManager.Error error = routeManager.calculateRoute(routePlan, new RouteListener());
+        if (error != RouteManager.Error.NONE) {
+            Toast.makeText(getApplicationContext(),
+                    "Route calculation failed with: " + error.toString(),
+                    Toast.LENGTH_SHORT)
+                    .show();
+        }
+    };
 }
