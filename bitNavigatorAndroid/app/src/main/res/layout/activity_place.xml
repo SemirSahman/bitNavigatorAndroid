@@ -43,9 +43,8 @@
     <LinearLayout
             android:id="@+id/title"
             android:layout_width="fill_parent"
-            android:layout_height="33dp"
-            android:layout_marginBottom="20dp"
-            android:orientation="horizontal"
+            android:layout_height="35dp"
+        android:orientation="horizontal"
             android:weightSum="2"
             android:visibility="visible">
 
@@ -67,10 +66,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:textSize="23dp"
+                android:textSize="21dp"
                 android:textIsSelectable="false"
                 android:textAlignment="center"
-                android:textStyle="bold|italic" />
+                android:textStyle="italic" />
         </LinearLayout>
         </LinearLayout>
 

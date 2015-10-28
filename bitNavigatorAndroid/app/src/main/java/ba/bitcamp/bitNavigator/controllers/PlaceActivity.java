@@ -48,13 +48,21 @@ public class PlaceActivity extends Activity{
 
         mService.setImageResource(res);
         mTitle.setText(place.getTitle());
-        mAddress.setText("   " + place.getAddress());
+        mAddress.setText(place.getAddress());
         mDescription.setText(place.getDescription());
 
         SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
         if(sharedpreferences.contains("email")){
             mReservation.setVisibility(View.VISIBLE);
+            mReservation.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
+
+
 
 
 
