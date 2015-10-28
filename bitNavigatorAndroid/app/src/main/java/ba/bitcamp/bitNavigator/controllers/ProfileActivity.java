@@ -25,7 +25,6 @@ public class ProfileActivity extends Activity{
     private TextView mName;
     private TextView mEmail;
     private Button mLogout;
-    private LinearLayout llProfileLayout;
 
 
     @Override

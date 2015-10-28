@@ -12,14 +12,17 @@ public class Place {
     private String address;
     private Double longitude;
     private Double latitude;
-    private Calendar dateAdded;
+    private String description;
+    private String service;
 
-    public Place(int id, String title, String address, Double longitude, Double latitude) {
+    public Place(int id, String title, String address, Double longitude, Double latitude, String description, String service) {
         this.id = id;
         this.title = title;
         this.address = address;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.description = description;
+        this.service = service;
     }
 
     public String getTitle() {
@@ -54,12 +57,20 @@ public class Place {
         this.latitude = latitude;
     }
 
-    public Calendar getDateAdded() {
-        return dateAdded;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDateAdded(Calendar dateAdded) {
-        this.dateAdded = dateAdded;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getService() {
+        return service;
+    }
+
+    public void setService(String service) {
+        this.service = service;
     }
 
     public int getId() {

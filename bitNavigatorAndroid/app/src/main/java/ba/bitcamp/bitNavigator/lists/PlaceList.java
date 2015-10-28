@@ -48,6 +48,17 @@ public class PlaceList {
         return placeList;
     }
 
+    public Place getPlace(Integer id){
+        Place p;
+        for(int i =0; i<mPlaceList.getSize(); i++){
+            if(mPlaceList.getPlaceList().get(i).getId() == id){
+                p = mPlaceList.getPlaceList().get(i);
+                return p;
+            }
+        }
+        return null;
+    }
+
 
 
 }
