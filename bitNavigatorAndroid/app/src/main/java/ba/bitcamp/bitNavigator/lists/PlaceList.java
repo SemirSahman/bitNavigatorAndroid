@@ -1,6 +1,8 @@
 package ba.bitcamp.bitNavigator.lists;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import ba.bitcamp.bitNavigator.models.Place;
@@ -16,6 +18,9 @@ public class PlaceList {
         if (mPlaceList == null) {
             mPlaceList = new ba.bitcamp.bitNavigator.lists.PlaceList();
         }
+
+
+
         return mPlaceList;
     }
 
@@ -44,5 +49,7 @@ public class PlaceList {
     public List<Place> getPlaceList(){
         return placeList;
     }
+
+
 
 }

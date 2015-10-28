@@ -9,12 +9,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.PlaceList;
@@ -26,7 +33,7 @@ import ba.bitcamp.bitNavigator.models.Place;
  */
 public class SearchActivity extends Activity{
 
-    public static PlaceList placeList = PlaceList.getInstance();
+    public static List<Place> placeList = PlaceList.getInstance().getPlaceList();
 
     private EditText mSearch;
     private RecyclerView recyclerView;
@@ -36,7 +43,14 @@ public class SearchActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        Log.e("Placelist", placeList.getSize() + "");
+
+        Collections.sort(placeList, new Comparator<Place>() {
+            @Override
+            public int compare(Place lhs, Place rhs) {
+                return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+            }
+        });
+
 
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mSearch = (EditText)findViewById(R.id.autocomplete_places);
@@ -45,24 +59,53 @@ public class SearchActivity extends Activity{
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
+
         mSearch.addTextChangedListener(new TextWatcher() {
 
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
 
+                List<Place> list = new ArrayList<Place>();
+
+                for (int i = 0; i < placeList.size(); i++) {
+                    list.add(placeList.get(i));
+                }
+
+
                 placeAdapter.notifyDataSetChanged();
 
-                Log.e("USOOO", "aaaaaaaaaaa");
+
                 if (s.length() != 0) {
-                    int size = placeList.getSize();
-                    for (int i = 0; i < size; i++) {
-                        if (placeList.get(i).getTitle().contains(mSearch.getText())) {
-                            PlaceList.getInstance().add(PlaceList.getInstance().get(i));
+                    int size = list.size();
+                    int i = 0;
+                    while (i < size) {
+                        if (!(list.get(i).getTitle().toLowerCase().contains(s.toString().toLowerCase()))) {
+                            list.remove(i);
+                            size--;
+                        } else {
+                            i++;
                         }
                     }
-                    for (int i = 0; i < size; i++) {
-                        PlaceList.getInstance().remove(PlaceList.getInstance().get(i));
-                    }
+
+                    Collections.sort(list, new Comparator<Place>() {
+                        @Override
+                        public int compare(Place lhs, Place rhs) {
+                            return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+                        }
+                    });
+
+                    placeAdapter = new PlaceAdapter(list);
+                    recyclerView.setAdapter(placeAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
+                } else {
+
+                    Collections.sort(placeList, new Comparator<Place>() {
+                        @Override
+                        public int compare(Place lhs, Place rhs) {
+                            return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+                        }
+                    });
+
                     placeAdapter = new PlaceAdapter(placeList);
                     recyclerView.setAdapter(placeAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
@@ -134,11 +177,11 @@ public class SearchActivity extends Activity{
         }
     }
 
-    private class PlaceAdapter extends RecyclerView.Adapter<PlaceView> {
+    private class PlaceAdapter extends RecyclerView.Adapter<PlaceView>{
 
-        private PlaceList placeList;
+        private List<Place> placeList;
 
-        public PlaceAdapter(PlaceList placeList) {
+        public PlaceAdapter(List<Place> placeList) {
             this.placeList = placeList;
         }
 
@@ -158,7 +201,7 @@ public class SearchActivity extends Activity{
 
         @Override
         public int getItemCount() {
-            return placeList.getSize();
+            return placeList.size();
         }
     }
 
