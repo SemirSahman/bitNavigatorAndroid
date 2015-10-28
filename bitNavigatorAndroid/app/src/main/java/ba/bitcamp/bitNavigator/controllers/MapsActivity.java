@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
 import com.here.android.mpa.cluster.ClusterLayer;
+import com.here.android.mpa.common.GeoBoundingBox;
 import com.here.android.mpa.common.ViewObject;
 import com.here.android.mpa.mapping.MapGesture;
 import com.here.android.mpa.mapping.MapMarker;
@@ -16,12 +18,14 @@ import java.io.IOException;
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.PlaceList;
 import ba.bitcamp.bitNavigator.models.Place;
+import ba.bitcamp.bitNavigator.service.MapHelper;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 import android.app.Activity;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -210,24 +214,34 @@ public class MapsActivity extends Activity {
         arController = compositeFragment.getARController();
         // tells LiveSight to display icons while viewing the map (pitch down)
         arController.setUseDownIconsOnMap(true);
-        for (Place place : PlaceList.getInstance().getPlaceList()) {
-            TextView label = new TextView(this);
-            label.setText(place.getTitle());
-            ARIconObject arIconObject = new ARIconObject(new GeoCoordinate(place.getLatitude(), place.getLongitude()), label, R.drawable.icon);
-            arIconObject.setFrontIconSizeScale(3.3f);
-            arController.addARObject(arIconObject);
-        }
+
         // tells LiveSight to use a static mock location instead of the devices GPS fix
         //arController.setAlternativeCenter(new GeoCoordinate(49.279483, -123.116906, 0.0));
     }
 
     public void startLiveSight(View view) {
         if (arController != null) {
+            setupLiveSight();
             // triggers the transition from Map mode to LiveSight mode
             Error error = arController.start();
 
             if (error == Error.NONE) {
 
+                for (Place place : PlaceList.getInstance().getPlaceList()) {
+                    //LayoutInflater layoutInflater = LayoutInflater.from(this);
+                    //LiveSightInfo info = new LiveSightInfo();
+                    //info.setPlace(place);
+                    //View view = info.getView();
+                    //LinearLayout info = (LinearLayout) findViewById(R.id.livesight_layout);
+                    //Log.d("dibag", view.toString()+"");
+                    //TextView title = (TextView) findViewById(R.id.livesight_info_text);
+                    //title.setText(place.getTitle());
+                    String distance = String.format("%.2f m", mGPSPosition.distanceTo(new GeoCoordinate(place.getLatitude(), place.getLongitude())));
+                    View info = MapHelper.getInfoView(this, place.getTitle(), distance);
+                    ARIconObject arIconObject = new ARIconObject(new GeoCoordinate(place.getLatitude(), place.getLongitude()), info, R.drawable.icon);
+                    //arIconObject.setFrontIconSizeScale(3.3f);
+                    arController.addARObject(arIconObject);
+                }
                 map.removeClusterLayer(mClusterLayer);
 
                 startButton.setVisibility(View.GONE);
@@ -310,6 +324,10 @@ public class MapsActivity extends Activity {
                 // Render the route on the map
                 mapRoute = new MapRoute(routeResult.get(0).getRoute());
                 map.addMapObject(mapRoute);
+                // Get the bounding box containing the route and zoom in
+                GeoBoundingBox gbb = routeResult.get(0).getRoute().getBoundingBox();
+                map.zoomTo(gbb, Map.Animation.NONE, Map.MOVE_PRESERVE_ORIENTATION);
+
             }
             else {
                 // Display a message indicating route calculation failure
