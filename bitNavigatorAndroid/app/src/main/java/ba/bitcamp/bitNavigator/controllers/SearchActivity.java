@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +32,7 @@ import ba.bitcamp.bitNavigator.models.Place;
 /**
  * Created by hajrudin.sehic on 27/10/15.
  */
-public class SearchActivity extends Activity{
+public class SearchActivity extends Activity {
 
     public static List<Place> placeList = PlaceList.getInstance().getPlaceList();
 
@@ -53,11 +54,10 @@ public class SearchActivity extends Activity{
 
 
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        mSearch = (EditText)findViewById(R.id.autocomplete_places);
+        mSearch = (EditText) findViewById(R.id.autocomplete_places);
         placeAdapter = new PlaceAdapter(placeList);
         recyclerView.setAdapter(placeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
 
         mSearch.addTextChangedListener(new TextWatcher() {
@@ -124,15 +124,13 @@ public class SearchActivity extends Activity{
         });
 
 
-
-
         Button mLoginButton = (Button) findViewById(R.id.btnProfile);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
-                                               public void onClick(View v) {
-                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                                                   startActivity(i);
-                                               }
-                                           });
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        });
 
 
         Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
@@ -164,20 +162,31 @@ public class SearchActivity extends Activity{
     }
 
 
-    private class PlaceView extends RecyclerView.ViewHolder {
+    private class PlaceView extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView titleText;
         private TextView addressText;
-        private TextView dateText;
+        private TextView id;
 
         public PlaceView(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             titleText = (TextView) itemView.findViewById(R.id.textView2);
             addressText = (TextView) itemView.findViewById(R.id.textView3);
+            id = (TextView) itemView.findViewById(R.id.place_id);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(getApplicationContext(),
+                    PlaceActivity.class);
+            i.putExtra("place_id", id.getText());
+            startActivity(i);
+            finish();
         }
     }
 
-    private class PlaceAdapter extends RecyclerView.Adapter<PlaceView>{
+    private class PlaceAdapter extends RecyclerView.Adapter<PlaceView> {
 
         private List<Place> placeList;
 
@@ -197,6 +206,8 @@ public class SearchActivity extends Activity{
             Place place = placeList.get(position);
             holder.titleText.setText(place.getTitle());
             holder.addressText.setText(place.getAddress());
+            String tmp = String.valueOf(place.getId());
+            holder.id.setText(tmp);
         }
 
         @Override

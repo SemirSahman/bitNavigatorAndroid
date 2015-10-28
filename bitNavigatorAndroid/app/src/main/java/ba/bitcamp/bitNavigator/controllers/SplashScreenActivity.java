@@ -67,25 +67,23 @@ public class SplashScreenActivity extends Activity{
 
             @Override
             public void onResponse(Response response) throws IOException {
-
                 try {
                     String responseJSON= response.body().string();
                     JSONArray array = new JSONArray(responseJSON);
                     for (int i = 0; i < array.length(); i++) {
-
                         JSONObject postObj = array.getJSONObject(i);
                         Integer id = postObj.getInt("id");
                         String name = postObj.getString("title");
                         String address = postObj.getString("address");
                         Double longitude = postObj.getDouble("longitude");
                         Double latitude = postObj.getDouble("latitude");
-
-                        Place place = new Place(id, name, address, longitude, latitude);
+                        String description = postObj.getString("description");
+                        String service = postObj.getString("service");
+                        Place place = new Place(id, name, address, longitude, latitude, description, service);
                         if (!PlaceList.getInstance().getPlaceList().contains(place)) {
                             PlaceList.getInstance().add(place);
                         }
                         Log.d("dibag", address);
-
                     }
                 } catch (JSONException e) {
                     //makeToast(R.string.toast_try_again);
@@ -94,5 +92,4 @@ public class SplashScreenActivity extends Activity{
             }
         };
     }
-
 }
