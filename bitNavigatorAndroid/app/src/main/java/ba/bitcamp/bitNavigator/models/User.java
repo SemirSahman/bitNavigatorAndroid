@@ -10,13 +10,15 @@ public class User {
     private String lastName;
     private String email;
     private String password;
+    private String avatar;
 
-    public User(Integer id, String firstName, String lastName, String email, String password){
+    public User(Integer id, String firstName, String lastName, String email, String password, String avatar){
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.avatar = avatar;
     }
 
     public String getFirstName() {
@@ -57,5 +59,13 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

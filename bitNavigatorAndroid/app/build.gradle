@@ -28,4 +28,5 @@ dependencies {
     compile 'com.android.support:design:23.0.1'
     compile files('libs/HERE-sdk.jar')
     compile 'com.google.code.gson:gson:2.4'
+    compile files('libs/cloudinary-core-1.2.2.jar')
 }

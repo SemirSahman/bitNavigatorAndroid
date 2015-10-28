@@ -21,6 +21,7 @@ import ba.bitcamp.bitNavigator.models.Place;
 import ba.bitcamp.bitNavigator.service.MapHelper;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -81,6 +82,8 @@ public class MapsActivity extends Activity {
     private GeoCoordinate mGPSPosition;
 
     private MapRoute mapRoute;
+
+    private List<ARIconObject> arIconObjects = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,16 +189,11 @@ public class MapsActivity extends Activity {
 
             @Override
             public boolean onLongPressEvent(PointF pointF) {
-                Log.d("dibag", "hold");
                 for (ViewObject object : map.getSelectedObjects(pointF)) {
-                    Log.d("dibag", "for");
                     if (object instanceof MapMarker) {
                         MapMarker marker = (MapMarker) object;
-                        Log.d("dibag", "marker");
                         if (mGPSPosition != null) {
-                            Log.d("dibag", "getd");
                             getDirections(mGPSPosition, marker.getCoordinate());
-                            Log.d("dibag", "naso");
                         }
 
                     }
@@ -220,6 +218,12 @@ public class MapsActivity extends Activity {
     }
 
     public void startLiveSight(View view) {
+
+        if (mGPSPosition == null) {
+            Toast.makeText(this, getString(R.string.error_gps), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (arController != null) {
             setupLiveSight();
             // triggers the transition from Map mode to LiveSight mode
@@ -228,23 +232,17 @@ public class MapsActivity extends Activity {
             if (error == Error.NONE) {
 
                 for (Place place : PlaceList.getInstance().getPlaceList()) {
-                    //LayoutInflater layoutInflater = LayoutInflater.from(this);
-                    //LiveSightInfo info = new LiveSightInfo();
-                    //info.setPlace(place);
-                    //View view = info.getView();
-                    //LinearLayout info = (LinearLayout) findViewById(R.id.livesight_layout);
-                    //Log.d("dibag", view.toString()+"");
-                    //TextView title = (TextView) findViewById(R.id.livesight_info_text);
-                    //title.setText(place.getTitle());
                     String distance = String.format("%.2f m", mGPSPosition.distanceTo(new GeoCoordinate(place.getLatitude(), place.getLongitude())));
                     View info = MapHelper.getInfoView(this, place.getTitle(), distance);
-                    ARIconObject arIconObject = new ARIconObject(new GeoCoordinate(place.getLatitude(), place.getLongitude()), info, R.drawable.icon);
-                    //arIconObject.setFrontIconSizeScale(3.3f);
+                    int icon = getResources().getIdentifier(place.getService().toLowerCase(), "drawable", getPackageName());
+                    ARIconObject arIconObject = new ARIconObject(new GeoCoordinate(place.getLatitude(), place.getLongitude()), info, icon);
+                    arIconObjects.add(arIconObject);
                     arController.addARObject(arIconObject);
                 }
                 map.removeClusterLayer(mClusterLayer);
 
                 startButton.setVisibility(View.GONE);
+                hereButton.setVisibility(View.GONE);
                 stopButton.setVisibility(View.VISIBLE);
             } else {
                 Toast.makeText(getApplicationContext(), "Error starting LiveSight: " + error.toString(), Toast.LENGTH_LONG);
@@ -258,11 +256,15 @@ public class MapsActivity extends Activity {
             Error error = arController.stop(true);
 
             if (error == Error.NONE) {
-
                 map.addClusterLayer(mClusterLayer);
-
                 startButton.setVisibility(View.VISIBLE);
+                hereButton.setVisibility(View.VISIBLE);
                 stopButton.setVisibility(View.GONE);
+
+                for (ARIconObject object : arIconObjects) {
+                    arController.removeARObject(object);
+                }
+
             } else {
                 Toast.makeText(getApplicationContext(), "Error stopping LiveSight: " + error.toString(), Toast.LENGTH_LONG);
             }
@@ -326,7 +328,7 @@ public class MapsActivity extends Activity {
                 map.addMapObject(mapRoute);
                 // Get the bounding box containing the route and zoom in
                 GeoBoundingBox gbb = routeResult.get(0).getRoute().getBoundingBox();
-                map.zoomTo(gbb, Map.Animation.NONE, Map.MOVE_PRESERVE_ORIENTATION);
+                map.zoomTo(gbb, Map.Animation.BOW, Map.MOVE_PRESERVE_ORIENTATION);
 
             }
             else {

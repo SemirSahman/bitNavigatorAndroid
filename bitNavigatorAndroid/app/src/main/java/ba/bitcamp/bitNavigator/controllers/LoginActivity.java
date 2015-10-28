@@ -151,13 +151,15 @@ public class LoginActivity extends Activity {
                     String surname = userObj.getString("lastName");
                     String email = userObj.getString("email");
                     String password = userObj.getString("password");
-                    user = new User(id, name, surname, email, password);
+                    String avatar = userObj.getString("avatar");
+                    user = new User(id, name, surname, email, password, avatar);
                     makeToast("Wellcome " + user.getFirstName());
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putInt("id", id);
                     editor.putString("name", name);
                     editor.putString("surname", surname);
                     editor.putString("email", email);
+                    editor.putString("avatar", avatar);
                     editor.commit();
 
                     goToProfile();
