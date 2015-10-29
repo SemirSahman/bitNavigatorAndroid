@@ -4,15 +4,22 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.InputStream;
+
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.PlaceList;
 import ba.bitcamp.bitNavigator.models.Place;
+import ba.bitcamp.bitNavigator.service.ImageHelper;
 
 /**
  * Created by hajrudin.sehic on 28/10/15.
@@ -20,7 +27,6 @@ import ba.bitcamp.bitNavigator.models.Place;
 public class PlaceActivity extends Activity{
 
     private ImageView mImage;
-    private ImageView mService;
     private TextView mTitle;
     private TextView mAddress;
     private TextView mDescription;
@@ -37,7 +43,6 @@ public class PlaceActivity extends Activity{
         final Place place = PlaceList.getInstance().getPlace(place_id);
 
         mImage = (ImageView) findViewById(R.id.imgProfilePic);
-        mService = (ImageView) findViewById(R.id.service_img);
         mTitle = (TextView) findViewById(R.id.txtTitle);
         mAddress = (TextView) findViewById(R.id.txtAddress);
         mDescription = (TextView) findViewById(R.id.txtDescription);
@@ -45,7 +50,6 @@ public class PlaceActivity extends Activity{
 
         int res = getResources().getIdentifier(place.getService().toLowerCase(),"drawable",getPackageName());
 
-        mService.setImageResource(res);
         mTitle.setText(place.getTitle());
         mAddress.setText(place.getAddress());
         mDescription.setText(place.getDescription());
@@ -65,7 +69,10 @@ public class PlaceActivity extends Activity{
             });
         }
 
-
+        String avatar = place.getImage();
+        if (!avatar.equals("")) {
+            new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 400, 400));
+        }
 
 
 
@@ -107,5 +114,32 @@ public class PlaceActivity extends Activity{
         );
 
 
+    }
+
+    class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+
+        ImageView thumbnail;
+
+        public DownloadImageTask(ImageView bmImage) {
+            thumbnail = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Log.e("URL", urldisplay);
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            thumbnail.setImageBitmap(result);
+        }
     }
 }

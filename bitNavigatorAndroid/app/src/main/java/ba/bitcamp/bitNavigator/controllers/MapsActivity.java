@@ -253,7 +253,14 @@ public class MapsActivity extends Activity {
         for (Place place : PlaceList.getInstance().getPlaceList()) {
             String distance = String.format("%.2f m", mGPSPosition.distanceTo(new GeoCoordinate(place.getLatitude(), place.getLongitude())));
             View info = MapHelper.getInfoView(this, place.getTitle(), distance);
-            int icon = getResources().getIdentifier(place.getService().toLowerCase(), "drawable", getPackageName());
+            String service = place.getService().toLowerCase();
+            if (service.contains(" ")) {
+                service.replace(" ", "_");
+            }
+            if (service.contains("&")) {
+                service = "arts";
+            }
+            int icon = getResources().getIdentifier(service, "drawable", getPackageName());
             ARIconObject arIconObject = new ARIconObject(new GeoCoordinate(place.getLatitude(), place.getLongitude()), info, icon);
             arIconObjects.add(arIconObject);
             arController.addARObject(arIconObject);

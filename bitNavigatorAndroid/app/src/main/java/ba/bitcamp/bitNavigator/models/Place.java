@@ -14,8 +14,9 @@ public class Place {
     private Double latitude;
     private String description;
     private String service;
+    private String image;
 
-    public Place(int id, String title, String address, Double longitude, Double latitude, String description, String service) {
+    public Place(int id, String title, String address, Double longitude, Double latitude, String description, String service, String image) {
         this.id = id;
         this.title = title;
         this.address = address;
@@ -23,6 +24,7 @@ public class Place {
         this.latitude = latitude;
         this.description = description;
         this.service = service;
+        this.image = image;
     }
 
     public String getTitle() {
@@ -79,6 +81,14 @@ public class Place {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override

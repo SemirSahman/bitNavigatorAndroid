@@ -84,7 +84,8 @@ public class SplashScreenActivity extends Activity{
                         Double latitude = postObj.getDouble("latitude");
                         String description = postObj.getString("description");
                         String service = postObj.getString("service");
-                        Place place = new Place(id, name, address, longitude, latitude, description, service);
+                        String image = postObj.getString("image");
+                        Place place = new Place(id, name, address, longitude, latitude, description, service, image);
                         if (!PlaceList.getInstance().getPlaceList().contains(place)) {
                             PlaceList.getInstance().add(place);
                         }
