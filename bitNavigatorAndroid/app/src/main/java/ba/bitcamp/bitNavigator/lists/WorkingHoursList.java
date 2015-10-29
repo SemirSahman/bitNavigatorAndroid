@@ -1,5 +1,7 @@
 package ba.bitcamp.bitNavigator.lists;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,14 +44,15 @@ public class WorkingHoursList {
     }
 
     public WorkingHours getByPlaceId(Integer id){
-        WorkingHours hours = null;
+        WorkingHours hours;
+        Log.e("s", mHoursList.getSize() + "");
         for(int i = 0; i < mHoursList.getSize(); i++){
-            if(mHoursList.get(i).getPlace_id() == id){
-                hours = mHoursList.get(i);
+            if(mHoursList.getHoursList().get(i).getPlace_id().equals(id)){
+                hours = mHoursList.getHoursList().get(i);
                 return hours;
             }
         }
-        return  hours;
+        return  null;
     }
 
 

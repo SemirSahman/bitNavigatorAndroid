@@ -4,7 +4,7 @@ package ba.bitcamp.bitNavigator.models;
  * Created by hajrudin.sehic on 29/10/15.
  */
 public class WorkingHours {
-    private int id;
+    private Integer id;
     private Integer place_id;
     private Integer open1;
     private Integer close1;
@@ -21,23 +21,23 @@ public class WorkingHours {
     private Integer open7;
     private Integer close7;
 
-    public WorkingHours(int id, Integer place_id, Integer open1, Integer close1, Integer open5, Integer close7, Integer open7, Integer close6, Integer open6, Integer close5, Integer close4, Integer open4, Integer open3, Integer close3, Integer close2, Integer open2) {
+    public WorkingHours(Integer id, Integer place_id, Integer open1, Integer close1, Integer open2, Integer close2, Integer open3, Integer close3, Integer open4, Integer close4, Integer open5, Integer close5, Integer open6, Integer close6, Integer open7, Integer close7) {
         this.id = id;
         this.place_id = place_id;
         this.open1 = open1;
         this.close1 = close1;
-        this.open5 = open5;
-        this.close7 = close7;
-        this.open7 = open7;
-        this.close6 = close6;
-        this.open6 = open6;
-        this.close5 = close5;
-        this.close4 = close4;
-        this.open4 = open4;
+        this.open2 = open2;
+        this.close2 = close2;
         this.open3 = open3;
         this.close3 = close3;
-        this.close2 = close2;
-        this.open2 = open2;
+        this.open4 = open4;
+        this.close4 = close4;
+        this.open5 = open5;
+        this.close5 = close5;
+        this.open6 = open6;
+        this.close6 = close6;
+        this.open7 = open7;
+        this.close7 = close7;
     }
 
     public Integer getPlace_id() {
@@ -159,4 +159,5 @@ public class WorkingHours {
     public void setClose7(Integer close7) {
         this.close7 = close7;
     }
+
 }

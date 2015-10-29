@@ -102,7 +102,7 @@ public class SplashScreenActivity extends Activity{
         return new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                Log.e("Uso","aaaaaaa");
+                Log.e("Uso", "aaaaaaa");
             }
 
             @Override
@@ -128,10 +128,9 @@ public class SplashScreenActivity extends Activity{
                          Integer close6 = hourObj.getInt("close6");
                          Integer open7 = hourObj.getInt("open7");
                          Integer close7 = hourObj.getInt("close7");
+                        Log.e("close7", close7 + " ");
                         WorkingHours hours = new WorkingHours(id, place_id, open1, close1, open2, close2, open3, close3, open4, close4, open5, close5, open6, close6, open7, close7);
-                        if (!WorkingHoursList.getInstance().getHoursList().contains(hours)) {
                             WorkingHoursList.getInstance().add(hours);
-                        }
                     }
                 } catch (JSONException e) {
                     //makeToast(R.string.toast_try_again);

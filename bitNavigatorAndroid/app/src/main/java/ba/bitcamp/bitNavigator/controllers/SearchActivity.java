@@ -26,6 +26,15 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,7 +42,9 @@ import java.util.List;
 
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.PlaceList;
+import ba.bitcamp.bitNavigator.lists.WorkingHoursList;
 import ba.bitcamp.bitNavigator.models.Place;
+import ba.bitcamp.bitNavigator.models.WorkingHours;
 
 
 /**

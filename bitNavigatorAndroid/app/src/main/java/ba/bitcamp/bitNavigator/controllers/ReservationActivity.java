@@ -5,19 +5,20 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import ba.bitcamp.bitNavigator.bitnavigator.R;
-import ba.bitcamp.bitNavigator.lists.PlaceList;
 import ba.bitcamp.bitNavigator.lists.WorkingHoursList;
-import ba.bitcamp.bitNavigator.models.Place;
 import ba.bitcamp.bitNavigator.models.WorkingHours;
 
 /**
@@ -41,7 +42,10 @@ public class ReservationActivity extends Activity{
         final String id = getIntent().getStringExtra("place_id");
         Integer place_id = Integer.parseInt(id);
 
+        Log.e("place", id);
         final WorkingHours hours = WorkingHoursList.getInstance().getByPlaceId(place_id);
+
+        Log.e("Hours", hours.getClose7()+ " ");
 
         btnCalendar = (Button) findViewById(R.id.btnCalendar);
         btnTimePicker = (Button) findViewById(R.id.btnTimePicker);
@@ -67,7 +71,20 @@ public class ReservationActivity extends Activity{
                                 // Display Selected date in textbox
                                 txtDate.setText(dayOfMonth + "-"
                                         + (monthOfYear + 1) + "-" + year);
-                                btnTimePicker.setEnabled(true);
+                                SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
+                                Date date = new Date(year, monthOfYear, dayOfMonth-1);
+                                String dayOfWeek = simpledateformat.format(date);
+                                Log.e("day", "."+dayOfWeek+".");
+                                int tmp = getIntDay(dayOfWeek);
+                                Log.e("tmp", tmp + "");
+                                Log.e("aaaa", getIsWorking(tmp, hours));
+                                if(getIsWorking(tmp, hours).equals("1")){
+                                    txtDate.setError("Please select valid date");
+                                    btnTimePicker.setEnabled(false);
+                                    return;
+                                }else {
+                                    btnTimePicker.setEnabled(true);
+                                }
                             }
                         }, mYear, mMonth, mDay);
                 dpd.getDatePicker().setMinDate(new GregorianCalendar().getTimeInMillis()+86400000);
@@ -137,4 +154,72 @@ public class ReservationActivity extends Activity{
 
 
     }
+
+    public int getIntDay(String dayOfWeek){
+        switch(dayOfWeek){
+            case "Monday":return 1;
+            case "Tuesday":return 2;
+            case "Wednesday":return 3;
+            case "Thursday":return 4;
+            case "Friday":return 5;
+            case "Saturday":return 6;
+            default: return 7;
+        }
+    }
+
+    public String getIsWorking(int day, WorkingHours hours){
+        switch (day){
+            case 1: {
+                if (hours.getOpen1() == -1) {
+                    return "1";
+                } else {
+                    return hours.getOpen1() + " " + hours.getClose1();
+                }
+            }
+            case 2: {
+                if (hours.getOpen2() == -1) {
+                    return "1";
+                } else {
+                    return hours.getOpen2() + " " + hours.getClose2();
+                }
+            }
+            case 3: {
+                if (hours.getOpen3() == -1) {
+                    return "1";
+                } else {
+                    return hours.getOpen3() + " " + hours.getClose3();
+                }
+            }
+            case 4: {
+                if (hours.getOpen4() == -1) {
+                    return "1";
+                } else {
+                    return hours.getOpen4() + " " + hours.getClose4();
+                }
+            }
+            case 5: {
+                if (hours.getOpen5() == -1) {
+                    return "1";
+                } else {
+                    return hours.getOpen5() + " " + hours.getClose5();
+                }
+            }
+            case 6: {
+                if (hours.getOpen6() == -1) {
+                    return "1";
+                } else {
+                    return hours.getOpen6() + " " + hours.getClose6();
+                }
+            }
+            case 7: {
+                if (hours.getOpen7().equals(-1)) {
+                    return "1";
+                } else {
+                    return hours.getOpen7() + " " + hours.getClose7();
+                }
+            }
+            default: return "2";
+        }
+    }
+
 }
