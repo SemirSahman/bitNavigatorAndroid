@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,10 +31,10 @@ public class PlaceActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
 
-        String id = getIntent().getStringExtra("place_id");
+        final String id = getIntent().getStringExtra("place_id");
         Integer place_id = Integer.parseInt(id);
 
-        Place place = PlaceList.getInstance().getPlace(place_id);
+        final Place place = PlaceList.getInstance().getPlace(place_id);
 
         mImage = (ImageView) findViewById(R.id.imgProfilePic);
         mService = (ImageView) findViewById(R.id.service_img);
@@ -57,7 +56,11 @@ public class PlaceActivity extends Activity{
             mReservation.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-
+                    Intent i = new Intent(getApplicationContext(),
+                            ReservationActivity.class);
+                    i.putExtra("place_id", id);
+                    startActivity(i);
+                    finish();
                 }
             });
         }

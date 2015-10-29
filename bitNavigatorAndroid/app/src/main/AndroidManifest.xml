@@ -51,6 +51,12 @@
         </activity>
 
         <activity
+            android:name="ba.bitcamp.bitNavigator.controllers.ReservationActivity"
+            android:label="Reservation"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
             android:name="ba.bitcamp.bitNavigator.controllers.PlaceActivity"
             android:label="Place"
             android:screenOrientation="portrait">

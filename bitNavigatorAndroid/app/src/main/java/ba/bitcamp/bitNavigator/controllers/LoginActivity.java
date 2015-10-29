@@ -23,8 +23,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import ba.bitcamp.bitNavigator.bitnavigator.R;
-import ba.bitcamp.bitNavigator.controllers.*;
-import ba.bitcamp.bitNavigator.controllers.MapsActivity;
 import ba.bitcamp.bitNavigator.models.User;
 import ba.bitcamp.bitNavigator.service.ServiceRequest;
 
