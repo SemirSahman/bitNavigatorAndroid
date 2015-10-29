@@ -7,8 +7,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="99dp"
-    android:id="@+id/linearLayout">
+    android:layout_height="133dp"
+    android:id="@+id/linearLayout"
+    android:layout_alignParentEnd="true">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Working hours"
+        android:textAlignment="center"
+        android:textColor="#607D8B"
+        android:textSize="21dp" />
+
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Thu" />
+            android:text="Tue" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Thr" />
+            android:text="Thu" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,12 +60,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Sun" />
+            android:text="Sat" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Sat" />
+            android:text="Sun" />
     </TableRow>
 
     <TableRow
@@ -164,7 +174,8 @@ android:layout_height="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
         android:id="@+id/txtDate"
         android:enabled="false"
-        android:focusable="false">
+        android:focusable="false"
+        android:textAlignment="center">
         <requestFocus></requestFocus>
     </EditText>
     <Button android:layout_height="wrap_content"
@@ -179,7 +190,8 @@ android:layout_height="fill_parent"
         android:layout_weight="1"
         android:id="@+id/txtTime"
         android:enabled="false"
-        android:focusable="false">
+        android:focusable="false"
+        android:textAlignment="center">
     </EditText>
     <Button
         android:layout_height="wrap_content"
