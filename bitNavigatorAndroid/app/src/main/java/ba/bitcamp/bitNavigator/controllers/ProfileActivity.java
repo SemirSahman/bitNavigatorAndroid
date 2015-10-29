@@ -98,9 +98,7 @@ public class ProfileActivity extends Activity{
 
         String avatar = preferences.getString("avatar", "");
         if (!avatar.equals("")) {
-            Log.d("dibag", "u ifu");
-            new DownloadImageTask(mImage)
-                    .execute(ImageHelper.getImage(this, avatar, 300, 300));
+            new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 400, 400));
         }
 
 
