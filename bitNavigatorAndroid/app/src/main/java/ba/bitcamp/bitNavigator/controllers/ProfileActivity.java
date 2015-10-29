@@ -1,7 +1,9 @@
 package ba.bitcamp.bitNavigator.controllers;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -40,6 +42,8 @@ public class ProfileActivity extends Activity{
         // setting default screen to login.xml
         setContentView(R.layout.activity_user_profile);
 
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
         mImage = (ImageView) findViewById(R.id.imgProfilePic);
         mName = (TextView) findViewById(R.id.txtName);
         mEmail = (TextView) findViewById(R.id.txtEmail);
@@ -55,13 +59,40 @@ public class ProfileActivity extends Activity{
         mLogout.setVisibility(View.VISIBLE);
         mLogout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.clear();
-                editor.commit();
-                Intent i = new Intent(getApplicationContext(),
-                        LoginActivity.class);
-                startActivity(i);
-                finish();
+
+                // Setting Dialog Title
+                alertDialog.setTitle("Logout");
+
+                // Setting Dialog Message
+                alertDialog.setMessage("Are you sure you want logout?");
+
+                // Setting Icon to Dialog
+                alertDialog.setIcon(R.drawable.navbar_profilenormal);
+
+                // Setting Positive "Yes" Button
+                alertDialog.setPositiveButton("YES",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences.Editor editor = preferences.edit();
+                                editor.clear();
+                                editor.commit();
+                                Intent i = new Intent(getApplicationContext(),
+                                        LoginActivity.class);
+                                startActivity(i);
+                                finish();
+                            }
+                        });
+
+                // Setting Negative "NO" Button
+                alertDialog.setNegativeButton("NO",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                // Showing Alert Message
+                alertDialog.show();
             }
         });
 
