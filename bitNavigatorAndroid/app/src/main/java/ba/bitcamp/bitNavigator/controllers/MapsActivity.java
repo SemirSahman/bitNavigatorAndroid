@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import com.here.android.mpa.ar.ARObject;
 import com.here.android.mpa.cluster.ClusterLayer;
 import com.here.android.mpa.common.GeoBoundingBox;
 import com.here.android.mpa.common.ViewObject;
@@ -62,6 +63,7 @@ public class MapsActivity extends Activity {
     private Button startButton;
     private Button stopButton;
     private ImageView hereButton;
+    private ImageView clearRouteButton;
 
     // the image we will display in LiveSight
     private Image image;
@@ -82,6 +84,8 @@ public class MapsActivity extends Activity {
     private GeoCoordinate mGPSPosition;
 
     private MapRoute mapRoute;
+
+    private MapMarker mRouteMarker;
 
     private List<ARIconObject> arIconObjects = new ArrayList<>();
 
@@ -118,6 +122,7 @@ public class MapsActivity extends Activity {
         startButton = (Button) findViewById(R.id.startLiveSight);
         stopButton = (Button) findViewById(R.id.stopLiveSight);
         hereButton = (ImageView) findViewById(R.id.here_button);
+        clearRouteButton = (ImageView) findViewById(R.id.clear_route_button);
 
         Button mLoginButton = (Button) findViewById(R.id.btnProfile);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -191,9 +196,11 @@ public class MapsActivity extends Activity {
             public boolean onLongPressEvent(PointF pointF) {
                 for (ViewObject object : map.getSelectedObjects(pointF)) {
                     if (object instanceof MapMarker) {
-                        MapMarker marker = (MapMarker) object;
+                        mRouteMarker = (MapMarker) object;
                         if (mGPSPosition != null) {
-                            getDirections(mGPSPosition, marker.getCoordinate());
+                            getDirections(mGPSPosition, mRouteMarker.getCoordinate());
+                            map.removeClusterLayer(mClusterLayer);
+                            map.addMapObject(mRouteMarker);
                         }
 
                     }
@@ -231,15 +238,7 @@ public class MapsActivity extends Activity {
 
             if (error == Error.NONE) {
 
-                for (Place place : PlaceList.getInstance().getPlaceList()) {
-                    String distance = String.format("%.2f m", mGPSPosition.distanceTo(new GeoCoordinate(place.getLatitude(), place.getLongitude())));
-                    View info = MapHelper.getInfoView(this, place.getTitle(), distance);
-                    int icon = getResources().getIdentifier(place.getService().toLowerCase(), "drawable", getPackageName());
-                    ARIconObject arIconObject = new ARIconObject(new GeoCoordinate(place.getLatitude(), place.getLongitude()), info, icon);
-                    arIconObjects.add(arIconObject);
-                    arController.addARObject(arIconObject);
-                }
-                map.removeClusterLayer(mClusterLayer);
+                getARObjects();
 
                 startButton.setVisibility(View.GONE);
                 hereButton.setVisibility(View.GONE);
@@ -250,24 +249,40 @@ public class MapsActivity extends Activity {
         }
     }
 
+    private void getARObjects() {
+        for (Place place : PlaceList.getInstance().getPlaceList()) {
+            String distance = String.format("%.2f m", mGPSPosition.distanceTo(new GeoCoordinate(place.getLatitude(), place.getLongitude())));
+            View info = MapHelper.getInfoView(this, place.getTitle(), distance);
+            int icon = getResources().getIdentifier(place.getService().toLowerCase(), "drawable", getPackageName());
+            ARIconObject arIconObject = new ARIconObject(new GeoCoordinate(place.getLatitude(), place.getLongitude()), info, icon);
+            arIconObjects.add(arIconObject);
+            arController.addARObject(arIconObject);
+        }
+        map.removeClusterLayer(mClusterLayer);
+    }
+
     public void stopLiveSight(View view) {
         if (arController != null) {
             // exits LiveSight mode and returns to Map mode with exit animation
             Error error = arController.stop(true);
 
             if (error == Error.NONE) {
-                map.addClusterLayer(mClusterLayer);
+
+                removeARObjects();
+
                 startButton.setVisibility(View.VISIBLE);
                 hereButton.setVisibility(View.VISIBLE);
                 stopButton.setVisibility(View.GONE);
-
-                for (ARIconObject object : arIconObjects) {
-                    arController.removeARObject(object);
-                }
-
             } else {
                 Toast.makeText(getApplicationContext(), "Error stopping LiveSight: " + error.toString(), Toast.LENGTH_LONG);
             }
+        }
+    }
+
+    private void removeARObjects() {
+        map.addClusterLayer(mClusterLayer);
+        for (ARIconObject object : arIconObjects) {
+            arController.removeARObject(object);
         }
     }
 
@@ -291,6 +306,10 @@ public class MapsActivity extends Activity {
                     mGPSPosition = position.getCoordinate();
                     // Display position indicator
                     map.getPositionIndicator().setVisible(true);
+                    if (stopButton.getVisibility() == View.VISIBLE) {
+                        removeARObjects();
+                        getARObjects();
+                    }
                 }
             }
             @Override
@@ -323,6 +342,8 @@ public class MapsActivity extends Activity {
         public void onCalculateRouteFinished(RouteManager.Error error, List<RouteResult> routeResult) {
             // If the route was calculated successfully
             if (error == RouteManager.Error.NONE) {
+                // Add clear route button
+                clearRouteButton.setVisibility(View.VISIBLE);
                 // Render the route on the map
                 mapRoute = new MapRoute(routeResult.get(0).getRoute());
                 map.addMapObject(mapRoute);
@@ -369,5 +390,17 @@ public class MapsActivity extends Activity {
                     Toast.LENGTH_SHORT)
                     .show();
         }
-    };
+    }
+
+    public void clearRoute(View view) {
+
+        if (mapRoute != null) {
+            map.removeMapObject(mapRoute);
+            mapRoute = null;
+            map.removeMapObject(mRouteMarker);
+            map.addClusterLayer(mClusterLayer);
+        }
+        clearRouteButton.setVisibility(View.GONE);
+
+    }
 }
