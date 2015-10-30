@@ -3,15 +3,27 @@ package ba.bitcamp.bitNavigator.controllers;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +32,7 @@ import java.util.GregorianCalendar;
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.WorkingHoursList;
 import ba.bitcamp.bitNavigator.models.WorkingHours;
+import ba.bitcamp.bitNavigator.service.ServiceRequest;
 
 /**
  * Created by hajrudin.sehic on 29/10/15.
@@ -28,9 +41,33 @@ public class ReservationActivity extends Activity{
 
     private Button btnCalendar;
     private Button btnTimePicker;
+    private Button btnSubmit;
 
     private EditText txtDate;
     private EditText txtTime;
+    private EditText txtMessage;
+
+    private TextView monFrom;
+    private TextView tueFrom;
+    private TextView wedFrom;
+    private TextView thuFrom;
+    private TextView friFrom;
+    private TextView satFrom;
+    private TextView sunFrom;
+
+    private TextView monTo;
+    private TextView tueTo;
+    private TextView wedTo;
+    private TextView thuTo;
+    private TextView friTo;
+    private TextView satTo;
+    private TextView sunTo;
+
+
+
+    public Date date;
+    public int selectedDay;
+    public String id;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
 
@@ -39,18 +76,48 @@ public class ReservationActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation);
 
-        final String id = getIntent().getStringExtra("place_id");
-        Integer place_id = Integer.parseInt(id);
+        id = getIntent().getStringExtra("place_id");
+        final Integer place_id = Integer.parseInt(id);
 
-        Log.e("place", id);
         final WorkingHours hours = WorkingHoursList.getInstance().getByPlaceId(place_id);
 
-        Log.e("Hours", hours.getClose7()+ " ");
 
+        monFrom = (TextView) findViewById(R.id.monFrom);
+        monFrom.setText(hours.getFormatedTime(hours.getOpen1()));
+        tueFrom = (TextView) findViewById(R.id.tueFrom);
+        tueFrom.setText(hours.getFormatedTime(hours.getOpen2()));
+        wedFrom = (TextView) findViewById(R.id.wedFrom);
+        wedFrom.setText(hours.getFormatedTime(hours.getOpen3()));
+        thuFrom = (TextView) findViewById(R.id.thuFrom);
+        thuFrom.setText(hours.getFormatedTime(hours.getOpen4()));
+        friFrom = (TextView) findViewById(R.id.friFrom);
+        friFrom.setText(hours.getFormatedTime(hours.getOpen5()));
+        satFrom = (TextView) findViewById(R.id.satFrom);
+        satFrom.setText(hours.getFormatedTime(hours.getOpen6()));
+        sunFrom = (TextView) findViewById(R.id.sunFrom);
+        sunFrom.setText(hours.getFormatedTime(hours.getOpen7()));
+
+        monTo = (TextView) findViewById(R.id.monTo);
+        monTo.setText(hours.getFormatedTime(hours.getClose1()));
+        tueTo = (TextView) findViewById(R.id.tueTo);
+        tueTo.setText(hours.getFormatedTime(hours.getClose2()));
+        wedTo = (TextView) findViewById(R.id.wedTo);
+        wedTo.setText(hours.getFormatedTime(hours.getClose3()));
+        thuTo = (TextView) findViewById(R.id.thuTo);
+        thuTo.setText(hours.getFormatedTime(hours.getClose4()));
+        friTo = (TextView) findViewById(R.id.friTo);
+        friTo.setText(hours.getFormatedTime(hours.getClose5()));
+        satTo = (TextView) findViewById(R.id.satTo);
+        satTo.setText(hours.getFormatedTime(hours.getClose6()));
+        sunTo = (TextView) findViewById(R.id.sunTo);
+        sunTo.setText(hours.getFormatedTime(hours.getClose7()));
+
+        btnSubmit = (Button) findViewById(R.id.btn_submit_reservation);
         btnCalendar = (Button) findViewById(R.id.btnCalendar);
         btnTimePicker = (Button) findViewById(R.id.btnTimePicker);
         txtDate = (EditText) findViewById(R.id.txtDate);
         txtTime = (EditText) findViewById(R.id.txtTime);
+        txtMessage = (EditText) findViewById(R.id.txtMessage);
 
         btnCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +127,6 @@ public class ReservationActivity extends Activity{
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
-
                 // Launch Date Picker Dialog
                 DatePickerDialog dpd;
                 dpd = new DatePickerDialog(ReservationActivity.this,
@@ -72,17 +138,14 @@ public class ReservationActivity extends Activity{
                                 txtDate.setText(dayOfMonth + "-"
                                         + (monthOfYear + 1) + "-" + year);
                                 SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
-                                Date date = new Date(year, monthOfYear, dayOfMonth-1);
+                                date = new Date(year, monthOfYear, dayOfMonth-1);
                                 String dayOfWeek = simpledateformat.format(date);
-                                Log.e("day", "."+dayOfWeek+".");
-                                int tmp = getIntDay(dayOfWeek);
-                                Log.e("tmp", tmp + "");
-                                Log.e("aaaa", getIsWorking(tmp, hours));
-                                if(getIsWorking(tmp, hours).equals("1")){
-                                    txtDate.setError("Please select valid date");
+                                selectedDay = getIntDay(dayOfWeek);
+                                if(hours.getIsWorking(selectedDay)== null){
                                     btnTimePicker.setEnabled(false);
-                                    return;
+                                    txtDate.setError("Please select valid date!");
                                 }else {
+                                    txtDate.setError(null);
                                     btnTimePicker.setEnabled(true);
                                 }
                             }
@@ -109,9 +172,46 @@ public class ReservationActivity extends Activity{
                                                   int minute) {
                                 // Display Selected time in textbox
                                 txtTime.setText(hourOfDay + ":" + minute);
+                                if(validateTime(hourOfDay, minute, hours)){
+                                    txtTime.setError(null);
+                                    txtMessage.setEnabled(true);
+                                }else{
+                                    txtTime.setError("Please select valid time!");
+                                    txtMessage.setEnabled(false);
+                                }
                             }
                         }, mHour, mMinute, false);
                 tpd.show();
+            }
+        });
+        btnSubmit.setEnabled(true);
+        final String message = txtMessage.getText().toString();
+//        if(message.length() < 25){
+//            btnSubmit.setEnabled(false);
+//            txtMessage.setError("Message must contains at least 25 caracters!");
+//        }else{
+//            btnSubmit.setEnabled(true);
+//        }
+
+        SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
+        final String email = sharedpreferences.getString("email", "");
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("place_id", place_id);
+                    json.put("user_email", email);
+                    json.put("day", txtDate.getText());
+                    json.put("time", txtTime.getText());
+                    json.put("message",message);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String url = getString(R.string.service_submit_reservation);
+                ServiceRequest.post(url, json.toString(), submitReservation());
             }
         });
 
@@ -155,6 +255,26 @@ public class ReservationActivity extends Activity{
 
     }
 
+    public boolean validateTime(int h, int m, WorkingHours hours){
+        String selected = h + "" +m;
+        String work = hours.getIsWorking(selectedDay);
+        String split[] = work.split(" ");
+        int sel = Integer.parseInt(selected);
+        int op = Integer.parseInt(split[0]);
+        String p = String.format("%02d%02d", op / 60, op % 60);
+        op = Integer.parseInt(p);
+        int cl = Integer.parseInt(split[1]);
+        String c = String.format("%02d%02d", cl / 60, cl % 60);
+        cl = Integer.parseInt(c);
+        Log.e("sel" , sel+"");
+        Log.e("op" , op+"");
+        Log.e("cl" , cl+"");
+        if(sel >= op && sel <= cl){
+            return true;
+        }
+        return false;
+    }
+
     public int getIntDay(String dayOfWeek){
         switch(dayOfWeek){
             case "Monday":return 1;
@@ -167,59 +287,25 @@ public class ReservationActivity extends Activity{
         }
     }
 
-    public String getIsWorking(int day, WorkingHours hours){
-        switch (day){
-            case 1: {
-                if (hours.getOpen1() == -1) {
-                    return "1";
-                } else {
-                    return hours.getOpen1() + " " + hours.getClose1();
-                }
+    private Callback submitReservation() {
+        return new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                e.getMessage();
+                e.printStackTrace();
             }
-            case 2: {
-                if (hours.getOpen2() == -1) {
-                    return "1";
-                } else {
-                    return hours.getOpen2() + " " + hours.getClose2();
-                }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                goToPlace();
             }
-            case 3: {
-                if (hours.getOpen3() == -1) {
-                    return "1";
-                } else {
-                    return hours.getOpen3() + " " + hours.getClose3();
-                }
-            }
-            case 4: {
-                if (hours.getOpen4() == -1) {
-                    return "1";
-                } else {
-                    return hours.getOpen4() + " " + hours.getClose4();
-                }
-            }
-            case 5: {
-                if (hours.getOpen5() == -1) {
-                    return "1";
-                } else {
-                    return hours.getOpen5() + " " + hours.getClose5();
-                }
-            }
-            case 6: {
-                if (hours.getOpen6() == -1) {
-                    return "1";
-                } else {
-                    return hours.getOpen6() + " " + hours.getClose6();
-                }
-            }
-            case 7: {
-                if (hours.getOpen7().equals(-1)) {
-                    return "1";
-                } else {
-                    return hours.getOpen7() + " " + hours.getClose7();
-                }
-            }
-            default: return "2";
-        }
+        };
+    }
+
+    public void goToPlace() {
+        Intent i = new Intent(this, PlaceActivity.class);
+        i.putExtra("place_id", id);
+        startActivity(i);
     }
 
 }
