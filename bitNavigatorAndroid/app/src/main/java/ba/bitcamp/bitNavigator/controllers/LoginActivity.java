@@ -100,14 +100,14 @@ public class LoginActivity extends Activity {
                                         }
         );
 
-        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-        mRegisterButton.setOnClickListener(new View.OnClickListener(){
-                                               public void onClick(View v) {
-                                                   Intent i = new Intent(getApplicationContext(), ba.bitcamp.bitNavigator.controllers.LoginActivity.class);
-                                                   startActivity(i);
-                                               }
-                                           }
-        );
+//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
+//        mRegisterButton.setOnClickListener(new View.OnClickListener(){
+//                                               public void onClick(View v) {
+//                                                   Intent i = new Intent(getApplicationContext(), ba.bitcamp.bitNavigator.controllers.LoginActivity.class);
+//                                                   startActivity(i);
+//                                               }
+//                                           }
+//        );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener(){
@@ -148,8 +148,11 @@ public class LoginActivity extends Activity {
                     String name = userObj.getString("firstName");
                     String surname = userObj.getString("lastName");
                     String email = userObj.getString("email");
+                    Log.d("dsds", "id");
                     String password = userObj.getString("password");
+                    Log.d("dsds", "slika");
                     String avatar = userObj.getString("avatar");
+                    Log.d("dsds", "slikaposle"+avatar);
                     user = new User(id, name, surname, email, password, avatar);
                     makeToast("Wellcome " + user.getFirstName());
                     SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -158,6 +161,7 @@ public class LoginActivity extends Activity {
                     editor.putString("surname", surname);
                     editor.putString("email", email);
                     editor.putString("avatar", avatar);
+
                     editor.commit();
 
                     goToProfile();

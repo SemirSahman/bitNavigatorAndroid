@@ -16,7 +16,9 @@ public class Place {
     private String service;
     private String image;
 
-    public Place(int id, String title, String address, Double longitude, Double latitude, String description, String service, String image) {
+    private Integer user_id;
+
+    public Place(int id, String title, String address, Double longitude, Double latitude, String description, String service, String image, Integer user_id) {
         this.id = id;
         this.title = title;
         this.address = address;
@@ -25,6 +27,7 @@ public class Place {
         this.description = description;
         this.service = service;
         this.image = image;
+        this.user_id = user_id;
     }
 
     public String getTitle() {
@@ -73,6 +76,14 @@ public class Place {
 
     public void setService(String service) {
         this.service = service;
+    }
+
+    public Integer getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
     }
 
     public int getId() {

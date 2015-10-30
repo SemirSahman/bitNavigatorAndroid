@@ -55,18 +55,21 @@ public class PlaceActivity extends Activity{
         mDescription.setText(place.getDescription());
 
         SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-        if(sharedpreferences.contains("email")){
-            mReservation.setVisibility(View.VISIBLE);
-            mReservation.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(getApplicationContext(),
-                            ReservationActivity.class);
-                    i.putExtra("place_id", id);
-                    startActivity(i);
-                    finish();
-                }
-            });
+        if(sharedpreferences.contains("email")) {
+            Integer user_id = sharedpreferences.getInt("id", 0);
+            if (!user_id.equals(place.getUser_id())) {
+                mReservation.setVisibility(View.VISIBLE);
+                mReservation.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(getApplicationContext(),
+                                ReservationActivity.class);
+                        i.putExtra("place_id", id);
+                        startActivity(i);
+                        finish();
+                    }
+                });
+            }
         }
 
         String avatar = place.getImage();
@@ -86,14 +89,14 @@ public class PlaceActivity extends Activity{
         });
 
 
-        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-                                               public void onClick(View v) {
-                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                                                   startActivity(i);
-                                               }
-                                           }
-        );
+//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
+//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+//                                               public void onClick(View v) {
+//                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+//                                                   startActivity(i);
+//                                               }
+//                                           }
+//        );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener() {

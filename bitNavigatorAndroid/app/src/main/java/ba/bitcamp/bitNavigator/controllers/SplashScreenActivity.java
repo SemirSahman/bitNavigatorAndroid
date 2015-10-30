@@ -85,7 +85,8 @@ public class SplashScreenActivity extends Activity{
                         String description = postObj.getString("description");
                         String service = postObj.getString("service");
                         String image = postObj.getString("image");
-                        Place place = new Place(id, name, address, longitude, latitude, description, service, image);
+                        Integer user_id = postObj.getInt("user_id");
+                        Place place = new Place(id, name, address, longitude, latitude, description, service, image, user_id);
                         if (!PlaceList.getInstance().getPlaceList().contains(place)) {
                             PlaceList.getInstance().add(place);
                         }

@@ -7,14 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
@@ -68,6 +66,7 @@ public class ReservationActivity extends Activity{
     public Date date;
     public int selectedDay;
     public String id;
+    public String message;
 
     private int mYear, mMonth, mDay, mHour, mMinute;
 
@@ -143,7 +142,9 @@ public class ReservationActivity extends Activity{
                                 selectedDay = getIntDay(dayOfWeek);
                                 if(hours.getIsWorking(selectedDay)== null){
                                     btnTimePicker.setEnabled(false);
+                                    txtDate.setFocusable(true);
                                     txtDate.setError("Please select valid date!");
+                                    txtDate.requestFocus();
                                 }else {
                                     txtDate.setError(null);
                                     btnTimePicker.setEnabled(true);
@@ -156,7 +157,7 @@ public class ReservationActivity extends Activity{
         });
 
 
-        btnTimePicker.setOnClickListener(new View.OnClickListener(){
+        btnTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
@@ -172,11 +173,14 @@ public class ReservationActivity extends Activity{
                                                   int minute) {
                                 // Display Selected time in textbox
                                 txtTime.setText(hourOfDay + ":" + minute);
-                                if(validateTime(hourOfDay, minute, hours)){
+                                if (validateTime(hourOfDay, minute, hours)) {
                                     txtTime.setError(null);
                                     txtMessage.setEnabled(true);
-                                }else{
+                                    btnSubmit.setEnabled(true);
+                                } else {
+                                    txtTime.setFocusable(true);
                                     txtTime.setError("Please select valid time!");
+                                    txtTime.requestFocus();
                                     txtMessage.setEnabled(false);
                                 }
                             }
@@ -184,14 +188,7 @@ public class ReservationActivity extends Activity{
                 tpd.show();
             }
         });
-        btnSubmit.setEnabled(true);
-        final String message = txtMessage.getText().toString();
-//        if(message.length() < 25){
-//            btnSubmit.setEnabled(false);
-//            txtMessage.setError("Message must contains at least 25 caracters!");
-//        }else{
-//            btnSubmit.setEnabled(true);
-//        }
+
 
         SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
         final String email = sharedpreferences.getString("email", "");
@@ -199,6 +196,13 @@ public class ReservationActivity extends Activity{
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                message = txtMessage.getText().toString();
+                if(message.length() < 25){
+                    txtMessage.setError("Message must contains at least 25 characters!");
+                }else{
+                    txtMessage.setError(null);
+
+
                 JSONObject json = new JSONObject();
                 try {
                     json.put("place_id", place_id);
@@ -212,7 +216,7 @@ public class ReservationActivity extends Activity{
 
                 String url = getString(R.string.service_submit_reservation);
                 ServiceRequest.post(url, json.toString(), submitReservation());
-            }
+            }    }
         });
 
 
@@ -225,14 +229,14 @@ public class ReservationActivity extends Activity{
         });
 
 
-        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-                                               public void onClick(View v) {
-                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                                                   startActivity(i);
-                                               }
-                                           }
-        );
+//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
+//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+//                                               public void onClick(View v) {
+//                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+//                                                   startActivity(i);
+//                                               }
+//                                           }
+//        );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -266,9 +270,6 @@ public class ReservationActivity extends Activity{
         int cl = Integer.parseInt(split[1]);
         String c = String.format("%02d%02d", cl / 60, cl % 60);
         cl = Integer.parseInt(c);
-        Log.e("sel" , sel+"");
-        Log.e("op" , op+"");
-        Log.e("cl" , cl+"");
         if(sel >= op && sel <= cl){
             return true;
         }
