@@ -99,14 +99,14 @@ public class ProfileActivity extends Activity{
                                         }
         );
 
-        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-                                               public void onClick(View v) {
-                                                   Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-                                                   startActivity(i);
-                                               }
-                                           }
-        );
+//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
+//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+//                                               public void onClick(View v) {
+//                                                   Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+//                                                   startActivity(i);
+//                                               }
+//                                           }
+//        );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener() {

@@ -142,7 +142,9 @@ public class ReservationActivity extends Activity{
                                 selectedDay = getIntDay(dayOfWeek);
                                 if(hours.getIsWorking(selectedDay)== null){
                                     btnTimePicker.setEnabled(false);
+                                    txtDate.setFocusable(true);
                                     txtDate.setError("Please select valid date!");
+                                    txtDate.requestFocus();
                                 }else {
                                     txtDate.setError(null);
                                     btnTimePicker.setEnabled(true);
@@ -176,7 +178,9 @@ public class ReservationActivity extends Activity{
                                     txtMessage.setEnabled(true);
                                     btnSubmit.setEnabled(true);
                                 } else {
+                                    txtTime.setFocusable(true);
                                     txtTime.setError("Please select valid time!");
+                                    txtTime.requestFocus();
                                     txtMessage.setEnabled(false);
                                 }
                             }
@@ -225,14 +229,14 @@ public class ReservationActivity extends Activity{
         });
 
 
-        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-                                               public void onClick(View v) {
-                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                                                   startActivity(i);
-                                               }
-                                           }
-        );
+//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
+//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+//                                               public void onClick(View v) {
+//                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+//                                                   startActivity(i);
+//                                               }
+//                                           }
+//        );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener() {

@@ -194,11 +194,15 @@ android:layout_height="100dp"
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/linearLayout1">
-    <EditText android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:layout_weight="1"
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:id="@+id/txtDate"
         android:enabled="false"
-        android:focusable="false"
+        android:focusable="true"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
         android:textAlignment="center">
         <requestFocus></requestFocus>
     </EditText>
@@ -214,7 +218,9 @@ android:layout_height="100dp"
         android:layout_weight="1"
         android:id="@+id/txtTime"
         android:enabled="false"
-        android:focusable="false"
+        android:focusable="true"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
         android:textAlignment="center">
     </EditText>
     <Button

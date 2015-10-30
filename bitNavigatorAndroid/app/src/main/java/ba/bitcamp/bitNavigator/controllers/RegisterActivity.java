@@ -129,14 +129,14 @@ public class RegisterActivity extends Activity {
                                         }
         );
 
-        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-        mRegisterButton.setOnClickListener(new OnClickListener(){
-                                               public void onClick(View v) {
-                                                   Intent i = new Intent(getApplicationContext(), ba.bitcamp.bitNavigator.controllers.RegisterActivity.class);
-                                                   startActivity(i);
-                                               }
-                                           }
-        );
+//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
+//        mRegisterButton.setOnClickListener(new OnClickListener(){
+//                                               public void onClick(View v) {
+//                                                   Intent i = new Intent(getApplicationContext(), ba.bitcamp.bitNavigator.controllers.RegisterActivity.class);
+//                                                   startActivity(i);
+//                                               }
+//                                           }
+//        );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new OnClickListener(){
