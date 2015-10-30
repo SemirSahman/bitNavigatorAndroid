@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ffffff">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="133dp"
+    android:id="@+id/linearLayout"
+    android:layout_alignParentEnd="true">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Working hours"
+        android:textAlignment="center"
+        android:textColor="#607D8B"
+        android:textSize="21dp" />
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp">
+
+    <TableRow
+        android:background="#607D8B"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Mon"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tue"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Wed"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Thu"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Fri"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sat"
+            android:textAlignment="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sun"
+            android:textAlignment="center"/>
+    </TableRow>
+
+    <TableRow
+        android:background="#ECEFF1"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="From"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/monFrom"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/tueFrom"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/wedFrom"
+            android:textAlignment="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/thuFrom"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/friFrom"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/satFrom"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/sunFrom"
+            android:textAlignment="center" />
+    </TableRow>
+
+    <TableRow
+        android:background="#ECEFF1"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="To"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/monTo"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/tueTo"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/wedTo"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/thuTo"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/friTo"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/satTo"
+            android:textAlignment="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/sunTo"
+            android:textAlignment="center"/>
+    </TableRow>
+</TableLayout>
+</LinearLayout>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="fill_parent"
+android:layout_height="100dp"
+    android:layout_below="@+id/linearLayout"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:id="@+id/linearLayout3">
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/linearLayout1">
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/txtDate"
+        android:enabled="false"
+        android:focusable="true"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:textAlignment="center">
+        <requestFocus></requestFocus>
+    </EditText>
+    <Button android:layout_height="wrap_content"
+        android:layout_weight="0" android:id="@+id/btnCalendar" android:text="Date"
+        android:layout_width="100dp"></Button>
+</LinearLayout>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content" android:id="@+id/linearLayout2">
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/txtTime"
+        android:enabled="false"
+        android:focusable="true"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:textAlignment="center">
+    </EditText>
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:id="@+id/btnTimePicker"
+        android:text="Time"
+        android:layout_width="100dp"
+        android:enabled="false">
+
+    </Button>
+</LinearLayout>
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/linearLayout3">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:text="Message"
+            android:textAlignment="center"
+            android:textColor="#607D8B"
+            android:textSize="21dp" />
+
+        <EditText android:id="@+id/txtMessage"
+            android:layout_width="match_parent"
+            android:layout_height="99dp"
+            android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine"
+            android:imeOptions="actionSend|flagNoEnterAction"
+            android:maxLines="4"
+            android:maxLength="2000"
+            android:hint="I would like to reserve"
+            android:enabled="false"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_submit_reservation"
+            android:text="Submit"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:enabled="false" />
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/include2" />
+
+    </RelativeLayout>

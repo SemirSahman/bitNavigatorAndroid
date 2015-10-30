@@ -5,4 +5,10 @@
     <string name="app">BIT Navigator</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="label_button_stoplivesight">Stop LiveSight</string>
+    <string name="label_button_startlivesight">Start LiveSight</string>
+    <string name="label_button_addobject">Add Object</string>
+    <string name="error_gps">Can not get your location</string>
+    <string name="search_text">Enter name of place</string>
+    <string name="search_button">Search</string>
 </resources>
