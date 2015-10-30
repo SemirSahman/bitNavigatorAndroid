@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -136,11 +137,13 @@ public class ReservationActivity extends Activity{
                                 // Display Selected date in textbox
                                 txtDate.setText(dayOfMonth + "-"
                                         + (monthOfYear + 1) + "-" + year);
-                                SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
-                                date = new Date(year, monthOfYear, dayOfMonth-1);
-                                String dayOfWeek = simpledateformat.format(date);
-                                selectedDay = getIntDay(dayOfWeek);
-                                if(hours.getIsWorking(selectedDay)== null){
+                                Calendar c = new GregorianCalendar(year,monthOfYear,dayOfMonth);
+                                Calendar today = Calendar.getInstance();
+                                selectedDay = c.get(Calendar.DAY_OF_WEEK) - 1;
+                                if(selectedDay == 0){
+                                    selectedDay = 7;
+                                }
+                                if(hours.getIsWorking(selectedDay) == null || c.before(today)){
                                     btnTimePicker.setEnabled(false);
                                     txtDate.setFocusable(true);
                                     txtDate.setError("Please select valid date!");
@@ -197,8 +200,8 @@ public class ReservationActivity extends Activity{
             @Override
             public void onClick(View v) {
                 message = txtMessage.getText().toString();
-                if(message.length() < 25){
-                    txtMessage.setError("Message must contains at least 25 characters!");
+                if(message.length() < 1){
+                    txtMessage.setError("Can't send an empty message!");
                 }else{
                     txtMessage.setError(null);
 
@@ -274,18 +277,6 @@ public class ReservationActivity extends Activity{
             return true;
         }
         return false;
-    }
-
-    public int getIntDay(String dayOfWeek){
-        switch(dayOfWeek){
-            case "Monday":return 1;
-            case "Tuesday":return 2;
-            case "Wednesday":return 3;
-            case "Thursday":return 4;
-            case "Friday":return 5;
-            case "Saturday":return 6;
-            default: return 7;
-        }
     }
 
     private Callback submitReservation() {
