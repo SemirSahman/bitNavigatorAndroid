@@ -160,4 +160,66 @@ public class WorkingHours {
         this.close7 = close7;
     }
 
+    public String getIsWorking(int day){
+        switch (day){
+            case 1: {
+                if (this.getOpen1() == -1) {
+                    return null;
+                } else {
+                    return this.getOpen1() + " " + this.getClose1();
+                }
+            }
+            case 2: {
+                if (this.getOpen2() == -1) {
+                    return null;
+                } else {
+                    return this.getOpen2() + " " + this.getClose2();
+                }
+            }
+            case 3: {
+                if (this.getOpen3() == -1) {
+                    return null;
+                } else {
+                    return this.getOpen3() + " " + this.getClose3();
+                }
+            }
+            case 4: {
+                if (this.getOpen4() == -1) {
+                    return null;
+                } else {
+                    return this.getOpen4() + " " + this.getClose4();
+                }
+            }
+            case 5: {
+                if (this.getOpen5() == -1) {
+                    return null;
+                } else {
+                    return this.getOpen5() + " " + this.getClose5();
+                }
+            }
+            case 6: {
+                if (this.getOpen6() == -1) {
+                    return null;
+                } else {
+                    return this.getOpen6() + " " + this.getClose6();
+                }
+            }
+            case 7: {
+                if (this.getOpen7().equals(-1)) {
+                    return null;
+                } else {
+                    return this.getOpen7() + " " + this.getClose7();
+                }
+            }
+            default: return null ;
+        }
+    }
+
+    public String getFormatedTime(Integer time){
+        if(time != -1) {
+            return String.format("%02d:%02d", time / 60, time % 60);
+        }
+        return "/";
+    }
+
 }

@@ -35,37 +35,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Mon" />
+            android:text="Mon"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Tue" />
+            android:text="Tue"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Wed" />
+            android:text="Wed"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Thu" />
+            android:text="Thu"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Fri" />
+            android:text="Fri"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Sat" />
+            android:text="Sat"
+            android:textAlignment="center" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Sun" />
+            android:text="Sun"
+            android:textAlignment="center"/>
     </TableRow>
 
     <TableRow
@@ -75,42 +82,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="From"/>
+            android:text="From"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="11" />
+            android:id="@+id/monFrom"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="21" />
+            android:id="@+id/tueFrom"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="11" />
+            android:id="@+id/wedFrom"
+            android:textAlignment="center" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="21" />
+            android:id="@+id/thuFrom"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="11" />
+            android:id="@+id/friFrom"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="21" />
+            android:id="@+id/satFrom"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="21" />
+            android:id="@+id/sunFrom"
+            android:textAlignment="center" />
     </TableRow>
 
     <TableRow
@@ -120,42 +135,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="To"/>
+            android:text="To"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="11" />
+            android:id="@+id/monTo"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="21" />
+            android:id="@+id/tueTo"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="11" />
+            android:id="@+id/wedTo"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="21" />
+            android:id="@+id/thuTo"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="11" />
+            android:id="@+id/friTo"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="21" />
+            android:id="@+id/satTo"
+            android:textAlignment="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="21" />
+            android:id="@+id/sunTo"
+            android:textAlignment="center"/>
     </TableRow>
 </TableLayout>
 </LinearLayout>
@@ -163,10 +186,11 @@
 xmlns:android="http://schemas.android.com/apk/res/android"
 android:orientation="vertical"
 android:layout_width="fill_parent"
-android:layout_height="fill_parent"
+android:layout_height="100dp"
     android:layout_below="@+id/linearLayout"
     android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true">
+    android:layout_alignParentStart="true"
+    android:id="@+id/linearLayout3">
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/linearLayout1">
@@ -204,6 +228,41 @@ android:layout_height="fill_parent"
     </Button>
 </LinearLayout>
 </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/linearLayout3">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:text="Message"
+            android:textAlignment="center"
+            android:textColor="#607D8B"
+            android:textSize="21dp" />
+
+        <EditText android:id="@+id/txtMessage"
+            android:layout_width="match_parent"
+            android:layout_height="99dp"
+            android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine"
+            android:imeOptions="actionSend|flagNoEnterAction"
+            android:maxLines="4"
+            android:maxLength="2000"
+            android:hint="I would like to reserve"
+            android:enabled="false"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_submit_reservation"
+            android:text="Submit"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:enabled="false" />
+
+    </LinearLayout>
 
     <include
         layout="@layout/navbar"
