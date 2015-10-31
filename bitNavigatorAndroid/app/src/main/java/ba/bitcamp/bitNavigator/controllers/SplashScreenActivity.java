@@ -1,10 +1,13 @@
 package ba.bitcamp.bitNavigator.controllers;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
@@ -32,10 +35,19 @@ public class SplashScreenActivity extends Activity{
 
     private static int SPLASH_TIME_OUT = 5000;
 
+    private TextView text;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
+        if(sharedpreferences.contains("email")){
+            String name = sharedpreferences.getString("name", "");
+            text = (TextView) findViewById(R.id.txt_welcome);
+            text.setText("Welcome back " + name);
+        }
 
         String url = getString(R.string.service_all_places);
         ServiceRequest.get(url, getPlaces());

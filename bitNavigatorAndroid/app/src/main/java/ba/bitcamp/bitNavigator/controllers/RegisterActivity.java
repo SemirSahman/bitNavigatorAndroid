@@ -54,17 +54,7 @@ public class RegisterActivity extends Activity {
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         confirmPassword = (EditText) findViewById(R.id.confirmpassword);
-        mLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
 
-
-        mLinkToLogin.setOnClickListener(new OnClickListener() {
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),
-                        LoginActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
 
         findViewById(R.id.btnRegister).setOnClickListener(new OnClickListener() {
 

@@ -32,6 +32,7 @@ public class ProfileActivity extends Activity{
 
     private ImageView mImage;
     private TextView mName;
+    private TextView mSurname;
     private TextView mEmail;
     private Button mLogout;
 
@@ -46,15 +47,17 @@ public class ProfileActivity extends Activity{
 
         mImage = (ImageView) findViewById(R.id.imgProfilePic);
         mName = (TextView) findViewById(R.id.txtName);
+        mSurname = (TextView) findViewById(R.id.txtSurname);
         mEmail = (TextView) findViewById(R.id.txtEmail);
         mLogout = (Button) findViewById(R.id.btn_sign_out);
 
         final SharedPreferences preferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-        String name = preferences.getString("name","") + " ";
-        name += preferences.getString("surname", "");
+        String name = preferences.getString("name","");
+        String surname = preferences.getString("surname", "");
         String email = preferences.getString("email","");
-        mName.setText(name);
-        mEmail.setText(email);
+        mName.setText("First name: " + name);
+        mSurname.setText("Last name: " + surname);
+        mEmail.setText("Email: " + email);
         mLogout.setText("Logout");
         mLogout.setVisibility(View.VISIBLE);
         mLogout.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +101,7 @@ public class ProfileActivity extends Activity{
 
         String avatar = preferences.getString("avatar", "");
         if (!avatar.equals("")) {
-            new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 400, 400));
+            new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 700, 300));
         }
 
 

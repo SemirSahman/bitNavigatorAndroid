@@ -10,9 +10,12 @@
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
         android:background="@drawable/navbar_background"
-        >
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal"
+        android:gravity="fill_horizontal|bottom|clip_horizontal"
+        android:foregroundGravity="bottom"
+        android:paddingBottom="0dp">
         <RadioButton
             android:id="@+id/btnProfile"
             style="@style/navbar_button"
