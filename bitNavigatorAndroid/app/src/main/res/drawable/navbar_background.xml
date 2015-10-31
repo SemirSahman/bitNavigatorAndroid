@@ -37,14 +37,14 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 	<item>
 		<shape>
-            <solid android:color="#000000" />
+            <solid android:color="#2b669a" />
 		</shape>
 	</item>
 	<item android:bottom="35dip">
 		<shape>
 			<gradient 
-                android:startColor="#2c2c2c"
-				android:endColor="#151515"
+                android:startColor="#2b669a"
+				android:endColor="#2b669a"
 				android:angle="270.0" />
 		</shape>
 	</item>

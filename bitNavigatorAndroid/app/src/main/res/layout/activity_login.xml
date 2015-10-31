@@ -1,85 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#ffffff">
+    android:layout_height="wrap_content"
+    android:background="#ffffff">
 
-        <!--  Header  Starts-->
-        <!--  Header Ends -->
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:fillViewport="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/include2">
-        <!-- Login Form -->
-    </ScrollView>
-        <include
-            layout="@layout/navbar"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/include2" />
+<LinearLayout
+android:orientation="vertical"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_centerInParent="true"
+android:padding="10dp"
+>
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:gravity="center"
+<EditText
+    android:id="@+id/login_email"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/edittext_top_bg"
+    android:padding="10dp"
+    android:hint="Email"
+    android:textColorHint="#cccccc"
+    android:drawableLeft="@drawable/mail"/>
+<EditText
+    android:id="@+id/login_password"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/edittext_bottom_bg"
+    android:layout_marginTop="-2dp"
+    android:padding="10dp"
+    android:hint="Password"
+    android:textColorHint="#cccccc"
+    android:password="true"
+    android:drawableLeft="@drawable/pass"/>
+<Button
+    android:id="@+id/login"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:layout_margin="4dp"
+    android:text="Sign In"
+    style="@style/DefaultButtonText"
+    android:background="@drawable/button_default_bg"
+    />
+    <Button
+        android:id="@+id/btnLinkToRegisterScreen"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:padding="10dip"
-        android:layout_alignWithParentIfMissing="false"
-        android:layout_above="@+id/include2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true">
-        <!--  Email Label -->
-        <TextView android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#372c24"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:text="Email"/>
-        <EditText android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/login_email"
-            android:layout_marginTop="5dip"
-            android:layout_marginBottom="20dip"
-            android:textColor="#372c24"
-            android:singleLine="true"/>
-        <!--  Password Label -->
-        <TextView android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#372c24"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:text="Password"/>
-        <EditText android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/login_password"
-            android:layout_marginTop="5dip"
-            android:singleLine="true"
-            android:textColor="#372c24"
-            android:password="true"/>
-        <!-- Login button -->
-        <Button android:id="@+id/login"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="Login"/>
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="4dp"
+        android:text="Sign Up"
+        style="@style/DefaultButtonText"
+        android:background="@drawable/button_default_bg"
+        />
+</LinearLayout>
 
-        <Button
-            android:id="@+id/btnLinkToRegisterScreen"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dip"
-            android:background="@null"
-            android:text="I don&apos;t have account. Register Me!"
-            android:textColor="#91c8e1"
-            android:textStyle="bold" />
+<include
+    layout="@layout/navbar"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_alignParentBottom="true"
+    android:id="@+id/include2" />
 
-    </LinearLayout>
-    <!-- Login Form Ends -->
-    </RelativeLayout>
+</RelativeLayout>
