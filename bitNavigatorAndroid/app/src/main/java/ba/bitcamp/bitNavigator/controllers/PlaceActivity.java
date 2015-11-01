@@ -89,14 +89,14 @@ public class PlaceActivity extends Activity{
         });
 
 
-//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-//                                               public void onClick(View v) {
-//                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-//                                                   startActivity(i);
-//                                               }
-//                                           }
-//        );
+        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
+        mReservationButton.setOnClickListener(new View.OnClickListener() {
+                                                  public void onClick(View v) {
+                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
+                                                      startActivity(i);
+                                                  }
+                                              }
+        );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +115,6 @@ public class PlaceActivity extends Activity{
                                           }
                                       }
         );
-
-
     }
 
     class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {

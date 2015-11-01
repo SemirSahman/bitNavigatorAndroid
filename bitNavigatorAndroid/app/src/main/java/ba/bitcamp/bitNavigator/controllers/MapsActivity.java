@@ -126,21 +126,21 @@ public class MapsActivity extends Activity {
 
         Button mLoginButton = (Button) findViewById(R.id.btnProfile);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
-                                            public void onClick(View v) {
-                                                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                                                startActivity(i);
-                                            }
-                                        }
-        );
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        });
 
-//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-//                                               public void onClick(View v) {
-//                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-//                                                   startActivity(i);
-//                                               }
-//                                           }
-//        );
+
+        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
+        mReservationButton.setOnClickListener(new View.OnClickListener() {
+                                                  public void onClick(View v) {
+                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
+                                                      startActivity(i);
+                                                  }
+                                              }
+        );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -154,12 +154,11 @@ public class MapsActivity extends Activity {
         Button mMapButton = (Button) findViewById(R.id.btnMap);
         mMapButton.setOnClickListener(new View.OnClickListener() {
                                           public void onClick(View v) {
-                                              Intent i = new Intent(getApplicationContext(), ba.bitcamp.bitNavigator.controllers.MapsActivity.class);
+                                              Intent i = new Intent(getApplicationContext(), MapsActivity.class);
                                               startActivity(i);
                                           }
                                       }
         );
-
     }
 
     private void addMarkers() {

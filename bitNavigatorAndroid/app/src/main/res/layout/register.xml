@@ -4,123 +4,6 @@
     android:layout_height="wrap_content"
     android:background="#fff">
 
-        <!--  Header  Starts-->
-        <!--  Header Ends -->
-    <!--<ScrollView-->
-        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:fillViewport="true"-->
-        <!--android:layout_above="@+id/include"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_alignParentEnd="true">-->
-        <!--&lt;!&ndash; Registration Form &ndash;&gt;-->
-        <!--<LinearLayout-->
-            <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-            <!--android:orientation="vertical"-->
-            <!--android:gravity="center"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:padding="10dip">-->
-            <!--&lt;!&ndash; First Name Label &ndash;&gt;-->
-            <!--<TextView android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textColor="#372c24"-->
-                <!--android:textSize="20dp"-->
-                <!--android:textStyle="bold"-->
-                <!--android:text="First Name"/>-->
-            <!--<EditText android:id="@+id/firstname"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:inputType="textCapWords"-->
-                <!--android:layout_marginTop="5dip"-->
-                <!--android:singleLine="true"-->
-                <!--android:textColor="#372c24"-->
-                <!--android:layout_marginBottom="20dip"/>-->
-            <!--&lt;!&ndash; Last Name Label &ndash;&gt;-->
-            <!--<TextView android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="20dp"-->
-                <!--android:textStyle="bold"-->
-                <!--android:textColor="#372c24"-->
-                <!--android:text="Last Name"/>-->
-            <!--<EditText android:id="@+id/lastname"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:inputType="textCapWords"-->
-                <!--android:layout_marginTop="5dip"-->
-                <!--android:singleLine="true"-->
-                <!--android:textColor="#372c24"-->
-                <!--android:layout_marginBottom="20dip"/>-->
-            <!--&lt;!&ndash;  Email Label &ndash;&gt;-->
-            <!--<TextView android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="20dp"-->
-                <!--android:textStyle="bold"-->
-                <!--android:textColor="#372c24"-->
-                <!--android:text="Email"/>-->
-            <!--<EditText android:id="@+id/email"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="5dip"-->
-                <!--android:singleLine="true"-->
-                <!--android:textColor="#372c24"-->
-                <!--android:layout_marginBottom="20dip"/>-->
-            <!--&lt;!&ndash; Password Label &ndash;&gt;-->
-            <!--<TextView android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="20dp"-->
-                <!--android:textStyle="bold"-->
-                <!--android:textColor="#372c24"-->
-                <!--android:text="Password"/>-->
-            <!--<EditText android:id="@+id/password"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:password="true"-->
-                <!--android:singleLine="true"-->
-                <!--android:textColor="#372c24"-->
-                <!--android:layout_marginTop="5dip"/>-->
-            <!--&lt;!&ndash; Confirm Password Label &ndash;&gt;-->
-            <!--<TextView android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="20dp"-->
-                <!--android:textStyle="bold"-->
-                <!--android:textColor="#372c24"-->
-                <!--android:text="Confirm Password"/>-->
-            <!--<EditText android:id="@+id/confirmpassword"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:password="true"-->
-                <!--android:singleLine="true"-->
-                <!--android:textColor="#372c24"-->
-                <!--android:layout_marginTop="5dip"/>-->
-            <!--&lt;!&ndash; Register Button &ndash;&gt;-->
-            <!--<Button android:id="@+id/btnRegister"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="10dip"-->
-                <!--android:text="Register New Account"/>-->
-
-            <!--<Button-->
-                <!--android:id="@+id/btnLinkToLoginScreen"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="40dip"-->
-                <!--android:background="@null"-->
-                <!--android:text="Already registred. Login Me!"-->
-                <!--android:textColor="#91c8e1"-->
-                <!--android:textStyle="bold" />-->
-
-        <!--</LinearLayout>-->
-<!--</ScrollView>-->
-        <!--&lt;!&ndash; Registration Form Ends &ndash;&gt;-->
-        <!--<include-->
-            <!--layout="@layout/navbar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="60dp"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:id="@+id/include" />-->
-
     <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
@@ -134,7 +17,7 @@
         <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
-        android:gravity="center"
+        android:gravity="top"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dip">
@@ -195,8 +78,7 @@
                 android:layout_margin="4dp"
                 android:text="Sign Up"
                 style="@style/DefaultButtonText"
-                android:background="@drawable/button_default_bg"
-                />
+                android:background="@drawable/button_default_bg" />
         </LinearLayout>
 </ScrollView>
     <include
