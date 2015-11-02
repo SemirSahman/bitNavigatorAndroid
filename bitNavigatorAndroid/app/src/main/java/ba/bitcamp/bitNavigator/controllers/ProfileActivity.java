@@ -18,12 +18,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.InputStream;
 
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.controllers.*;
 import ba.bitcamp.bitNavigator.controllers.LoginActivity;
+import ba.bitcamp.bitNavigator.lists.ReservationList;
+import ba.bitcamp.bitNavigator.models.Reservation;
 import ba.bitcamp.bitNavigator.service.ImageHelper;
+import ba.bitcamp.bitNavigator.service.ServiceRequest;
 
 /**
  * Created by hajrudin.sehic on 27/10/15.
@@ -60,6 +72,16 @@ public class ProfileActivity extends Activity{
         mEmail.setText("Email: " + email);
         mLogout.setText("Logout");
         mLogout.setVisibility(View.VISIBLE);
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("user_email", email);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String url = getString(R.string.service_user_reservations);
+        ServiceRequest.post(url, json.toString(), getReservations());
+
         mLogout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
@@ -70,7 +92,7 @@ public class ProfileActivity extends Activity{
                 alertDialog.setMessage("Are you sure you want logout?");
 
                 // Setting Icon to Dialog
-                alertDialog.setIcon(R.drawable.navbar_profilenormal);
+                alertDialog.setIcon(R.drawable.navbar_profileselected);
 
                 // Setting Positive "Yes" Button
                 alertDialog.setPositiveButton("YES",
@@ -107,21 +129,21 @@ public class ProfileActivity extends Activity{
 
         Button mLoginButton = (Button) findViewById(R.id.btnProfile);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
-                                            public void onClick(View v) {
-                                                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                                                startActivity(i);
-                                            }
-                                        }
-        );
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        });
 
-//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-//                                               public void onClick(View v) {
-//                                                   Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-//                                                   startActivity(i);
-//                                               }
-//                                           }
-//        );
+
+        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
+        mReservationButton.setOnClickListener(new View.OnClickListener() {
+                                                  public void onClick(View v) {
+                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
+                                                      startActivity(i);
+                                                  }
+                                              }
+        );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -140,9 +162,6 @@ public class ProfileActivity extends Activity{
                                           }
                                       }
         );
-
-
-
     }
 
     @Override
@@ -182,6 +201,40 @@ public class ProfileActivity extends Activity{
         protected void onPostExecute(Bitmap result) {
             thumbnail.setImageBitmap(result);
         }
+    }
+
+    private Callback getReservations() {
+        return new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                //makeToast(R.string.toast_try_again);
+                Log.e("dibag", "hdashgdkjsa87998987111111111");
+                e.getMessage();
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                try {
+                    String responseJSON= response.body().string();
+                    JSONArray array = new JSONArray(responseJSON);
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject reservObj = array.getJSONObject(i);
+                        Integer id = reservObj.getInt("id");
+                        String place_title = reservObj.getString("place_title");
+                        String status = reservObj.getString("status");
+                        String date = reservObj.getString("date");
+                        Reservation r = new Reservation(id, place_title, status, date);
+                        if (!ReservationList.getInstance().getReservationList().contains(r)) {
+                            ReservationList.getInstance().add(r);
+                        }
+                    }
+                } catch (JSONException e) {
+                    //makeToast(R.string.toast_try_again);
+                    Log.e("dibag", "hdashgdkjsa87998987");
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 
 }

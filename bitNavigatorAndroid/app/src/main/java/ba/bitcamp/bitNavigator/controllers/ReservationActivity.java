@@ -2,6 +2,7 @@ package ba.bitcamp.bitNavigator.controllers;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -202,6 +203,9 @@ public class ReservationActivity extends Activity{
                 if(message.length() < 1){
                     txtMessage.setError("Can't send an empty message!");
                 }else{
+                    Dialog progressDialog = new Dialog(ReservationActivity.this);
+                    progressDialog.setTitle("Loading...");
+                    progressDialog.show();
                     txtMessage.setError(null);
 
 
@@ -231,14 +235,14 @@ public class ReservationActivity extends Activity{
         });
 
 
-//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-//                                               public void onClick(View v) {
-//                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-//                                                   startActivity(i);
-//                                               }
-//                                           }
-//        );
+        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
+        mReservationButton.setOnClickListener(new View.OnClickListener() {
+                                                  public void onClick(View v) {
+                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
+                                                      startActivity(i);
+                                                  }
+                                              }
+        );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -257,8 +261,6 @@ public class ReservationActivity extends Activity{
                                           }
                                       }
         );
-
-
     }
 
     public boolean validateTime(int h, int m, WorkingHours hours){

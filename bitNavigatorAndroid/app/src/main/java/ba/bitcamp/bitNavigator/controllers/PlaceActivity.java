@@ -55,7 +55,7 @@ public class PlaceActivity extends Activity{
         mDescription.setText(place.getDescription());
 
         SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-        if(sharedpreferences.contains("email")) {
+        if(sharedpreferences.contains("email") && place.getIsReservable()) {
             Integer user_id = sharedpreferences.getInt("id", 0);
             if (!user_id.equals(place.getUser_id())) {
                 mReservation.setVisibility(View.VISIBLE);
@@ -89,14 +89,14 @@ public class PlaceActivity extends Activity{
         });
 
 
-//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-//                                               public void onClick(View v) {
-//                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-//                                                   startActivity(i);
-//                                               }
-//                                           }
-//        );
+        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
+        mReservationButton.setOnClickListener(new View.OnClickListener() {
+                                                  public void onClick(View v) {
+                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
+                                                      startActivity(i);
+                                                  }
+                                              }
+        );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +115,6 @@ public class PlaceActivity extends Activity{
                                           }
                                       }
         );
-
-
     }
 
     class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {

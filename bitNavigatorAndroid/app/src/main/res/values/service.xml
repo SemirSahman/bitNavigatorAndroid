@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="service_all_places">http://10.0.82.95:9000/api/place/list</string>
+    <string name="service_sign_in">http://10.0.82.95:9000/api/user/signin</string>
+    <string name="service_sign_up">http://10.0.82.95:9000/api/user/signup</string>
+    <string name="service_all_hours">http://10.0.82.95:9000/api/hours/list</string>
+    <string name="service_submit_reservation">http://10.0.82.95:9000/api/reservation/submit</string>
+    <string name="service_user_reservations">http://10.0.82.95:9000/api/reservation/list</string>
 
-    <string name="service_all_places">http://192.168.1.3:9000/api/place/list</string>
+    <!--
+
+<string name="service_all_places">http://192.168.1.3:9000/api/place/list</string>
     <string name="service_sign_in">http://192.168.1.3:9000/api/user/signin</string>
     <string name="service_sign_up">http://192.168.1.3:9000/api/user/signup</string>
     <string name="service_all_hours">http://192.168.1.3:9000/api/hours/list</string>
     <string name="service_submit_reservation">http://192.168.1.3:9000/api/reservation/submit</string>
-
-    <!--
+    <string name="service_user_reservations">http://192.168.1.3:9000/api/reservation/list</string>
 
     <string name="service_all_places">http://10.0.82.32:9000/api/place/list</string>
     <string name="service_sign_in">http://10.0.82.32:9000/api/user/signin</string>
