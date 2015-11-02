@@ -38,7 +38,7 @@ public class PlaceActivity extends Activity{
         setContentView(R.layout.activity_place);
 
         final String id = getIntent().getStringExtra("place_id");
-        Integer place_id = Integer.parseInt(id);
+        final Integer place_id = Integer.parseInt(id);
 
         final Place place = PlaceList.getInstance().getPlace(place_id);
 
@@ -53,6 +53,16 @@ public class PlaceActivity extends Activity{
         mTitle.setText(place.getTitle());
         mAddress.setText(place.getAddress());
         mDescription.setText(place.getDescription());
+
+        mAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                intent.putExtra("place_id", place_id);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
         if(sharedpreferences.contains("email") && place.getIsReservable()) {
