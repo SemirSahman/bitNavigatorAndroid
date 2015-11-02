@@ -208,7 +208,8 @@ public class ProfileActivity extends Activity{
             @Override
             public void onFailure(Request request, IOException e) {
                 //makeToast(R.string.toast_try_again);
-                Log.d("dibag", "hdashgdkjsa87998987");
+                Log.e("dibag", "hdashgdkjsa87998987111111111");
+                e.getMessage();
             }
 
             @Override
@@ -229,6 +230,7 @@ public class ProfileActivity extends Activity{
                     }
                 } catch (JSONException e) {
                     //makeToast(R.string.toast_try_again);
+                    Log.e("dibag", "hdashgdkjsa87998987");
                     e.printStackTrace();
                 }
             }

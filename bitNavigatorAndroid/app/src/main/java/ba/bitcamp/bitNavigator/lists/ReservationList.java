@@ -1,18 +1,15 @@
 package ba.bitcamp.bitNavigator.lists;
 
-import android.app.Activity;
-import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.models.Reservation;
 
 /**
  * Created by hajrudin.sehic on 30/10/15.
  */
-public class ReservationList extends Activity{
+public class ReservationList{
 
     private static ba.bitcamp.bitNavigator.lists.ReservationList mReservationList;
 
