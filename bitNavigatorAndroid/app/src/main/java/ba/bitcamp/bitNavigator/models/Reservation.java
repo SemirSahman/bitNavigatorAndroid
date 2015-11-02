@@ -48,4 +48,10 @@ public class Reservation {
     public void setDate(String date) {
         this.date = date;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Reservation r = (Reservation) o;
+        return this.id == r.id;
+    }
 }

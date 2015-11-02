@@ -119,6 +119,7 @@ public class SplashScreenActivity extends Activity{
             @Override
             public void onFailure(Request request, IOException e) {
                 Log.e("Uso", "aaaaaaa");
+                e.getMessage();
             }
 
             @Override

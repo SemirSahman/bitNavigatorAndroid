@@ -55,7 +55,7 @@ public class PlaceActivity extends Activity{
         mDescription.setText(place.getDescription());
 
         SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-        if(sharedpreferences.contains("email")) {
+        if(sharedpreferences.contains("email") && place.getIsReservable()) {
             Integer user_id = sharedpreferences.getInt("id", 0);
             if (!user_id.equals(place.getUser_id())) {
                 mReservation.setVisibility(View.VISIBLE);
