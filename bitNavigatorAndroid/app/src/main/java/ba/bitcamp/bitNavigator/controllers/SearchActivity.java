@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -180,6 +181,7 @@ public class SearchActivity extends Activity {
 
     private class PlaceView extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        private ImageView mServiceImage;
         private TextView titleText;
         private TextView addressText;
         private TextView id;
@@ -187,6 +189,7 @@ public class SearchActivity extends Activity {
         public PlaceView(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
+            mServiceImage = (ImageView) itemView.findViewById(R.id.place_service);
             titleText = (TextView) itemView.findViewById(R.id.textView2);
             addressText = (TextView) itemView.findViewById(R.id.textView3);
             id = (TextView) itemView.findViewById(R.id.place_id);
@@ -220,6 +223,8 @@ public class SearchActivity extends Activity {
         @Override
         public void onBindViewHolder(PlaceView holder, int position) {
             Place place = placeList.get(position);
+            int res = getResources().getIdentifier(place.getService().toLowerCase(), "drawable", getPackageName());
+            holder.mServiceImage.setImageResource(res);
             holder.titleText.setText(place.getTitle());
             holder.addressText.setText(place.getAddress());
             String tmp = String.valueOf(place.getId());

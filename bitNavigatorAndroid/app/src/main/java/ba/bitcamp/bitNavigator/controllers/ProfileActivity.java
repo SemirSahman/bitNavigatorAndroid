@@ -67,9 +67,9 @@ public class ProfileActivity extends Activity{
         String name = preferences.getString("name","");
         String surname = preferences.getString("surname", "");
         String email = preferences.getString("email","");
-        mName.setText("First name: " + name);
-        mSurname.setText("Last name: " + surname);
-        mEmail.setText("Email: " + email);
+        mName.setText(name);
+        mSurname.setText(surname);
+        mEmail.setText(email);
         mLogout.setText("Logout");
         mLogout.setVisibility(View.VISIBLE);
 

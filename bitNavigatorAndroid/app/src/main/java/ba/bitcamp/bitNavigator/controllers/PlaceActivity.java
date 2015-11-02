@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -31,6 +32,7 @@ public class PlaceActivity extends Activity{
     private TextView mAddress;
     private TextView mDescription;
     private Button mReservation;
+    private RatingBar mRatingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +49,14 @@ public class PlaceActivity extends Activity{
         mAddress = (TextView) findViewById(R.id.txtAddress);
         mDescription = (TextView) findViewById(R.id.txtDescription);
         mReservation = (Button) findViewById(R.id.btn_reservation);
+        mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
 
         int res = getResources().getIdentifier(place.getService().toLowerCase(),"drawable",getPackageName());
 
         mTitle.setText(place.getTitle());
         mAddress.setText(place.getAddress());
         mDescription.setText(place.getDescription());
+        mRatingBar.setRating(place.getRating().floatValue());
 
         SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
         if(sharedpreferences.contains("email") && place.getIsReservable()) {
