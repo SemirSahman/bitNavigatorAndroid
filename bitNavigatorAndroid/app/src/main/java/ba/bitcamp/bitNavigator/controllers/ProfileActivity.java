@@ -73,15 +73,6 @@ public class ProfileActivity extends Activity{
         mLogout.setText("Logout");
         mLogout.setVisibility(View.VISIBLE);
 
-        JSONObject json = new JSONObject();
-        try {
-            json.put("user_email", email);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String url = getString(R.string.service_user_reservations);
-        ServiceRequest.post(url, json.toString(), getReservations());
-
         mLogout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
@@ -202,39 +193,4 @@ public class ProfileActivity extends Activity{
             thumbnail.setImageBitmap(result);
         }
     }
-
-    private Callback getReservations() {
-        return new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {
-                //makeToast(R.string.toast_try_again);
-                Log.e("dibag", "hdashgdkjsa87998987111111111");
-                e.getMessage();
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                try {
-                    String responseJSON= response.body().string();
-                    JSONArray array = new JSONArray(responseJSON);
-                    for (int i = 0; i < array.length(); i++) {
-                        JSONObject reservObj = array.getJSONObject(i);
-                        Integer id = reservObj.getInt("id");
-                        String place_title = reservObj.getString("place_title");
-                        String status = reservObj.getString("status");
-                        String date = reservObj.getString("date");
-                        Reservation r = new Reservation(id, place_title, status, date);
-                        if (!ReservationList.getInstance().getReservationList().contains(r)) {
-                            ReservationList.getInstance().add(r);
-                        }
-                    }
-                } catch (JSONException e) {
-                    //makeToast(R.string.toast_try_again);
-                    Log.e("dibag", "hdashgdkjsa87998987");
-                    e.printStackTrace();
-                }
-            }
-        };
-    }
-
 }

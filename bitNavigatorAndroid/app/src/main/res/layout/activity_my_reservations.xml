@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ffffff">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/myReservations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="4dp"
+            android:text="My reservations"
+            style="@style/DefaultButtonText"
+            android:background="@drawable/button_default_bg"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/reservationsOnMyPlaces"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="4dp"
+            android:text="Reservations on my places"
+            style="@style/DefaultButtonText"
+            android:background="@drawable/button_default_bg"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/textInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please log in to continue"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <include
+        layout="@layout/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/include" />
+
+</RelativeLayout>

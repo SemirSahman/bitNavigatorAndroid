@@ -1,118 +1,96 @@
 package ba.bitcamp.bitNavigator.controllers;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+        import android.app.Activity;
+        import android.content.Context;
+        import android.content.Intent;
+        import android.content.SharedPreferences;
+        import android.os.Bundle;
+        import android.util.Log;
+        import android.view.View;
+        import android.widget.Button;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+        import com.squareup.okhttp.Callback;
+        import com.squareup.okhttp.Request;
+        import com.squareup.okhttp.Response;
 
-import ba.bitcamp.bitNavigator.bitnavigator.R;
-import ba.bitcamp.bitNavigator.lists.ReservationList;
-import ba.bitcamp.bitNavigator.models.Reservation;
+        import org.json.JSONArray;
+        import org.json.JSONException;
+        import org.json.JSONObject;
+
+        import java.io.IOException;
+
+        import ba.bitcamp.bitNavigator.bitnavigator.R;
+        import ba.bitcamp.bitNavigator.lists.ReservationList;
+        import ba.bitcamp.bitNavigator.lists.ReservationOnMyPlacesList;
+        import ba.bitcamp.bitNavigator.models.Reservation;
+        import ba.bitcamp.bitNavigator.models.ReservationOnMyPlaces;
+        import ba.bitcamp.bitNavigator.service.ServiceRequest;
 
 /**
- * Created by hajrudin.sehic on 30/10/15.
+ * Created by Sehic on 3.11.2015.
  */
 public class ReservationListActivity extends Activity{
 
-    public static List<Reservation> reservationList = ReservationList.getInstance().getReservationList();
-
-    private EditText mSearch;
-    private RecyclerView recyclerView;
-    private ReservationAdapter reservationAdapter;
+    private Button mMyReservations;
+    private Button mReservationsOnMyPlaces;
+    private TextView mText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reservation_list);
+        setContentView(R.layout.activity_my_reservations);
 
-        Collections.sort(reservationList, new Comparator<Reservation>() {
+        final SharedPreferences preferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
+        String email = preferences.getString("email","");
+        JSONObject json = new JSONObject();
+        try {
+            json.put("user_email", email);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String url = getString(R.string.service_user_reservations);
+        ServiceRequest.post(url, json.toString(), getReservations());
+
+        JSONObject json1 = new JSONObject();
+        try {
+            json1.put("user_email", email);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String url1 = getString(R.string.service_user_reservations_on_my_places);
+        ServiceRequest.post(url1, json1.toString(), getReservationsOnMyPlaces());
+
+        mMyReservations = (Button) findViewById(R.id.myReservations);
+        mReservationsOnMyPlaces = (Button) findViewById(R.id.reservationsOnMyPlaces);
+        mText = (TextView) findViewById(R.id.textInfo);
+
+        SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
+        if(sharedpreferences.contains("email")){
+           mMyReservations.setVisibility(View.VISIBLE);
+           mReservationsOnMyPlaces.setVisibility(View.VISIBLE);
+        }else {
+            mText.setVisibility(View.VISIBLE);
+        }
+
+        mMyReservations.setOnClickListener(new View.OnClickListener() {
             @Override
-            public int compare(Reservation lhs, Reservation rhs) {
-                return lhs.getPlace_title().compareToIgnoreCase(rhs.getPlace_title());
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),
+                        MyReservationsActivity.class);
+                startActivity(i);
+                finish();
             }
         });
 
-
-        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        mSearch = (EditText) findViewById(R.id.autocomplete_reservations);
-        reservationAdapter = new ReservationAdapter(reservationList);
-        recyclerView.setAdapter(reservationAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        mSearch.addTextChangedListener(new TextWatcher() {
-
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-
-                List<Reservation> list = new ArrayList<Reservation>();
-
-                for (int i = 0; i < reservationList.size(); i++) {
-                    list.add(reservationList.get(i));
-                }
-
-
-                reservationAdapter.notifyDataSetChanged();
-
-
-                if (s.length() != 0) {
-                    int size = list.size();
-                    int i = 0;
-                    while (i < size) {
-                        if (!(list.get(i).getPlace_title().toLowerCase().contains(s.toString().toLowerCase()))) {
-                            list.remove(i);
-                            size--;
-                        } else {
-                            i++;
-                        }
-                    }
-
-                    Collections.sort(reservationList, new Comparator<Reservation>() {
-                        @Override
-                        public int compare(Reservation lhs, Reservation rhs) {
-                            return lhs.getPlace_title().compareToIgnoreCase(rhs.getPlace_title());
-                        }
-                    });
-
-                    reservationAdapter = new ReservationAdapter(list);
-                    recyclerView.setAdapter(reservationAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(ReservationListActivity.this));
-                } else {
-
-                    Collections.sort(reservationList, new Comparator<Reservation>() {
-                        @Override
-                        public int compare(Reservation lhs, Reservation rhs) {
-                            return lhs.getPlace_title().compareToIgnoreCase(rhs.getPlace_title());
-                        }
-                    });
-
-                    reservationAdapter = new ReservationAdapter(reservationList);
-                    recyclerView.setAdapter(reservationAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(ReservationListActivity.this));
-                }
-
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-
-            }
-
-            public void afterTextChanged(Editable s) {
-
+        mReservationsOnMyPlaces.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),
+                        ReservationOnMyPlacesActivity.class);
+                startActivity(i);
+                finish();
             }
         });
 
@@ -128,11 +106,11 @@ public class ReservationListActivity extends Activity{
 
         Button mReservationButton = (Button) findViewById(R.id.btnReservations);
         mReservationButton.setOnClickListener(new View.OnClickListener() {
-                                               public void onClick(View v) {
-                                                   Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
-                                                   startActivity(i);
-                                               }
-                                           }
+                                                  public void onClick(View v) {
+                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
+                                                      startActivity(i);
+                                                  }
+                                              }
         );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
@@ -152,49 +130,75 @@ public class ReservationListActivity extends Activity{
                                           }
                                       }
         );
+
     }
 
-    private class ReservationView extends RecyclerView.ViewHolder{
+    private Callback getReservations() {
+        return new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                //makeToast(R.string.toast_try_again);
+                Log.e("dibag", "hdashgdkjsa87998987111111111");
+                e.getMessage();
+            }
 
-        private TextView titleText;
-        private TextView statusText;
-        private TextView dateText;
-
-        public ReservationView(View itemView) {
-            super(itemView);
-            titleText = (TextView) itemView.findViewById(R.id.textView2);
-            statusText = (TextView) itemView.findViewById(R.id.textView3);
-            dateText = (TextView) itemView.findViewById(R.id.textView4);
-        }
+            @Override
+            public void onResponse(Response response) throws IOException {
+                try {
+                    String responseJSON= response.body().string();
+                    JSONArray array = new JSONArray(responseJSON);
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject reservObj = array.getJSONObject(i);
+                        Integer id = reservObj.getInt("id");
+                        String place_title = reservObj.getString("place_title");
+                        String status = reservObj.getString("status");
+                        String date = reservObj.getString("date");
+                        Reservation r = new Reservation(id, place_title, status, date);
+                        if (!ReservationList.getInstance().getReservationList().contains(r)) {
+                            ReservationList.getInstance().add(r);
+                        }
+                    }
+                } catch (JSONException e) {
+                    //makeToast(R.string.toast_try_again);
+                    Log.e("dibag", "hdashgdkjsa87998987");
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 
-    private class ReservationAdapter extends RecyclerView.Adapter<ReservationView> {
+    private Callback getReservationsOnMyPlaces() {
+        return new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                //makeToast(R.string.toast_try_again);
+                Log.e("dibag", "hdashgdkjsa87998987111111111");
+                e.getMessage();
+            }
 
-        private List<Reservation> reservationList;
-
-        public ReservationAdapter(List<Reservation> reservationList) {
-            this.reservationList = reservationList;
-        }
-
-        @Override
-        public ReservationView onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(ReservationListActivity.this);
-            View view = layoutInflater.inflate(R.layout.reservation_layout, parent, false);
-            return new ReservationView(view);
-        }
-
-        @Override
-        public void onBindViewHolder(ReservationView holder, int position) {
-            Reservation r = reservationList.get(position);
-            holder.titleText.setText(r.getPlace_title());
-            holder.statusText.setText(r.getStatus());
-            holder.dateText.setText(r.getDate());
-        }
-
-        @Override
-        public int getItemCount() {
-            return reservationList.size();
-        }
+            @Override
+            public void onResponse(Response response) throws IOException {
+                try {
+                    String responseJSON= response.body().string();
+                    JSONArray array = new JSONArray(responseJSON);
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject reservObj = array.getJSONObject(i);
+                        Integer id = reservObj.getInt("id");
+                        String place_title = reservObj.getString("place_title");
+                        String status = reservObj.getString("status");
+                        String date = reservObj.getString("date");
+                        ReservationOnMyPlaces r = new ReservationOnMyPlaces(id, place_title, status, date);
+                        if (!ReservationOnMyPlacesList.getInstance().getReservationList().contains(r)) {
+                            ReservationOnMyPlacesList.getInstance().add(r);
+                        }
+                    }
+                } catch (JSONException e) {
+                    //makeToast(R.string.toast_try_again);
+                    Log.e("dibag", "hdashgdkjsa87998987");
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 
 }
