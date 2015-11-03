@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,12 +29,15 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.controllers.*;
 import ba.bitcamp.bitNavigator.controllers.LoginActivity;
 import ba.bitcamp.bitNavigator.lists.ReservationList;
 import ba.bitcamp.bitNavigator.models.Reservation;
+import ba.bitcamp.bitNavigator.service.Cache;
 import ba.bitcamp.bitNavigator.service.ImageHelper;
 import ba.bitcamp.bitNavigator.service.ServiceRequest;
 
@@ -47,7 +51,6 @@ public class ProfileActivity extends Activity{
     private TextView mSurname;
     private TextView mEmail;
     private Button mLogout;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,10 +114,23 @@ public class ProfileActivity extends Activity{
                 alertDialog.show();
             }
         });
-
         String avatar = preferences.getString("avatar", "");
         if (!avatar.equals("")) {
-            new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 700, 300));
+            //new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 700, 300));
+
+
+            if (getBitmapFromMemCache(avatar) == null) {
+                Log.d("di/*/*/*/*/*/", "u ifu");
+                new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 700, 300));
+            } else {
+                Log.d("di/*/*/*/*/*/", "u elsu");
+                mImage.setImageBitmap(getBitmapFromMemCache(avatar));
+            }
+
+
+
+
+
         }
 
 
@@ -155,6 +171,21 @@ public class ProfileActivity extends Activity{
         );
     }
 
+    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if (getBitmapFromMemCache(key) == null) {
+            Cache.getInstance().getLruCache().put(key, bitmap);
+            if (getBitmapFromMemCache(key) != null) {
+                Log.d("09321-9-10923", "upiso" + key);
+            } else {
+                Log.d("09321-9-10923", "nije upiso");
+            }
+        }
+    }
+
+    public Bitmap getBitmapFromMemCache(String key) {
+        return Cache.getInstance().getLruCache().get(key);
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -182,6 +213,7 @@ public class ProfileActivity extends Activity{
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 mIcon11 = BitmapFactory.decodeStream(in);
+                addBitmapToMemoryCache(urldisplay, mIcon11);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
