@@ -18,4 +18,14 @@ public class ImageHelper {
                 .generate(publicId);
     }
 
+    public static String getThumbnail(String publicId){
+        Cloudinary cloudinary = new Cloudinary("cloudinary://756156952378232:X8lT5_JXOX_H3P4mUdEI93XNA9E@dxuplnpya");
+        String url = cloudinary.url().format("png")
+                .transformation(
+                        new Transformation().width(300).height(300).crop("thumb").gravity("face").radius("max")
+                )
+                .generate(publicId);
+        return url;
+    }
+
 }

@@ -119,12 +119,12 @@ public class ProfileActivity extends Activity{
             //new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 700, 300));
 
 
-            if (getBitmapFromMemCache(avatar) == null) {
+            if (getBitmapFromMemCache(ImageHelper.getThumbnail(avatar)) == null) {
                 Log.d("di/*/*/*/*/*/", "u ifu");
-                new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 700, 300));
+                new DownloadImageTask(mImage).execute(ImageHelper.getThumbnail(avatar));
             } else {
                 Log.d("di/*/*/*/*/*/", "u elsu");
-                mImage.setImageBitmap(getBitmapFromMemCache(avatar));
+                mImage.setImageBitmap(getBitmapFromMemCache(ImageHelper.getThumbnail(avatar)));
             }
 
 

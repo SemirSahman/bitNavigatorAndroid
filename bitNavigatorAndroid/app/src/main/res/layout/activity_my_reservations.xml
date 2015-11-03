@@ -19,8 +19,9 @@
             android:layout_margin="4dp"
             android:text="My reservations"
             style="@style/DefaultButtonText"
-            android:background="@drawable/button_default_bg"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/textColorPrimary"/>
         <Button
             android:id="@+id/reservationsOnMyPlaces"
             android:layout_width="match_parent"
@@ -29,8 +30,9 @@
             android:layout_margin="4dp"
             android:text="Reservations on my places"
             style="@style/DefaultButtonText"
-            android:background="@drawable/button_default_bg"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/textColorPrimary"/>
 
         <TextView
             android:id="@+id/textInfo"
