@@ -20,6 +20,7 @@ import java.io.InputStream;
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.PlaceList;
 import ba.bitcamp.bitNavigator.models.Place;
+import ba.bitcamp.bitNavigator.service.Cache;
 import ba.bitcamp.bitNavigator.service.ImageHelper;
 
 /**
@@ -90,6 +91,13 @@ public class PlaceActivity extends Activity{
         if (!avatar.equals("")) {
             new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 400, 400));
         }
+        if (!avatar.equals("")) {
+            if (getBitmapFromMemCache(ImageHelper.getImage(this, avatar, 400, 400)) == null) {
+                new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 400, 400));
+            } else {
+                mImage.setImageBitmap(getBitmapFromMemCache(ImageHelper.getImage(this, avatar, 400, 400)));
+            }
+        }
 
 
 
@@ -131,6 +139,17 @@ public class PlaceActivity extends Activity{
         );
     }
 
+
+    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if (getBitmapFromMemCache(key) == null) {
+            Cache.getInstance().getLruCache().put(key, bitmap);
+        }
+    }
+
+    public Bitmap getBitmapFromMemCache(String key) {
+        return Cache.getInstance().getLruCache().get(key);
+    }
+
     class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 
         ImageView thumbnail;
@@ -146,6 +165,7 @@ public class PlaceActivity extends Activity{
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 mIcon11 = BitmapFactory.decodeStream(in);
+                addBitmapToMemoryCache(urldisplay, mIcon11);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -71,6 +72,7 @@ public class SearchActivity extends Activity {
             }
         });
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mSearch = (EditText) findViewById(R.id.autocomplete_places);
@@ -224,11 +226,11 @@ public class SearchActivity extends Activity {
         public void onBindViewHolder(PlaceView holder, int position) {
             Place place = placeList.get(position);
             String place_service = place.getService().toLowerCase();
-            if (place_service.contains(" ")) {
-                place_service.replace(" ", "_");
-            }
+
             if(place_service.equals("arts&entertainment")){
                 place_service = "arts";
+            }else if(place_service.equals("night life")){
+                place_service = "night_life";
             }
             int res = getResources().getIdentifier(place_service, "drawable", getPackageName());
             holder.mServiceImage.setImageResource(res);

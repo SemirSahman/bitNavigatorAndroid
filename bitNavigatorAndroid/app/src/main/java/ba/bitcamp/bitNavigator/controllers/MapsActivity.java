@@ -253,11 +253,10 @@ public class MapsActivity extends Activity {
             String distance = String.format("%.2f m", mGPSPosition.distanceTo(new GeoCoordinate(place.getLatitude(), place.getLongitude())));
             View info = MapHelper.getInfoView(this, place.getTitle(), distance);
             String service = place.getService().toLowerCase();
-            if (service.contains(" ")) {
-                service.replace(" ", "_");
-            }
             if (service.equals("arts&entertainment")) {
                 service = "arts";
+            } else if(service.equals("night life")){
+                service = "night_life";
             }
             int icon = getResources().getIdentifier(service, "drawable", getPackageName());
             ARIconObject arIconObject = new ARIconObject(new GeoCoordinate(place.getLatitude(), place.getLongitude()), info, icon);

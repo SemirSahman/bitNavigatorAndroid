@@ -15,41 +15,42 @@ android:padding="10dp">
     android:id="@+id/login_email"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/edittext_top_bg"
     android:padding="10dp"
-    android:hint="Email"
+    android:hint=" Email"
     android:textColorHint="#cccccc"
-    android:drawableLeft="@drawable/mail"/>
+    android:drawableLeft="@drawable/mail"
+    android:layout_margin="5dp" />
 <EditText
     android:id="@+id/login_password"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/edittext_bottom_bg"
-    android:layout_marginTop="-2dp"
     android:padding="10dp"
-    android:hint="Password"
+    android:hint=" Password"
     android:textColorHint="#cccccc"
     android:password="true"
-    android:drawableLeft="@drawable/pass"/>
+    android:drawableLeft="@drawable/pass"
+    android:layout_margin="5dp" />
 <Button
     android:id="@+id/login"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    android:layout_margin="4dp"
+    android:layout_margin="5dp"
     android:text="Sign In"
     style="@style/DefaultButtonText"
-    android:background="@drawable/button_default_bg"
+    android:background="@color/colorPrimary"
+    android:textColor="@android:color/white"
     />
     <Button
         android:id="@+id/btnLinkToRegisterScreen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:layout_margin="4dp"
+        android:layout_margin="5dp"
         android:text="Sign Up"
         style="@style/DefaultButtonText"
-        android:background="@drawable/button_default_bg"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
         />
 </LinearLayout>
 

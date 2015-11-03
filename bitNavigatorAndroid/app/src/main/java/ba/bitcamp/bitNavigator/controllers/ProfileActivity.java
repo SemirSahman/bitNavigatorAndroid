@@ -114,23 +114,14 @@ public class ProfileActivity extends Activity{
                 alertDialog.show();
             }
         });
+
         String avatar = preferences.getString("avatar", "");
         if (!avatar.equals("")) {
-            //new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 700, 300));
-
-
             if (getBitmapFromMemCache(ImageHelper.getThumbnail(avatar)) == null) {
-                Log.d("di/*/*/*/*/*/", "u ifu");
                 new DownloadImageTask(mImage).execute(ImageHelper.getThumbnail(avatar));
             } else {
-                Log.d("di/*/*/*/*/*/", "u elsu");
                 mImage.setImageBitmap(getBitmapFromMemCache(ImageHelper.getThumbnail(avatar)));
             }
-
-
-
-
-
         }
 
 
@@ -174,11 +165,6 @@ public class ProfileActivity extends Activity{
     public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
         if (getBitmapFromMemCache(key) == null) {
             Cache.getInstance().getLruCache().put(key, bitmap);
-            if (getBitmapFromMemCache(key) != null) {
-                Log.d("09321-9-10923", "upiso" + key);
-            } else {
-                Log.d("09321-9-10923", "nije upiso");
-            }
         }
     }
 
@@ -208,7 +194,7 @@ public class ProfileActivity extends Activity{
 
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
-            Log.e("URL", urldisplay);
+            Log.i("URL", urldisplay);
             Bitmap mIcon11 = null;
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();

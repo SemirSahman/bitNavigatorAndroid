@@ -83,15 +83,15 @@
                 android:hint="Description" />
 
             <TextView
-            android:id="@+id/txtAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textSize="19dp"
-            android:layout_gravity="center_vertical"
-            android:textAlignment="inherit"
-            android:layout_marginTop="7dp"
-            android:drawableLeft="@drawable/navbar_mapselected"
+                android:id="@+id/txtAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textSize="19dp"
+                android:layout_gravity="center_vertical"
+                android:textAlignment="inherit"
+                android:layout_marginTop="7dp"
+                android:drawableLeft="@drawable/navbar_mapselected"
                 android:contextClickable="false"
                 android:textIsSelectable="false"
                 android:hint="Address" />

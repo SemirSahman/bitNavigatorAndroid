@@ -70,8 +70,6 @@ public class LoginActivity extends Activity {
             }
         });
 
-        Log.e("////////////////","id");
-
 
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
