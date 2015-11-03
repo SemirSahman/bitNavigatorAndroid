@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,12 +19,27 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.controllers.*;
 import ba.bitcamp.bitNavigator.controllers.LoginActivity;
+import ba.bitcamp.bitNavigator.lists.ReservationList;
+import ba.bitcamp.bitNavigator.models.Reservation;
+import ba.bitcamp.bitNavigator.service.Cache;
 import ba.bitcamp.bitNavigator.service.ImageHelper;
+import ba.bitcamp.bitNavigator.service.ServiceRequest;
 
 /**
  * Created by hajrudin.sehic on 27/10/15.
@@ -35,7 +51,6 @@ public class ProfileActivity extends Activity{
     private TextView mSurname;
     private TextView mEmail;
     private Button mLogout;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,11 +70,12 @@ public class ProfileActivity extends Activity{
         String name = preferences.getString("name","");
         String surname = preferences.getString("surname", "");
         String email = preferences.getString("email","");
-        mName.setText("First name: " + name);
-        mSurname.setText("Last name: " + surname);
-        mEmail.setText("Email: " + email);
+        mName.setText(name);
+        mSurname.setText(surname);
+        mEmail.setText(email);
         mLogout.setText("Logout");
         mLogout.setVisibility(View.VISIBLE);
+
         mLogout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
 
@@ -70,7 +86,7 @@ public class ProfileActivity extends Activity{
                 alertDialog.setMessage("Are you sure you want logout?");
 
                 // Setting Icon to Dialog
-                alertDialog.setIcon(R.drawable.navbar_profilenormal);
+                alertDialog.setIcon(R.drawable.navbar_profileselected);
 
                 // Setting Positive "Yes" Button
                 alertDialog.setPositiveButton("YES",
@@ -98,30 +114,43 @@ public class ProfileActivity extends Activity{
                 alertDialog.show();
             }
         });
-
         String avatar = preferences.getString("avatar", "");
         if (!avatar.equals("")) {
-            new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 700, 300));
+            //new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 700, 300));
+
+
+            if (getBitmapFromMemCache(avatar) == null) {
+                Log.d("di/*/*/*/*/*/", "u ifu");
+                new DownloadImageTask(mImage).execute(ImageHelper.getImage(this, avatar, 700, 300));
+            } else {
+                Log.d("di/*/*/*/*/*/", "u elsu");
+                mImage.setImageBitmap(getBitmapFromMemCache(avatar));
+            }
+
+
+
+
+
         }
 
 
         Button mLoginButton = (Button) findViewById(R.id.btnProfile);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
-                                            public void onClick(View v) {
-                                                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                                                startActivity(i);
-                                            }
-                                        }
-        );
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        });
 
-//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-//                                               public void onClick(View v) {
-//                                                   Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-//                                                   startActivity(i);
-//                                               }
-//                                           }
-//        );
+
+        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
+        mReservationButton.setOnClickListener(new View.OnClickListener() {
+                                                  public void onClick(View v) {
+                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
+                                                      startActivity(i);
+                                                  }
+                                              }
+        );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -140,9 +169,21 @@ public class ProfileActivity extends Activity{
                                           }
                                       }
         );
+    }
 
+    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if (getBitmapFromMemCache(key) == null) {
+            Cache.getInstance().getLruCache().put(key, bitmap);
+            if (getBitmapFromMemCache(key) != null) {
+                Log.d("09321-9-10923", "upiso" + key);
+            } else {
+                Log.d("09321-9-10923", "nije upiso");
+            }
+        }
+    }
 
-
+    public Bitmap getBitmapFromMemCache(String key) {
+        return Cache.getInstance().getLruCache().get(key);
     }
 
     @Override
@@ -172,6 +213,7 @@ public class ProfileActivity extends Activity{
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 mIcon11 = BitmapFactory.decodeStream(in);
+                addBitmapToMemoryCache(urldisplay, mIcon11);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
@@ -183,5 +225,4 @@ public class ProfileActivity extends Activity{
             thumbnail.setImageBitmap(result);
         }
     }
-
 }

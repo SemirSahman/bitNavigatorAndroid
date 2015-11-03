@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -31,6 +32,7 @@ public class PlaceActivity extends Activity{
     private TextView mAddress;
     private TextView mDescription;
     private Button mReservation;
+    private RatingBar mRatingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class PlaceActivity extends Activity{
         setContentView(R.layout.activity_place);
 
         final String id = getIntent().getStringExtra("place_id");
-        Integer place_id = Integer.parseInt(id);
+        final Integer place_id = Integer.parseInt(id);
 
         final Place place = PlaceList.getInstance().getPlace(place_id);
 
@@ -47,15 +49,27 @@ public class PlaceActivity extends Activity{
         mAddress = (TextView) findViewById(R.id.txtAddress);
         mDescription = (TextView) findViewById(R.id.txtDescription);
         mReservation = (Button) findViewById(R.id.btn_reservation);
+        mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
 
         int res = getResources().getIdentifier(place.getService().toLowerCase(),"drawable",getPackageName());
 
         mTitle.setText(place.getTitle());
         mAddress.setText(place.getAddress());
         mDescription.setText(place.getDescription());
+        mRatingBar.setRating(place.getRating().floatValue());
+
+        mAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                intent.putExtra("place_id", place_id);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-        if(sharedpreferences.contains("email")) {
+        if(sharedpreferences.contains("email") && place.getIsReservable()) {
             Integer user_id = sharedpreferences.getInt("id", 0);
             if (!user_id.equals(place.getUser_id())) {
                 mReservation.setVisibility(View.VISIBLE);
@@ -89,14 +103,14 @@ public class PlaceActivity extends Activity{
         });
 
 
-//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-//                                               public void onClick(View v) {
-//                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-//                                                   startActivity(i);
-//                                               }
-//                                           }
-//        );
+        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
+        mReservationButton.setOnClickListener(new View.OnClickListener() {
+                                                  public void onClick(View v) {
+                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
+                                                      startActivity(i);
+                                                  }
+                                              }
+        );
 
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
         mSearchButton.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +129,6 @@ public class PlaceActivity extends Activity{
                                           }
                                       }
         );
-
-
     }
 
     class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {

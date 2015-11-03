@@ -3,14 +3,14 @@ package ba.bitcamp.bitNavigator.models;
 /**
  * Created by hajrudin.sehic on 30/10/15.
  */
-public class Reservation {
+public class ReservationOnMyPlaces {
 
     private Integer id;
     private String place_title;
     private String status;
     private String date;
 
-    public Reservation(Integer id, String place_title, String status, String date) {
+    public ReservationOnMyPlaces(Integer id, String place_title, String status, String date) {
         this.id = id;
         this.place_title = place_title;
         this.status = status;
@@ -51,7 +51,7 @@ public class Reservation {
 
     @Override
     public boolean equals(Object o) {
-        Reservation r = (Reservation) o;
+        ReservationOnMyPlaces r = (ReservationOnMyPlaces) o;
         return this.id == r.id;
     }
 }

@@ -1,6 +1,7 @@
 package ba.bitcamp.bitNavigator.controllers;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,8 +9,10 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.squareup.okhttp.Callback;
@@ -24,9 +27,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ba.bitcamp.bitNavigator.bitnavigator.R;
-import ba.bitcamp.bitNavigator.controllers.*;
-import ba.bitcamp.bitNavigator.controllers.LoginActivity;
-import ba.bitcamp.bitNavigator.controllers.MapsActivity;
 import ba.bitcamp.bitNavigator.service.ServiceRequest;
 
 
@@ -41,7 +41,6 @@ public class RegisterActivity extends Activity {
     private EditText email;
     private EditText password;
     private EditText confirmPassword;
-    private Button mLinkToLogin;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +87,11 @@ public class RegisterActivity extends Activity {
                     confirmPassword.setError("Password does not match");
                     return;
                 }
+
+                Dialog progressDialog = new Dialog(RegisterActivity.this);
+                progressDialog.setTitle("Loading...");
+                progressDialog.show();
+
                 Log.d("dibag", emailString + " ---  " + pass);
                 JSONObject json = new JSONObject();
                 try {
@@ -111,25 +115,25 @@ public class RegisterActivity extends Activity {
 
 
         Button mLoginButton = (Button) findViewById(R.id.btnProfile);
-        mLoginButton.setOnClickListener(new OnClickListener(){
-                                            public void onClick(View v) {
-                                                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                                                startActivity(i);
-                                            }
-                                        }
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        });
+
+
+        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
+        mReservationButton.setOnClickListener(new View.OnClickListener() {
+                                                  public void onClick(View v) {
+                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
+                                                      startActivity(i);
+                                                  }
+                                              }
         );
 
-//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-//        mRegisterButton.setOnClickListener(new OnClickListener(){
-//                                               public void onClick(View v) {
-//                                                   Intent i = new Intent(getApplicationContext(), ba.bitcamp.bitNavigator.controllers.RegisterActivity.class);
-//                                                   startActivity(i);
-//                                               }
-//                                           }
-//        );
-
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
-        mSearchButton.setOnClickListener(new OnClickListener(){
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
                                              public void onClick(View v) {
                                                  Intent i = new Intent(getApplicationContext(), SearchActivity.class);
                                                  startActivity(i);
@@ -138,7 +142,7 @@ public class RegisterActivity extends Activity {
         );
 
         Button mMapButton = (Button) findViewById(R.id.btnMap);
-        mMapButton.setOnClickListener(new OnClickListener() {
+        mMapButton.setOnClickListener(new View.OnClickListener() {
                                           public void onClick(View v) {
                                               Intent i = new Intent(getApplicationContext(), MapsActivity.class);
                                               startActivity(i);

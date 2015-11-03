@@ -1,6 +1,7 @@
 package ba.bitcamp.bitNavigator.controllers;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,6 +35,8 @@ public class LoginActivity extends Activity {
     private Button mLoginButton;
     private Button mLinkToRegister;
 
+    public Dialog progressDialog;
+
     public User user;
 
     public SharedPreferences sharedpreferences;
@@ -44,6 +47,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         // setting default screen to login.xml
         setContentView(R.layout.activity_login);
+        progressDialog = new Dialog(LoginActivity.this);
         sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
         if(sharedpreferences.contains("email")){
             Intent i = new Intent(getApplicationContext(),
@@ -73,7 +77,8 @@ public class LoginActivity extends Activity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                makeToast("Loging in...");
+                progressDialog.setTitle("Loading...");
+                progressDialog.show();
                 String email = mEmailEditText.getText().toString();
                 String password = mPasswordEditText.getText().toString();
 
@@ -92,25 +97,25 @@ public class LoginActivity extends Activity {
 
 
         Button mLoginButton = (Button) findViewById(R.id.btnProfile);
-        mLoginButton.setOnClickListener(new View.OnClickListener(){
-                                            public void onClick(View v) {
-                                                Intent i = new Intent(getApplicationContext(), ba.bitcamp.bitNavigator.controllers.LoginActivity.class);
-                                                startActivity(i);
-                                            }
-                                        }
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
+            }
+        });
+
+
+        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
+        mReservationButton.setOnClickListener(new View.OnClickListener() {
+                                                  public void onClick(View v) {
+                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
+                                                      startActivity(i);
+                                                  }
+                                              }
         );
 
-//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-//        mRegisterButton.setOnClickListener(new View.OnClickListener(){
-//                                               public void onClick(View v) {
-//                                                   Intent i = new Intent(getApplicationContext(), ba.bitcamp.bitNavigator.controllers.LoginActivity.class);
-//                                                   startActivity(i);
-//                                               }
-//                                           }
-//        );
-
         Button mSearchButton = (Button) findViewById(R.id.btnSearch);
-        mSearchButton.setOnClickListener(new View.OnClickListener(){
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
                                              public void onClick(View v) {
                                                  Intent i = new Intent(getApplicationContext(), SearchActivity.class);
                                                  startActivity(i);
@@ -121,12 +126,11 @@ public class LoginActivity extends Activity {
         Button mMapButton = (Button) findViewById(R.id.btnMap);
         mMapButton.setOnClickListener(new View.OnClickListener() {
                                           public void onClick(View v) {
-                                              Intent i = new Intent(getApplicationContext(), ba.bitcamp.bitNavigator.controllers.MapsActivity.class);
+                                              Intent i = new Intent(getApplicationContext(), MapsActivity.class);
                                               startActivity(i);
                                           }
                                       }
         );
-
     }
 
 
@@ -134,6 +138,7 @@ public class LoginActivity extends Activity {
         return new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
+                progressDialog.cancel();
                 makeToast("Email and/or password incorrect");
                 Log.e("**************", "id");
             }
@@ -169,6 +174,7 @@ public class LoginActivity extends Activity {
                 } catch (JSONException e) {
                     Log.e("**************", "id");
                     Log.e("Message = ",e.getMessage());
+                    progressDialog.cancel();
                     makeToast("Email and/or password incorrect");
                 }
             }
