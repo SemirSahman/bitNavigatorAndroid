@@ -156,7 +156,7 @@ public class MapsActivity extends Activity {
             MapMarker marker = new MapMarker();
             marker.setCoordinate(new GeoCoordinate(place.getLatitude(), place.getLongitude()));
             marker.setTitle(place.getTitle());
-            marker.setDescription(place.getDescription());
+            marker.setDescription(place.getAddress());
 
             if (place.getId() == placeId) {
                 selectedMarker = marker;
@@ -256,7 +256,7 @@ public class MapsActivity extends Activity {
             if (service.contains(" ")) {
                 service.replace(" ", "_");
             }
-            if (service.contains("&")) {
+            if (service.equals("arts&entertainment")) {
                 service = "arts";
             }
             int icon = getResources().getIdentifier(service, "drawable", getPackageName());
@@ -324,10 +324,10 @@ public class MapsActivity extends Activity {
                     // Display position indicator
                     map.getPositionIndicator().setVisible(true);
 
-                    if (stopButton.getVisibility() == View.VISIBLE) {
-                        removeARObjects();
-                        getARObjects();
-                    }
+//                    if (stopButton.getVisibility() == View.VISIBLE) {
+//                        removeARObjects();
+//                        getARObjects();
+//                    }
 
                 }
             }
