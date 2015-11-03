@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:layout_margin="4dp"
-            android:text="My reservations"
+            android:text="Reservations on my places"
             style="@style/DefaultButtonText"
             android:background="@drawable/button_default_bg"
             android:visibility="gone"/>
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:layout_margin="4dp"
-            android:text="Reservations on my places"
+            android:text="My reservations"
             style="@style/DefaultButtonText"
             android:background="@drawable/button_default_bg"
             android:visibility="gone"/>

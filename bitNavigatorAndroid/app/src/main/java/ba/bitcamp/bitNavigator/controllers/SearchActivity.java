@@ -223,7 +223,11 @@ public class SearchActivity extends Activity {
         @Override
         public void onBindViewHolder(PlaceView holder, int position) {
             Place place = placeList.get(position);
-            int res = getResources().getIdentifier(place.getService().toLowerCase(), "drawable", getPackageName());
+            String place_service = place.getService().toLowerCase();
+            if(place_service.equals("arts&entertainment")){
+                place_service = "arts";
+            }
+            int res = getResources().getIdentifier(place_service, "drawable", getPackageName());
             holder.mServiceImage.setImageResource(res);
             holder.titleText.setText(place.getTitle());
             holder.addressText.setText(place.getAddress());
