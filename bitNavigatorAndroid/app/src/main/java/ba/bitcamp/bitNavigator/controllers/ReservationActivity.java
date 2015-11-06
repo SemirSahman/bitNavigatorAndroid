@@ -31,12 +31,13 @@ import java.util.GregorianCalendar;
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.WorkingHoursList;
 import ba.bitcamp.bitNavigator.models.WorkingHours;
+import ba.bitcamp.bitNavigator.service.Navbar;
 import ba.bitcamp.bitNavigator.service.ServiceRequest;
 
 /**
  * Created by hajrudin.sehic on 29/10/15.
  */
-public class ReservationActivity extends Activity{
+public class ReservationActivity extends Navbar{
 
     private Button btnCalendar;
     private Button btnTimePicker;
@@ -226,41 +227,7 @@ public class ReservationActivity extends Activity{
         });
 
 
-        Button mLoginButton = (Button) findViewById(R.id.btnProfile);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(i);
-            }
-        });
-
-
-        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
-        mReservationButton.setOnClickListener(new View.OnClickListener() {
-                                                  public void onClick(View v) {
-                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
-                                                      startActivity(i);
-                                                  }
-                                              }
-        );
-
-        Button mSearchButton = (Button) findViewById(R.id.btnSearch);
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-                                             public void onClick(View v) {
-                                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                                                 startActivity(i);
-                                             }
-                                         }
-        );
-
-        Button mMapButton = (Button) findViewById(R.id.btnMap);
-        mMapButton.setOnClickListener(new View.OnClickListener() {
-                                          public void onClick(View v) {
-                                              Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-                                              startActivity(i);
-                                          }
-                                      }
-        );
+      navbarButtons();
     }
 
     public boolean validateTime(int h, int m, WorkingHours hours){

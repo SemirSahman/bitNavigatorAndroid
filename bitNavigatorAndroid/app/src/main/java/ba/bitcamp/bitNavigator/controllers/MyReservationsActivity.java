@@ -1,7 +1,5 @@
 package ba.bitcamp.bitNavigator.controllers;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +8,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,11 +19,12 @@ import java.util.List;
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.ReservationList;
 import ba.bitcamp.bitNavigator.models.Reservation;
+import ba.bitcamp.bitNavigator.service.Navbar;
 
 /**
  * Created by hajrudin.sehic on 30/10/15.
  */
-public class MyReservationsActivity extends Activity{
+public class MyReservationsActivity extends Navbar{
 
     public static List<Reservation> reservationList = ReservationList.getInstance().getReservationList();
 
@@ -38,7 +36,6 @@ public class MyReservationsActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_reservation_list);
-
         Collections.sort(reservationList, new Comparator<Reservation>() {
             @Override
             public int compare(Reservation lhs, Reservation rhs) {
@@ -117,41 +114,7 @@ public class MyReservationsActivity extends Activity{
         });
 
 
-        Button mLoginButton = (Button) findViewById(R.id.btnProfile);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(i);
-            }
-        });
-
-
-        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
-        mReservationButton.setOnClickListener(new View.OnClickListener() {
-                                                  public void onClick(View v) {
-                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
-                                                      startActivity(i);
-                                                  }
-                                              }
-        );
-
-        Button mSearchButton = (Button) findViewById(R.id.btnSearch);
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-                                             public void onClick(View v) {
-                                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                                                 startActivity(i);
-                                             }
-                                         }
-        );
-
-        Button mMapButton = (Button) findViewById(R.id.btnMap);
-        mMapButton.setOnClickListener(new View.OnClickListener() {
-                                          public void onClick(View v) {
-                                              Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-                                              startActivity(i);
-                                          }
-                                      }
-        );
+        navbarButtons();
     }
 
     private class ReservationView extends RecyclerView.ViewHolder{

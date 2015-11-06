@@ -22,11 +22,12 @@ import java.util.List;
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.ReservationOnMyPlacesList;
 import ba.bitcamp.bitNavigator.models.ReservationOnMyPlaces;
+import ba.bitcamp.bitNavigator.service.Navbar;
 
 /**
  * Created by Sehic on 3.11.2015.
  */
-public class ReservationOnMyPlacesActivity extends Activity{
+public class ReservationOnMyPlacesActivity extends Navbar{
 
     public static List<ReservationOnMyPlaces> reservationList = ReservationOnMyPlacesList.getInstance().getReservationList();
 
@@ -117,41 +118,7 @@ public class ReservationOnMyPlacesActivity extends Activity{
         });
 
 
-        Button mLoginButton = (Button) findViewById(R.id.btnProfile);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(i);
-            }
-        });
-
-
-        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
-        mReservationButton.setOnClickListener(new View.OnClickListener() {
-                                                  public void onClick(View v) {
-                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
-                                                      startActivity(i);
-                                                  }
-                                              }
-        );
-
-        Button mSearchButton = (Button) findViewById(R.id.btnSearch);
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-                                             public void onClick(View v) {
-                                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                                                 startActivity(i);
-                                             }
-                                         }
-        );
-
-        Button mMapButton = (Button) findViewById(R.id.btnMap);
-        mMapButton.setOnClickListener(new View.OnClickListener() {
-                                          public void onClick(View v) {
-                                              Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-                                              startActivity(i);
-                                          }
-                                      }
-        );
+       navbarButtons();
     }
 
     private class ReservationView extends RecyclerView.ViewHolder{
