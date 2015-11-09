@@ -17,8 +17,6 @@ public class PlaceList {
             mPlaceList = new ba.bitcamp.bitNavigator.lists.PlaceList();
         }
 
-
-
         return mPlaceList;
     }
 
@@ -58,7 +56,4 @@ public class PlaceList {
         }
         return null;
     }
-
-
-
 }

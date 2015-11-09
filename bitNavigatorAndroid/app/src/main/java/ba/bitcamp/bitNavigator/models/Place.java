@@ -15,10 +15,11 @@ public class Place {
     private String description;
     private String service;
     private String image;
-
     private Integer user_id;
+    private Double rating;
+    private Boolean isReservable;
 
-    public Place(int id, String title, String address, Double longitude, Double latitude, String description, String service, String image, Integer user_id) {
+    public Place(int id, String title, String address, Double longitude, Double latitude, String description, String service, String image, Integer user_id, Double rating, Boolean isReservable) {
         this.id = id;
         this.title = title;
         this.address = address;
@@ -28,6 +29,8 @@ public class Place {
         this.service = service;
         this.image = image;
         this.user_id = user_id;
+        this.rating = rating;
+        this.isReservable = isReservable;
     }
 
     public String getTitle() {
@@ -82,10 +85,6 @@ public class Place {
         return user_id;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
-    }
-
     public int getId() {
         return id;
     }
@@ -100,6 +99,18 @@ public class Place {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public Boolean getIsReservable() {
+        return isReservable;
     }
 
     @Override

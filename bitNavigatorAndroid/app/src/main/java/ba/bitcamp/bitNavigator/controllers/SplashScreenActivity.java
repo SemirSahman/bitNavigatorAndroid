@@ -1,10 +1,13 @@
 package ba.bitcamp.bitNavigator.controllers;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
@@ -17,8 +20,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import ba.bitcamp.bitNavigator.bitnavigator.R;
-import ba.bitcamp.bitNavigator.controllers.*;
-import ba.bitcamp.bitNavigator.controllers.MapsActivity;
 import ba.bitcamp.bitNavigator.lists.PlaceList;
 import ba.bitcamp.bitNavigator.lists.WorkingHoursList;
 import ba.bitcamp.bitNavigator.models.Place;
@@ -28,14 +29,23 @@ import ba.bitcamp.bitNavigator.service.ServiceRequest;
 /**
  * Created by Sehic on 26.10.2015.
  */
-public class SplashScreenActivity extends Activity{
+public class SplashScreenActivity extends Activity {
 
     private static int SPLASH_TIME_OUT = 5000;
+
+    private TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
+        if (sharedpreferences.contains("email")) {
+            String name = sharedpreferences.getString("name", "");
+            text = (TextView) findViewById(R.id.txt_welcome);
+            text.setText("Welcome back " + name);
+        }
 
         String url = getString(R.string.service_all_places);
         ServiceRequest.get(url, getPlaces());
@@ -66,14 +76,13 @@ public class SplashScreenActivity extends Activity{
         return new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                //makeToast(R.string.toast_try_again);
-                Log.d("dibag", "hdashgdkjsa87998987");
+                e.getMessage();
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
                 try {
-                    String responseJSON= response.body().string();
+                    String responseJSON = response.body().string();
                     JSONArray array = new JSONArray(responseJSON);
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject postObj = array.getJSONObject(i);
@@ -86,11 +95,12 @@ public class SplashScreenActivity extends Activity{
                         String service = postObj.getString("service");
                         String image = postObj.getString("image");
                         Integer user_id = postObj.getInt("user_id");
-                        Place place = new Place(id, name, address, longitude, latitude, description, service, image, user_id);
+                        Boolean isReservable = postObj.getBoolean("isReservable");
+                        Double rating = postObj.getDouble("rating");
+                        Place place = new Place(id, name, address, longitude, latitude, description, service, image, user_id, rating, isReservable);
                         if (!PlaceList.getInstance().getPlaceList().contains(place)) {
                             PlaceList.getInstance().add(place);
                         }
-                        Log.d("dibag", address);
                     }
                 } catch (JSONException e) {
                     //makeToast(R.string.toast_try_again);
@@ -105,12 +115,13 @@ public class SplashScreenActivity extends Activity{
             @Override
             public void onFailure(Request request, IOException e) {
                 Log.e("Uso", "aaaaaaa");
+                e.getMessage();
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
                 try {
-                    String responseJSON= response.body().string();
+                    String responseJSON = response.body().string();
                     JSONArray array = new JSONArray(responseJSON);
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject hourObj = array.getJSONObject(i);
@@ -119,20 +130,20 @@ public class SplashScreenActivity extends Activity{
                         Integer open1 = hourObj.getInt("open1");
                         Integer close1 = hourObj.getInt("close1");
                         Integer open2 = hourObj.getInt("open2");
-                         Integer close2 = hourObj.getInt("close2");
-                         Integer open3 = hourObj.getInt("open3");
-                         Integer close3 = hourObj.getInt("close3");
-                         Integer open4 = hourObj.getInt("open4");
-                         Integer close4 = hourObj.getInt("close4");
-                         Integer open5 = hourObj.getInt("open5");
-                         Integer close5 = hourObj.getInt("close5");
-                         Integer open6 = hourObj.getInt("open6");
-                         Integer close6 = hourObj.getInt("close6");
-                         Integer open7 = hourObj.getInt("open7");
-                         Integer close7 = hourObj.getInt("close7");
+                        Integer close2 = hourObj.getInt("close2");
+                        Integer open3 = hourObj.getInt("open3");
+                        Integer close3 = hourObj.getInt("close3");
+                        Integer open4 = hourObj.getInt("open4");
+                        Integer close4 = hourObj.getInt("close4");
+                        Integer open5 = hourObj.getInt("open5");
+                        Integer close5 = hourObj.getInt("close5");
+                        Integer open6 = hourObj.getInt("open6");
+                        Integer close6 = hourObj.getInt("close6");
+                        Integer open7 = hourObj.getInt("open7");
+                        Integer close7 = hourObj.getInt("close7");
                         Log.e("close7", close7 + " ");
                         WorkingHours hours = new WorkingHours(id, place_id, open1, close1, open2, close2, open3, close3, open4, close4, open5, close5, open6, close6, open7, close7);
-                            WorkingHoursList.getInstance().add(hours);
+                        WorkingHoursList.getInstance().add(hours);
                     }
                 } catch (JSONException e) {
                     //makeToast(R.string.toast_try_again);

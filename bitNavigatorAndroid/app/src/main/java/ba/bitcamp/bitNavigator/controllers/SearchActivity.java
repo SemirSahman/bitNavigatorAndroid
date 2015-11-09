@@ -1,6 +1,5 @@
 package ba.bitcamp.bitNavigator.controllers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,33 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.SearchView;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -42,15 +22,14 @@ import java.util.List;
 
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.PlaceList;
-import ba.bitcamp.bitNavigator.lists.WorkingHoursList;
 import ba.bitcamp.bitNavigator.models.Place;
-import ba.bitcamp.bitNavigator.models.WorkingHours;
+import ba.bitcamp.bitNavigator.service.Navbar;
 
 
 /**
  * Created by hajrudin.sehic on 27/10/15.
  */
-public class SearchActivity extends Activity {
+public class SearchActivity extends Navbar {
 
     public static List<Place> placeList = PlaceList.getInstance().getPlaceList();
 
@@ -63,13 +42,9 @@ public class SearchActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        Collections.sort(placeList, new Comparator<Place>() {
-            @Override
-            public int compare(Place lhs, Place rhs) {
-                return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-            }
-        });
+        sortList();
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mSearch = (EditText) findViewById(R.id.autocomplete_places);
@@ -88,9 +63,7 @@ public class SearchActivity extends Activity {
                     list.add(placeList.get(i));
                 }
 
-
                 placeAdapter.notifyDataSetChanged();
-
 
                 if (s.length() != 0) {
                     int size = list.size();
@@ -104,24 +77,14 @@ public class SearchActivity extends Activity {
                         }
                     }
 
-                    Collections.sort(list, new Comparator<Place>() {
-                        @Override
-                        public int compare(Place lhs, Place rhs) {
-                            return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-                        }
-                    });
+                    sortList();
 
                     placeAdapter = new PlaceAdapter(list);
                     recyclerView.setAdapter(placeAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
                 } else {
 
-                    Collections.sort(placeList, new Comparator<Place>() {
-                        @Override
-                        public int compare(Place lhs, Place rhs) {
-                            return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-                        }
-                    });
+                    sortList();
 
                     placeAdapter = new PlaceAdapter(placeList);
                     recyclerView.setAdapter(placeAdapter);
@@ -141,45 +104,21 @@ public class SearchActivity extends Activity {
         });
 
 
-        Button mLoginButton = (Button) findViewById(R.id.btnProfile);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(i);
-            }
-        });
-
-
-//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-//                                               public void onClick(View v) {
-//                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-//                                                   startActivity(i);
-//                                               }
-//                                           }
-//        );
-
-        Button mSearchButton = (Button) findViewById(R.id.btnSearch);
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-                                             public void onClick(View v) {
-                                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                                                 startActivity(i);
-                                             }
-                                         }
-        );
-
-        Button mMapButton = (Button) findViewById(R.id.btnMap);
-        mMapButton.setOnClickListener(new View.OnClickListener() {
-                                          public void onClick(View v) {
-                                              Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-                                              startActivity(i);
-                                          }
-                                      }
-        );
+        navbarButtons();
     }
 
-    private class PlaceView extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private void sortList() {
+        Collections.sort(placeList, new Comparator<Place>() {
+            @Override
+            public int compare(Place lhs, Place rhs) {
+                return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+            }
+        });
+    }
 
+    private class PlaceView extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private ImageView mServiceImage;
         private TextView titleText;
         private TextView addressText;
         private TextView id;
@@ -187,6 +126,7 @@ public class SearchActivity extends Activity {
         public PlaceView(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
+            mServiceImage = (ImageView) itemView.findViewById(R.id.place_service);
             titleText = (TextView) itemView.findViewById(R.id.textView2);
             addressText = (TextView) itemView.findViewById(R.id.textView3);
             id = (TextView) itemView.findViewById(R.id.place_id);
@@ -220,6 +160,16 @@ public class SearchActivity extends Activity {
         @Override
         public void onBindViewHolder(PlaceView holder, int position) {
             Place place = placeList.get(position);
+            String place_service = place.getService().toLowerCase();
+
+            if (place_service.equals("arts&entertainment")) {
+                place_service = "arts";
+            } else if (place_service.equals("night life")) {
+                place_service = "night_life";
+            }
+
+            int res = getResources().getIdentifier(place_service, "drawable", getPackageName());
+            holder.mServiceImage.setImageResource(res);
             holder.titleText.setText(place.getTitle());
             holder.addressText.setText(place.getAddress());
             String tmp = String.valueOf(place.getId());

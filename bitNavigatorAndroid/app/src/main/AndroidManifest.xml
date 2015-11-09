@@ -57,6 +57,12 @@
         </activity>
 
         <activity
+            android:name="ba.bitcamp.bitNavigator.controllers.MyReservationsActivity"
+            android:label="My reservations"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
             android:name="ba.bitcamp.bitNavigator.controllers.PlaceActivity"
             android:label="Place"
             android:screenOrientation="portrait">
@@ -65,6 +71,18 @@
         <activity
             android:name="ba.bitcamp.bitNavigator.controllers.SearchActivity"
             android:label="Search"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name="ba.bitcamp.bitNavigator.controllers.ReservationListActivity"
+            android:label="Reservaion list"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name="ba.bitcamp.bitNavigator.controllers.ReservationOnMyPlacesActivity"
+            android:label="Reservaion list"
             android:screenOrientation="portrait">
         </activity>
 

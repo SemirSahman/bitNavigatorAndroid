@@ -1,7 +1,7 @@
 package ba.bitcamp.bitNavigator.controllers;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -30,12 +29,13 @@ import java.util.GregorianCalendar;
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.WorkingHoursList;
 import ba.bitcamp.bitNavigator.models.WorkingHours;
+import ba.bitcamp.bitNavigator.service.Navbar;
 import ba.bitcamp.bitNavigator.service.ServiceRequest;
 
 /**
  * Created by hajrudin.sehic on 29/10/15.
  */
-public class ReservationActivity extends Activity{
+public class ReservationActivity extends Navbar{
 
     private Button btnCalendar;
     private Button btnTimePicker;
@@ -61,8 +61,6 @@ public class ReservationActivity extends Activity{
     private TextView satTo;
     private TextView sunTo;
 
-
-
     public Date date;
     public int selectedDay;
     public String id;
@@ -80,7 +78,7 @@ public class ReservationActivity extends Activity{
 
         final WorkingHours hours = WorkingHoursList.getInstance().getByPlaceId(place_id);
 
-
+//setting working hours
         monFrom = (TextView) findViewById(R.id.monFrom);
         monFrom.setText(hours.getFormatedTime(hours.getOpen1()));
         tueFrom = (TextView) findViewById(R.id.tueFrom);
@@ -158,7 +156,6 @@ public class ReservationActivity extends Activity{
             }
         });
 
-
         btnTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,7 +188,6 @@ public class ReservationActivity extends Activity{
             }
         });
 
-
         SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
         final String email = sharedpreferences.getString("email", "");
 
@@ -202,9 +198,10 @@ public class ReservationActivity extends Activity{
                 if(message.length() < 1){
                     txtMessage.setError("Can't send an empty message!");
                 }else{
+                    Dialog progressDialog = new Dialog(ReservationActivity.this);
+                    progressDialog.setTitle("Loading...");
+                    progressDialog.show();
                     txtMessage.setError(null);
-
-
                     JSONObject json = new JSONObject();
                     try {
                         json.put("place_id", place_id);
@@ -221,44 +218,7 @@ public class ReservationActivity extends Activity{
                 }    }
         });
 
-
-        Button mLoginButton = (Button) findViewById(R.id.btnProfile);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(i);
-            }
-        });
-
-
-//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-//                                               public void onClick(View v) {
-//                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-//                                                   startActivity(i);
-//                                               }
-//                                           }
-//        );
-
-        Button mSearchButton = (Button) findViewById(R.id.btnSearch);
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-                                             public void onClick(View v) {
-                                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                                                 startActivity(i);
-                                             }
-                                         }
-        );
-
-        Button mMapButton = (Button) findViewById(R.id.btnMap);
-        mMapButton.setOnClickListener(new View.OnClickListener() {
-                                          public void onClick(View v) {
-                                              Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-                                              startActivity(i);
-                                          }
-                                      }
-        );
-
-
+      navbarButtons();
     }
 
     public boolean validateTime(int h, int m, WorkingHours hours){

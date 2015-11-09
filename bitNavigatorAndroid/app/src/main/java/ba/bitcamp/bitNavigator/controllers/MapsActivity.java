@@ -3,23 +3,20 @@ package ba.bitcamp.bitNavigator.controllers;
 import android.content.Intent;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
-import com.here.android.mpa.ar.ARObject;
 import com.here.android.mpa.cluster.ClusterLayer;
 import com.here.android.mpa.common.GeoBoundingBox;
 import com.here.android.mpa.common.ViewObject;
 import com.here.android.mpa.mapping.MapGesture;
 import com.here.android.mpa.mapping.MapMarker;
-import java.io.IOException;
 
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.PlaceList;
 import ba.bitcamp.bitNavigator.models.Place;
 import ba.bitcamp.bitNavigator.service.MapHelper;
+import ba.bitcamp.bitNavigator.service.Navbar;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -27,8 +24,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.here.android.mpa.ar.ARController;
@@ -37,7 +32,6 @@ import com.here.android.mpa.ar.ARIconObject;
 import com.here.android.mpa.ar.CompositeFragment;
 import com.here.android.mpa.common.GeoCoordinate;
 import com.here.android.mpa.common.GeoPosition;
-import com.here.android.mpa.common.Image;
 import com.here.android.mpa.common.OnEngineInitListener;
 import com.here.android.mpa.common.PositioningManager;
 import com.here.android.mpa.mapping.Map;
@@ -48,7 +42,7 @@ import com.here.android.mpa.routing.RouteOptions;
 import com.here.android.mpa.routing.RoutePlan;
 import com.here.android.mpa.routing.RouteResult;
 
-public class MapsActivity extends Activity {
+public class MapsActivity extends Navbar {
 
     // map embedded in the composite fragment
     private Map map;
@@ -64,13 +58,6 @@ public class MapsActivity extends Activity {
     private Button stopButton;
     private ImageView hereButton;
     private ImageView clearRouteButton;
-
-    // the image we will display in LiveSight
-    private Image image;
-
-    // ARIconObject represents the image model which LiveSight accepts for display
-    private ARIconObject arIconObject;
-    private boolean objectAdded;
 
     // Application paused
     private boolean paused;
@@ -94,25 +81,25 @@ public class MapsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        final int placeId = getIntent().getIntExtra("place_id", -1);
+
         // Search for the composite fragment to finish setup by calling init().
         compositeFragment = (CompositeFragment) getFragmentManager().findFragmentById(R.id.compositefragment);
         compositeFragment.init(new OnEngineInitListener() {
             @Override
             public void onEngineInitializationCompleted(Error error) {
                 if (error == Error.NONE) {
-                    Log.d("dibag", "if-------------");
                     // retrieve a reference of the map from the composite fragment
                     map = compositeFragment.getMap();
                     // Set the map center coordinate to current position (no animation)
                     map.setCenter(new GeoCoordinate(43.850, 18.390, 0.0), Map.Animation.NONE);
-                    getPosition();
+                    getPosition(null);
                     // Set the map zoom level to the average between min and max (no animation)
                     map.setZoomLevel((map.getMaxZoomLevel() + map.getMinZoomLevel()) / 2);
                     // LiveSight setup should be done after fragment init is complete
-                    addMarkers();
+                    addMarkers(placeId);
                     setupLiveSight();
                 } else {
-                    Log.d("dibag", "else-------------"+error);
                     System.out.println("ERROR: Cannot initialize Composite Fragment");
                 }
             }
@@ -124,51 +111,23 @@ public class MapsActivity extends Activity {
         hereButton = (ImageView) findViewById(R.id.here_button);
         clearRouteButton = (ImageView) findViewById(R.id.clear_route_button);
 
-        Button mLoginButton = (Button) findViewById(R.id.btnProfile);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-                                            public void onClick(View v) {
-                                                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                                                startActivity(i);
-                                            }
-                                        }
-        );
-
-//        Button mRegisterButton = (Button) findViewById(R.id.btnReservations);
-//        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-//                                               public void onClick(View v) {
-//                                                   Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-//                                                   startActivity(i);
-//                                               }
-//                                           }
-//        );
-
-        Button mSearchButton = (Button) findViewById(R.id.btnSearch);
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-                                             public void onClick(View v) {
-                                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                                                 startActivity(i);
-                                             }
-                                         }
-        );
-
-        Button mMapButton = (Button) findViewById(R.id.btnMap);
-        mMapButton.setOnClickListener(new View.OnClickListener() {
-                                          public void onClick(View v) {
-                                              Intent i = new Intent(getApplicationContext(), ba.bitcamp.bitNavigator.controllers.MapsActivity.class);
-                                              startActivity(i);
-                                          }
-                                      }
-        );
-
+       navbarButtons();
     }
 
-    private void addMarkers() {
+    private void addMarkers(int placeId) {
+
+        MapMarker selectedMarker = null;
+
         mClusterLayer = new ClusterLayer();
         for (Place place : PlaceList.getInstance().getPlaceList()) {
             MapMarker marker = new MapMarker();
             marker.setCoordinate(new GeoCoordinate(place.getLatitude(), place.getLongitude()));
             marker.setTitle(place.getTitle());
-            //marker.setDescription(place.getDescription());
+            marker.setDescription(place.getAddress());
+
+            if (place.getId() == placeId) {
+                selectedMarker = marker;
+            }
 
             mClusterLayer.addMarker(marker);
         }
@@ -202,7 +161,6 @@ public class MapsActivity extends Activity {
                             map.removeClusterLayer(mClusterLayer);
                             map.addMapObject(mRouteMarker);
                         }
-
                     }
                 }
                 return false;
@@ -211,7 +169,15 @@ public class MapsActivity extends Activity {
 
         compositeFragment.getMapGesture().addOnGestureListener(listener);
 
-        map.addClusterLayer(mClusterLayer);
+        if (selectedMarker != null) {
+            mRouteMarker = selectedMarker;
+            map.addMapObject(mRouteMarker);
+            getPosition(selectedMarker);
+        } else {
+            map.addClusterLayer(mClusterLayer);
+        }
+
+
     }
 
     private void setupLiveSight() {
@@ -254,11 +220,10 @@ public class MapsActivity extends Activity {
             String distance = String.format("%.2f m", mGPSPosition.distanceTo(new GeoCoordinate(place.getLatitude(), place.getLongitude())));
             View info = MapHelper.getInfoView(this, place.getTitle(), distance);
             String service = place.getService().toLowerCase();
-            if (service.contains(" ")) {
-                service.replace(" ", "_");
-            }
-            if (service.contains("&")) {
+            if (service.equals("arts&entertainment")) {
                 service = "arts";
+            } else if(service.equals("night life")){
+                service = "night_life";
             }
             int icon = getResources().getIdentifier(service, "drawable", getPackageName());
             ARIconObject arIconObject = new ARIconObject(new GeoCoordinate(place.getLatitude(), place.getLongitude()), info, icon);
@@ -300,9 +265,11 @@ public class MapsActivity extends Activity {
         paused = false;
     }
 
-    public void getPosition() {
+    public void getPosition(final MapMarker marker) {
         // Register positioning listener
         positionListener = new PositioningManager.OnPositionChangedListener() {
+
+            private boolean markerDrawn;
 
             @Override
             public void onPositionUpdated(PositioningManager.LocationMethod method, GeoPosition position, boolean isMapMatched) {
@@ -311,12 +278,23 @@ public class MapsActivity extends Activity {
                 if (!paused) {
 
                     mGPSPosition = position.getCoordinate();
+
+                    if (marker != null && !markerDrawn) {
+                        mRouteMarker = marker;
+                        getDirections(mGPSPosition, mRouteMarker.getCoordinate());
+                        map.removeClusterLayer(mClusterLayer);
+                        map.addMapObject(mRouteMarker);
+                        markerDrawn = true;
+                    }
+
                     // Display position indicator
                     map.getPositionIndicator().setVisible(true);
-                    if (stopButton.getVisibility() == View.VISIBLE) {
-                        removeARObjects();
-                        getARObjects();
-                    }
+
+//                    if (stopButton.getVisibility() == View.VISIBLE) {
+//                        removeARObjects();
+//                        getARObjects();
+//                    }
+
                 }
             }
             @Override
