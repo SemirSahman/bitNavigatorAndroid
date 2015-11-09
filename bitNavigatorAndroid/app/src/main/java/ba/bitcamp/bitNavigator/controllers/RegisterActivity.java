@@ -1,18 +1,13 @@
 package ba.bitcamp.bitNavigator.controllers;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.squareup.okhttp.Callback;
@@ -46,7 +41,6 @@ public class RegisterActivity extends Navbar {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Set View to register.xml
         setContentView(R.layout.register);
 
         firstName = (EditText) findViewById(R.id.firstname);
@@ -73,18 +67,18 @@ public class RegisterActivity extends Navbar {
                 }
 
                 final String fName = firstName.getText().toString();
-                if(!isValidName(fName)){
+                if (!isValidName(fName)) {
                     firstName.setError("First name can only contain letters");
                     return;
                 }
 
                 final String lName = lastName.getText().toString();
-                if(!isValidName(lName)){
+                if (!isValidName(lName)) {
                     lastName.setError("Last name can only contain letters");
                     return;
                 }
 
-                if(!(password.getText().toString().equals(confirmPassword.getText().toString()))){
+                if (!(password.getText().toString().equals(confirmPassword.getText().toString()))) {
                     confirmPassword.setError("Password does not match");
                     return;
                 }
@@ -93,7 +87,6 @@ public class RegisterActivity extends Navbar {
                 progressDialog.setTitle("Loading...");
                 progressDialog.show();
 
-                Log.d("dibag", emailString + " ---  " + pass);
                 JSONObject json = new JSONObject();
                 try {
                     json.put("firstName", fName);
@@ -102,8 +95,6 @@ public class RegisterActivity extends Navbar {
                     json.put("password", pass);
                 } catch (JSONException e) {
                     e.printStackTrace();
-
-                    Log.d("dibag", emailString + "++++++++++" + pass);
                 }
 
                 String url = getString(R.string.service_sign_up);
@@ -113,7 +104,6 @@ public class RegisterActivity extends Navbar {
 
             }
         });
-
 
         navbarButtons();
     }
@@ -128,8 +118,8 @@ public class RegisterActivity extends Navbar {
         return matcher.matches();
     }
 
-    private boolean isValidName(String name){
-        if(name.equals(""))
+    private boolean isValidName(String name) {
+        if (name.equals(""))
             return true;
         String NAME_PATTERN = "[a-zA-Z]+";
 
@@ -155,8 +145,8 @@ public class RegisterActivity extends Navbar {
 
             @Override
             public void onResponse(Response response) throws IOException {
-                    makeToast("Registered! Please log in.");
-                    goToLogin();
+                makeToast("Registered! Please log in.");
+                goToLogin();
             }
         };
     }
@@ -166,7 +156,7 @@ public class RegisterActivity extends Navbar {
         startActivity(intent);
     }
 
-    private void makeToast(final String message){
+    private void makeToast(final String message) {
         new Handler(Looper.getMainLooper())
                 .post(new Runnable() {
                     @Override
@@ -177,5 +167,4 @@ public class RegisterActivity extends Navbar {
                     }
                 });
     }
-
 }

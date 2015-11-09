@@ -1,6 +1,5 @@
 package ba.bitcamp.bitNavigator.controllers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,34 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -44,9 +22,7 @@ import java.util.List;
 
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.PlaceList;
-import ba.bitcamp.bitNavigator.lists.WorkingHoursList;
 import ba.bitcamp.bitNavigator.models.Place;
-import ba.bitcamp.bitNavigator.models.WorkingHours;
 import ba.bitcamp.bitNavigator.service.Navbar;
 
 
@@ -66,12 +42,7 @@ public class SearchActivity extends Navbar {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        Collections.sort(placeList, new Comparator<Place>() {
-            @Override
-            public int compare(Place lhs, Place rhs) {
-                return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-            }
-        });
+        sortList();
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -92,9 +63,7 @@ public class SearchActivity extends Navbar {
                     list.add(placeList.get(i));
                 }
 
-
                 placeAdapter.notifyDataSetChanged();
-
 
                 if (s.length() != 0) {
                     int size = list.size();
@@ -108,24 +77,14 @@ public class SearchActivity extends Navbar {
                         }
                     }
 
-                    Collections.sort(list, new Comparator<Place>() {
-                        @Override
-                        public int compare(Place lhs, Place rhs) {
-                            return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-                        }
-                    });
+                    sortList();
 
                     placeAdapter = new PlaceAdapter(list);
                     recyclerView.setAdapter(placeAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
                 } else {
 
-                    Collections.sort(placeList, new Comparator<Place>() {
-                        @Override
-                        public int compare(Place lhs, Place rhs) {
-                            return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
-                        }
-                    });
+                    sortList();
 
                     placeAdapter = new PlaceAdapter(placeList);
                     recyclerView.setAdapter(placeAdapter);
@@ -148,7 +107,16 @@ public class SearchActivity extends Navbar {
         navbarButtons();
     }
 
-    private class PlaceView extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private void sortList() {
+        Collections.sort(placeList, new Comparator<Place>() {
+            @Override
+            public int compare(Place lhs, Place rhs) {
+                return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+            }
+        });
+    }
+
+    private class PlaceView extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView mServiceImage;
         private TextView titleText;
@@ -194,11 +162,12 @@ public class SearchActivity extends Navbar {
             Place place = placeList.get(position);
             String place_service = place.getService().toLowerCase();
 
-            if(place_service.equals("arts&entertainment")){
+            if (place_service.equals("arts&entertainment")) {
                 place_service = "arts";
-            }else if(place_service.equals("night life")){
+            } else if (place_service.equals("night life")) {
                 place_service = "night_life";
             }
+
             int res = getResources().getIdentifier(place_service, "drawable", getPackageName());
             holder.mServiceImage.setImageResource(res);
             holder.titleText.setText(place.getTitle());

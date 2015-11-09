@@ -45,7 +45,7 @@ import ba.bitcamp.bitNavigator.service.ServiceRequest;
 /**
  * Created by hajrudin.sehic on 27/10/15.
  */
-public class ProfileActivity extends Navbar{
+public class ProfileActivity extends Navbar {
 
     private ImageView mImage;
     private TextView mName;
@@ -56,7 +56,6 @@ public class ProfileActivity extends Navbar{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setting default screen to login.xml
         setContentView(R.layout.activity_user_profile);
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
@@ -68,9 +67,9 @@ public class ProfileActivity extends Navbar{
         mLogout = (Button) findViewById(R.id.btn_sign_out);
 
         final SharedPreferences preferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-        String name = preferences.getString("name","");
+        String name = preferences.getString("name", "");
         String surname = preferences.getString("surname", "");
-        String email = preferences.getString("email","");
+        String email = preferences.getString("email", "");
         mName.setText(name);
         mSurname.setText(surname);
         mEmail.setText(email);
@@ -89,7 +88,7 @@ public class ProfileActivity extends Navbar{
                 // Setting Icon to Dialog
                 alertDialog.setIcon(R.drawable.navbar_profileselected);
 
-                // Setting Positive "Yes" Button
+                // Setting Yes Button
                 alertDialog.setPositiveButton("YES",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -103,7 +102,7 @@ public class ProfileActivity extends Navbar{
                             }
                         });
 
-                // Setting Negative "NO" Button
+                // Setting NO Button
                 alertDialog.setNegativeButton("NO",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -125,7 +124,6 @@ public class ProfileActivity extends Navbar{
             }
         }
 
-
         navbarButtons();
     }
 
@@ -140,7 +138,7 @@ public class ProfileActivity extends Navbar{
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             Intent i = new Intent(getApplicationContext(),
                     ProfileActivity.class);
@@ -161,7 +159,6 @@ public class ProfileActivity extends Navbar{
 
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
-            Log.i("URL", urldisplay);
             Bitmap mIcon11 = null;
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();

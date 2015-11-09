@@ -1,7 +1,5 @@
 package ba.bitcamp.bitNavigator.controllers;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +8,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -40,13 +37,7 @@ public class ReservationOnMyPlacesActivity extends Navbar{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation_on_my_places);
 
-        Collections.sort(reservationList, new Comparator<ReservationOnMyPlaces>() {
-            @Override
-            public int compare(ReservationOnMyPlaces lhs, ReservationOnMyPlaces rhs) {
-                return lhs.getPlace_title().compareToIgnoreCase(rhs.getPlace_title());
-            }
-        });
-
+        sortList();
 
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mSearch = (EditText) findViewById(R.id.autocomplete_reservations);
@@ -65,9 +56,7 @@ public class ReservationOnMyPlacesActivity extends Navbar{
                     list.add(reservationList.get(i));
                 }
 
-
                 reservationAdapter.notifyDataSetChanged();
-
 
                 if (s.length() != 0) {
                     int size = list.size();
@@ -81,24 +70,14 @@ public class ReservationOnMyPlacesActivity extends Navbar{
                         }
                     }
 
-                    Collections.sort(reservationList, new Comparator<ReservationOnMyPlaces>() {
-                        @Override
-                        public int compare(ReservationOnMyPlaces lhs, ReservationOnMyPlaces rhs) {
-                            return lhs.getPlace_title().compareToIgnoreCase(rhs.getPlace_title());
-                        }
-                    });
+                    sortList();
 
                     reservationAdapter = new ReservationAdapter(list);
                     recyclerView.setAdapter(reservationAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(ReservationOnMyPlacesActivity.this));
                 } else {
 
-                    Collections.sort(reservationList, new Comparator<ReservationOnMyPlaces>() {
-                        @Override
-                        public int compare(ReservationOnMyPlaces lhs, ReservationOnMyPlaces rhs) {
-                            return lhs.getPlace_title().compareToIgnoreCase(rhs.getPlace_title());
-                        }
-                    });
+                    sortList();
 
                     reservationAdapter = new ReservationAdapter(reservationList);
                     recyclerView.setAdapter(reservationAdapter);
@@ -109,16 +88,22 @@ public class ReservationOnMyPlacesActivity extends Navbar{
 
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-
             }
 
             public void afterTextChanged(Editable s) {
-
             }
         });
 
-
        navbarButtons();
+    }
+
+    private void sortList(){
+        Collections.sort(reservationList, new Comparator<ReservationOnMyPlaces>() {
+            @Override
+            public int compare(ReservationOnMyPlaces lhs, ReservationOnMyPlaces rhs) {
+                return lhs.getPlace_title().compareToIgnoreCase(rhs.getPlace_title());
+            }
+        });
     }
 
     private class ReservationView extends RecyclerView.ViewHolder{

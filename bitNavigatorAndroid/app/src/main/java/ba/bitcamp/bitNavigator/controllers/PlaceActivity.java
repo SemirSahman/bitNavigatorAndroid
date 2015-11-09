@@ -1,6 +1,5 @@
 package ba.bitcamp.bitNavigator.controllers;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,7 +26,7 @@ import ba.bitcamp.bitNavigator.service.Navbar;
 /**
  * Created by hajrudin.sehic on 28/10/15.
  */
-public class PlaceActivity extends Navbar{
+public class PlaceActivity extends Navbar {
 
     private ImageView mImage;
     private TextView mTitle;
@@ -52,9 +51,6 @@ public class PlaceActivity extends Navbar{
         mDescription = (TextView) findViewById(R.id.txtDescription);
         mReservation = (Button) findViewById(R.id.btn_reservation);
         mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
-
-        int res = getResources().getIdentifier(place.getService().toLowerCase(),"drawable",getPackageName());
-
         mTitle.setText(place.getTitle());
         mAddress.setText(place.getAddress());
         mDescription.setText(place.getDescription());
@@ -71,7 +67,7 @@ public class PlaceActivity extends Navbar{
         });
 
         SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-        if(sharedpreferences.contains("email") && place.getIsReservable()) {
+        if (sharedpreferences.contains("email") && place.getIsReservable()) {
             Integer user_id = sharedpreferences.getInt("id", 0);
             if (!user_id.equals(place.getUser_id())) {
                 mReservation.setVisibility(View.VISIBLE);
@@ -100,9 +96,6 @@ public class PlaceActivity extends Navbar{
             }
         }
 
-
-
-
         navbarButtons();
     }
 
@@ -127,7 +120,6 @@ public class PlaceActivity extends Navbar{
 
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
-            Log.e("URL", urldisplay);
             Bitmap mIcon11 = null;
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();

@@ -1,6 +1,5 @@
 package ba.bitcamp.bitNavigator.controllers;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -23,7 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -63,8 +61,6 @@ public class ReservationActivity extends Navbar{
     private TextView satTo;
     private TextView sunTo;
 
-
-
     public Date date;
     public int selectedDay;
     public String id;
@@ -82,7 +78,7 @@ public class ReservationActivity extends Navbar{
 
         final WorkingHours hours = WorkingHoursList.getInstance().getByPlaceId(place_id);
 
-
+//setting working hours
         monFrom = (TextView) findViewById(R.id.monFrom);
         monFrom.setText(hours.getFormatedTime(hours.getOpen1()));
         tueFrom = (TextView) findViewById(R.id.tueFrom);
@@ -160,7 +156,6 @@ public class ReservationActivity extends Navbar{
             }
         });
 
-
         btnTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -193,7 +188,6 @@ public class ReservationActivity extends Navbar{
             }
         });
 
-
         SharedPreferences sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
         final String email = sharedpreferences.getString("email", "");
 
@@ -208,8 +202,6 @@ public class ReservationActivity extends Navbar{
                     progressDialog.setTitle("Loading...");
                     progressDialog.show();
                     txtMessage.setError(null);
-
-
                     JSONObject json = new JSONObject();
                     try {
                         json.put("place_id", place_id);
@@ -225,7 +217,6 @@ public class ReservationActivity extends Navbar{
                     ServiceRequest.post(url, json.toString(), submitReservation());
                 }    }
         });
-
 
       navbarButtons();
     }
