@@ -41,8 +41,4 @@ public class UserList {
         userList.remove(place);
     }
 
-    public List<User> getUserList(){
-        return userList;
-    }
-
 }

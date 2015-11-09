@@ -85,10 +85,6 @@ public class Place {
         return user_id;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
-    }
-
     public int getId() {
         return id;
     }
@@ -115,10 +111,6 @@ public class Place {
 
     public Boolean getIsReservable() {
         return isReservable;
-    }
-
-    public void setIsReservable(Boolean isReservable) {
-        this.isReservable = isReservable;
     }
 
     @Override

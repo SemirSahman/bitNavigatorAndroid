@@ -29,10 +29,6 @@ public class ReservationOnMyPlaces {
         return place_title;
     }
 
-    public void setPlace_title(String place_title) {
-        this.place_title = place_title;
-    }
-
     public String getStatus() {
         return status;
     }

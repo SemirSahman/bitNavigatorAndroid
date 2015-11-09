@@ -39,12 +39,13 @@ import ba.bitcamp.bitNavigator.lists.ReservationList;
 import ba.bitcamp.bitNavigator.models.Reservation;
 import ba.bitcamp.bitNavigator.service.Cache;
 import ba.bitcamp.bitNavigator.service.ImageHelper;
+import ba.bitcamp.bitNavigator.service.Navbar;
 import ba.bitcamp.bitNavigator.service.ServiceRequest;
 
 /**
  * Created by hajrudin.sehic on 27/10/15.
  */
-public class ProfileActivity extends Activity{
+public class ProfileActivity extends Navbar {
 
     private ImageView mImage;
     private TextView mName;
@@ -55,7 +56,6 @@ public class ProfileActivity extends Activity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setting default screen to login.xml
         setContentView(R.layout.activity_user_profile);
 
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
@@ -67,9 +67,9 @@ public class ProfileActivity extends Activity{
         mLogout = (Button) findViewById(R.id.btn_sign_out);
 
         final SharedPreferences preferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
-        String name = preferences.getString("name","");
+        String name = preferences.getString("name", "");
         String surname = preferences.getString("surname", "");
-        String email = preferences.getString("email","");
+        String email = preferences.getString("email", "");
         mName.setText(name);
         mSurname.setText(surname);
         mEmail.setText(email);
@@ -88,7 +88,7 @@ public class ProfileActivity extends Activity{
                 // Setting Icon to Dialog
                 alertDialog.setIcon(R.drawable.navbar_profileselected);
 
-                // Setting Positive "Yes" Button
+                // Setting Yes Button
                 alertDialog.setPositiveButton("YES",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -102,7 +102,7 @@ public class ProfileActivity extends Activity{
                             }
                         });
 
-                // Setting Negative "NO" Button
+                // Setting NO Button
                 alertDialog.setNegativeButton("NO",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -124,42 +124,7 @@ public class ProfileActivity extends Activity{
             }
         }
 
-
-        Button mLoginButton = (Button) findViewById(R.id.btnProfile);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(i);
-            }
-        });
-
-
-        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
-        mReservationButton.setOnClickListener(new View.OnClickListener() {
-                                                  public void onClick(View v) {
-                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
-                                                      startActivity(i);
-                                                  }
-                                              }
-        );
-
-        Button mSearchButton = (Button) findViewById(R.id.btnSearch);
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-                                             public void onClick(View v) {
-                                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                                                 startActivity(i);
-                                             }
-                                         }
-        );
-
-        Button mMapButton = (Button) findViewById(R.id.btnMap);
-        mMapButton.setOnClickListener(new View.OnClickListener() {
-                                          public void onClick(View v) {
-                                              Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-                                              startActivity(i);
-                                          }
-                                      }
-        );
+        navbarButtons();
     }
 
     public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
@@ -173,7 +138,7 @@ public class ProfileActivity extends Activity{
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             Intent i = new Intent(getApplicationContext(),
                     ProfileActivity.class);
@@ -194,7 +159,6 @@ public class ProfileActivity extends Activity{
 
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
-            Log.i("URL", urldisplay);
             Bitmap mIcon11 = null;
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();

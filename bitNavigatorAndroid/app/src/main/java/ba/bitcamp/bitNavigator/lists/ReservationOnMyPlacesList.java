@@ -46,15 +46,4 @@ public class ReservationOnMyPlacesList {
         return reservationList;
     }
 
-    public ReservationOnMyPlaces getReservation(Integer id){
-        ReservationOnMyPlaces r;
-        for(int i =0; i<mReservationList.getSize(); i++){
-            if(mReservationList.getReservationList().get(i).getId() == id){
-                r = mReservationList.getReservationList().get(i);
-                return r;
-            }
-        }
-        return null;
-    }
-
 }

@@ -44,10 +44,6 @@ public class WorkingHours {
         return place_id;
     }
 
-    public void setPlace_id(Integer place_id) {
-        this.place_id = place_id;
-    }
-
     public Integer getOpen1() {
         return open1;
     }

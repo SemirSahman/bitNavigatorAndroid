@@ -16,6 +16,7 @@ import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.lists.PlaceList;
 import ba.bitcamp.bitNavigator.models.Place;
 import ba.bitcamp.bitNavigator.service.MapHelper;
+import ba.bitcamp.bitNavigator.service.Navbar;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ import com.here.android.mpa.routing.RouteOptions;
 import com.here.android.mpa.routing.RoutePlan;
 import com.here.android.mpa.routing.RouteResult;
 
-public class MapsActivity extends Activity {
+public class MapsActivity extends Navbar {
 
     // map embedded in the composite fragment
     private Map map;
@@ -110,41 +111,7 @@ public class MapsActivity extends Activity {
         hereButton = (ImageView) findViewById(R.id.here_button);
         clearRouteButton = (ImageView) findViewById(R.id.clear_route_button);
 
-        Button mLoginButton = (Button) findViewById(R.id.btnProfile);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(i);
-            }
-        });
-
-
-        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
-        mReservationButton.setOnClickListener(new View.OnClickListener() {
-                                                  public void onClick(View v) {
-                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
-                                                      startActivity(i);
-                                                  }
-                                              }
-        );
-
-        Button mSearchButton = (Button) findViewById(R.id.btnSearch);
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-                                             public void onClick(View v) {
-                                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                                                 startActivity(i);
-                                             }
-                                         }
-        );
-
-        Button mMapButton = (Button) findViewById(R.id.btnMap);
-        mMapButton.setOnClickListener(new View.OnClickListener() {
-                                          public void onClick(View v) {
-                                              Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-                                              startActivity(i);
-                                          }
-                                      }
-        );
+       navbarButtons();
     }
 
     private void addMarkers(int placeId) {

@@ -1,12 +1,10 @@
 package ba.bitcamp.bitNavigator.controllers;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,27 +23,29 @@ import java.io.IOException;
 
 import ba.bitcamp.bitNavigator.bitnavigator.R;
 import ba.bitcamp.bitNavigator.models.User;
+import ba.bitcamp.bitNavigator.service.Navbar;
 import ba.bitcamp.bitNavigator.service.ServiceRequest;
 
-
-public class LoginActivity extends Activity {
+/**
+ * Created by hajrudin.sehic on 17/10/15.
+ */
+public class LoginActivity extends Navbar {
 
     private EditText mEmailEditText;
     private EditText mPasswordEditText;
     private Button mLoginButton;
     private Button mLinkToRegister;
 
-    public Dialog progressDialog;
+    private Dialog progressDialog;
 
-    public User user;
+    private User user;
 
-    public SharedPreferences sharedpreferences;
-
+    private SharedPreferences sharedpreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        // setting default screen to login.xml
         setContentView(R.layout.activity_login);
         progressDialog = new Dialog(LoginActivity.this);
         sharedpreferences = getSharedPreferences("SESSION", Context.MODE_PRIVATE);
@@ -70,8 +70,6 @@ public class LoginActivity extends Activity {
             }
         });
 
-
-
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +83,6 @@ public class LoginActivity extends Activity {
                     json.put("email", email);
                     json.put("password", password);
                 } catch (JSONException e) {
-                    Log.e("++++++++++++++++++++++","id");
                     e.printStackTrace();
                 }
                 String url = getString(R.string.service_sign_in);
@@ -93,42 +90,8 @@ public class LoginActivity extends Activity {
             }
         });
 
+          navbarButtons();
 
-        Button mLoginButton = (Button) findViewById(R.id.btnProfile);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(i);
-            }
-        });
-
-
-        Button mReservationButton = (Button) findViewById(R.id.btnReservations);
-        mReservationButton.setOnClickListener(new View.OnClickListener() {
-                                                  public void onClick(View v) {
-                                                      Intent i = new Intent(getApplicationContext(), ReservationListActivity.class);
-                                                      startActivity(i);
-                                                  }
-                                              }
-        );
-
-        Button mSearchButton = (Button) findViewById(R.id.btnSearch);
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-                                             public void onClick(View v) {
-                                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                                                 startActivity(i);
-                                             }
-                                         }
-        );
-
-        Button mMapButton = (Button) findViewById(R.id.btnMap);
-        mMapButton.setOnClickListener(new View.OnClickListener() {
-                                          public void onClick(View v) {
-                                              Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-                                              startActivity(i);
-                                          }
-                                      }
-        );
     }
 
 
@@ -137,13 +100,12 @@ public class LoginActivity extends Activity {
             @Override
             public void onFailure(Request request, IOException e) {
                 progressDialog.cancel();
+                e.getMessage();
                 makeToast("Email and/or password incorrect");
-                Log.e("**************", "id");
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
-
                 try {
                     String responseJSON= response.body().string();
                     JSONObject userObj = new JSONObject(responseJSON.toString());
@@ -151,27 +113,24 @@ public class LoginActivity extends Activity {
                     String name = userObj.getString("firstName");
                     String surname = userObj.getString("lastName");
                     String email = userObj.getString("email");
-                    Log.d("dsds", "id");
                     String password = userObj.getString("password");
-                    Log.d("dsds", "slika");
                     String avatar = userObj.getString("avatar");
-                    Log.d("dsds", "slikaposle"+avatar);
                     user = new User(id, name, surname, email, password, avatar);
+
                     makeToast("Wellcome " + user.getFirstName());
+
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putInt("id", id);
                     editor.putString("name", name);
                     editor.putString("surname", surname);
                     editor.putString("email", email);
                     editor.putString("avatar", avatar);
-
                     editor.commit();
 
                     goToProfile();
 
                 } catch (JSONException e) {
-                    Log.e("**************", "id");
-                    Log.e("Message = ",e.getMessage());
+                    e.getMessage();
                     progressDialog.cancel();
                     makeToast("Email and/or password incorrect");
                 }
